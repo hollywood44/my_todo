@@ -21,12 +21,16 @@ public class Member extends CommonTime {
     @Column(length = 20)
     private String memberId;
 
+    @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
     private String email;
 
+    @Column(nullable = false)
     private String phone;
 
     @Enumerated(EnumType.STRING)

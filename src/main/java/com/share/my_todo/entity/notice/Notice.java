@@ -17,6 +17,7 @@ public class Notice extends CommonTime {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long noticeId;
 
+    @Column(nullable = false)
     private String notice;
 
     @ManyToOne(targetEntity = Member.class,fetch = FetchType.LAZY)

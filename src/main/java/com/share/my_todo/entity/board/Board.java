@@ -17,9 +17,13 @@ public class Board extends CommonTime {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long boardId;
 
+    @Column(nullable = false)
     private String title;
+
+    @Column(nullable = false)
     private String content;
 
+    @Column(nullable = false)
     @ManyToOne(targetEntity = Member.class,fetch = FetchType.LAZY)
     @JoinColumn(name = "writer")
     private Member writer;

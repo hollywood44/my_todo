@@ -20,11 +20,14 @@ public class Todo extends CommonTime {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long todoId;
 
+    @Column(nullable = false)
     private String todo;
 
+    @Column(nullable = false)
     private LocalDateTime finishDate;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private TodoProgress progress;
 
     @ManyToOne(targetEntity = Member.class,fetch = FetchType.LAZY)
