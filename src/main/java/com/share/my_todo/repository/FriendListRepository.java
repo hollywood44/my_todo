@@ -2,6 +2,8 @@ package com.share.my_todo.repository;
 
 import com.share.my_todo.entity.member.FriendList;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface FriendListRepository extends JpaRepository<Long, FriendList> {
+@Repository
+public interface FriendListRepository extends JpaRepository<FriendList,Long> {
 }
