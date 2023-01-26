@@ -23,7 +23,6 @@ public class Board extends CommonTime {
     @Column(nullable = false)
     private String content;
 
-    @Column(nullable = false)
     @ManyToOne(targetEntity = Member.class,fetch = FetchType.LAZY)
     @JoinColumn(name = "writer")
     private Member writer;

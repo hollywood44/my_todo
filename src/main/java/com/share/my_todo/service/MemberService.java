@@ -23,5 +23,5 @@ public interface MemberService extends UserDetailsService {
      * @param memberDto
      * @return String타입 memberId
      */
-    String SignUp(MemberDto memberDto);
+    String signUp(MemberDto memberDto);
 }

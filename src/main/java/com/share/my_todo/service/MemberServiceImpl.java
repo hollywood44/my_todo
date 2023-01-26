@@ -25,7 +25,7 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public String SignUp(MemberDto memberDto) {
+    public String signUp(MemberDto memberDto) {
         Optional<Member> check = memberRepository.findById(memberDto.getMemberId());
         if (!check.isPresent()) {
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
