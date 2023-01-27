@@ -63,4 +63,10 @@ class MemberServiceTest {
 
         System.out.println(memberService.getMyInfo("member1"));
     }
+
+    @Test
+    @Rollback(value = false)
+    void modifyPassword() {
+        memberService.modifyPassword("member1", "12345");
+    }
 }

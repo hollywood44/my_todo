@@ -56,4 +56,12 @@ public class MemberServiceImpl implements MemberService{
         memberRepository.save(modifiedMember);
         return entityToDto(modifiedMember);
     }
+
+    @Override
+    public String modifyPassword(String memberId, String password) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        Member member = memberRepository.findById(memberId).get();
+        member.modifyPassword(encoder.encode(password));
+        return memberRepository.save(member).getMemberId();
+    }
 }

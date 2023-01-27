@@ -59,4 +59,11 @@ public interface MemberService extends UserDetailsService {
      * @return MemberDto : 수정이 완료된 회원정보
      */
     MemberDto modifyMemberInfo(MemberDto dto);
+
+    /**
+     * 비밀번호 변경
+     * @param memberId , password
+     * @return 변경완료 된 아이디 리턴
+     */
+    String modifyPassword(String memberId ,String password);
 }

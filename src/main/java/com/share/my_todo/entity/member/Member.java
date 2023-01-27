@@ -51,6 +51,10 @@ public class Member extends CommonTime implements UserDetails {
         this.auth = dto.getAuth();
     }
 
+    public void modifyPassword(String password) {
+        this.password = password;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> roles = new HashSet<>();
