@@ -40,4 +40,11 @@ public interface BoardService {
      * @return Long타입의 작성이 완료된 글의 게시글 번호
      */
     Long modifyPost(BoardDto dto);
+
+    /**
+     * 게시글 상세보기
+     * @param boardId 상세하게 보고자하는 게시글 아이디
+     * @return 제목,내용,작성자,등록일,수정일이 담긴 dto리턴
+     */
+    BoardDto postDetail(Long boardId);
 }

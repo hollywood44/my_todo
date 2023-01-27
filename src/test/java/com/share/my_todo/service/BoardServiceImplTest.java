@@ -42,4 +42,9 @@ class BoardServiceImplTest {
         System.out.println(boardService.modifyPost(dto));
     }
 
+    @Test
+    void detailTest() {
+        System.out.println(boardService.postDetail(2L));
+    }
+
 }

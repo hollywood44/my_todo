@@ -26,4 +26,12 @@ public class BoardServiceImpl implements BoardService{
 
         return boardRepository.save(modifiedPost).getBoardId();
     }
+
+    @Override
+    public BoardDto postDetail(Long boardId) {
+        Board board = boardRepository.findById(boardId).get();
+        BoardDto detailBoard = entityToDto(board);
+
+        return detailBoard;
+    }
 }
