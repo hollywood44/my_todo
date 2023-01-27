@@ -17,7 +17,7 @@ public class TodoDto {
 
     private Long todoId;
     private String todo;
-    private LocalDateTime finishDate;
+    private String finishDate;
     private TodoProgress progress;
     private String memberId;
     private LocalDateTime regDate;

@@ -1,13 +1,19 @@
 package com.share.my_todo.entity.todo;
 
+import com.share.my_todo.DTO.todo.TodoDto;
 import com.share.my_todo.entity.common.CommonTime;
 import com.share.my_todo.entity.common.TodoProgress;
 import com.share.my_todo.entity.member.Member;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
+/**
+ * 할일 아이디, 할일, 목표날짜, 진행도, 회원
+ */
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -24,7 +30,7 @@ public class Todo extends CommonTime {
     private String todo;
 
     @Column(nullable = false)
-    private LocalDateTime finishDate;
+    private LocalDate finishDate;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -34,4 +40,11 @@ public class Todo extends CommonTime {
     @JoinColumn(name = "memberId")
     private Member member;
 
+    public void modifyTodo(TodoDto dto) {
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyyMMdd");
+        LocalDate changeDate = LocalDate.parse(dto.getFinishDate(), format);
+
+        this.todo = dto.getTodo();
+        this.finishDate = changeDate;
+    }
 }
