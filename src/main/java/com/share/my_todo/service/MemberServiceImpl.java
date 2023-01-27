@@ -37,5 +37,16 @@ public class MemberServiceImpl implements MemberService{
         }
     }
 
+    @Override
+    public MemberDto getMyInfo(String memberId) {
+        MemberDto myInfo = entityToDto(memberRepository.findById(memberId).get());
+        return myInfo;
+    }
+
+    @Override
+    public MemberDto getMemberInfo(String memberId) {
+        MemberDto memberInfo = entityToDto(memberRepository.findById(memberId).get());
+        return memberInfo;
+    }
 
 }

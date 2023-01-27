@@ -38,7 +38,6 @@ class MemberServiceTest {
 
     @Test
     void getMemberByMemberId() {
-        Member member = memberRepository.findById("admin").get();
-        System.out.println(member.getMemberId());
+        System.out.println(memberService.getMyInfo("admin"));
     }
 }
