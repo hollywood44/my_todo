@@ -6,6 +6,7 @@ import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 import org.springframework.test.annotation.Rollback;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -45,6 +46,14 @@ class BoardServiceImplTest {
     @Test
     void detailTest() {
         System.out.println(boardService.postDetail(2L));
+    }
+
+    @Test
+    void getListTest() {
+        Page<BoardDto> list = boardService.getAllBoardList(0, 10);
+        for (BoardDto dto : list) {
+            System.out.println(dto);
+        }
     }
 
 }

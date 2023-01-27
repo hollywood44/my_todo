@@ -4,6 +4,10 @@ import com.share.my_todo.DTO.board.BoardDto;
 import com.share.my_todo.entity.board.Board;
 import com.share.my_todo.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -33,5 +37,15 @@ public class BoardServiceImpl implements BoardService{
         BoardDto detailBoard = entityToDto(board);
 
         return detailBoard;
+    }
+
+    @Override
+    public Page<BoardDto> getAllBoardList(int page,int size) {
+        Sort sort = Sort.by("boardId").descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        Page<Board> entityList = boardRepository.findAll(pageable);
+        Page<BoardDto> boardList = entityList.map(entity -> entityToDto(entity));
+
+        return boardList;
     }
 }

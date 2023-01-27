@@ -3,6 +3,7 @@ package com.share.my_todo.service;
 import com.share.my_todo.DTO.board.BoardDto;
 import com.share.my_todo.entity.board.Board;
 import com.share.my_todo.entity.member.Member;
+import org.springframework.data.domain.Page;
 
 public interface BoardService {
 
@@ -47,4 +48,6 @@ public interface BoardService {
      * @return 제목,내용,작성자,등록일,수정일이 담긴 dto리턴
      */
     BoardDto postDetail(Long boardId);
+
+    Page<BoardDto> getAllBoardList(int page,int size);
 }
