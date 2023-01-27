@@ -1,5 +1,6 @@
 package com.share.my_todo.entity.member;
 
+import com.share.my_todo.DTO.member.MemberDto;
 import com.share.my_todo.entity.common.Auth;
 import com.share.my_todo.entity.common.CommonTime;
 import jakarta.persistence.*;
@@ -42,6 +43,13 @@ public class Member extends CommonTime implements UserDetails {
 
     @Enumerated(EnumType.STRING)
     private Auth auth;
+
+    public void modifyInfo(MemberDto dto) {
+        this.name = dto.getName();
+        this.email = dto.getEmail();
+        this.phone = dto.getPhone();
+        this.auth = dto.getAuth();
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

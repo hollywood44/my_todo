@@ -24,13 +24,22 @@ class MemberServiceTest {
     @Test
     @Rollback(value = false)
     void signUp(){
+//        MemberDto dto = MemberDto.builder()
+//                .memberId("admin")
+//                .password("1234")
+//                .phone("010-0000-0000")
+//                .email("admin@sharetodo.com")
+//                .name("admin")
+//                .auth(Auth.Admin)
+//                .build();
+
         MemberDto dto = MemberDto.builder()
-                .memberId("admin")
+                .memberId("member1")
                 .password("1234")
-                .phone("010-0000-0000")
-                .email("admin@sharetodo.com")
-                .name("admin")
-                .auth(Auth.Admin)
+                .phone("010-0000-0001")
+                .email("member1@sharetodo.com")
+                .name("member1")
+                .auth(Auth.Member)
                 .build();
 
         System.out.println(memberService.signUp(dto));
@@ -39,5 +48,19 @@ class MemberServiceTest {
     @Test
     void getMemberByMemberId() {
         System.out.println(memberService.getMyInfo("admin"));
+    }
+
+    @Test
+    @Rollback(value = false)
+    void modifyMemberInfo() {
+        MemberDto dto = MemberDto.builder()
+                .memberId("member1")
+                .phone("010-0000-0001")
+                .email("member1@sharetodo.com")
+                .name("member1-modified1")
+                .auth(Auth.Member)
+                .build();
+
+        System.out.println(memberService.getMyInfo("member1"));
     }
 }

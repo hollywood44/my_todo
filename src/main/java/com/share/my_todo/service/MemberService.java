@@ -40,16 +40,23 @@ public interface MemberService extends UserDetailsService {
     String signUp(MemberDto memberDto);
 
     /**
-     *
+     * 내 정보 불러오기
      * @param memberId : 회원 아이디
      * @return MemberDto : 내 정보를 담아서 넘겨줌
      */
     MemberDto getMyInfo(String memberId);
 
     /**
-     *
+     * 회원 정보 불러오기
      * @param memberId : 회원 아이디
      * @return MemberDto : 해당 회원의 정보를 담아서 넘겨줌
      */
     MemberDto getMemberInfo(String memberId);
+
+    /**
+     * 회원 정보 수정하기
+     * @param dto : 기존 필드에서 password 제외하고 변경된 값이 적용되서 넘어온 수정된 회원정보
+     * @return MemberDto : 수정이 완료된 회원정보
+     */
+    MemberDto modifyMemberInfo(MemberDto dto);
 }

@@ -1,5 +1,6 @@
 package com.share.my_todo.entity.common;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
@@ -18,7 +19,9 @@ import java.time.LocalDateTime;
 public class CommonTime {
 
     @CreatedDate
+    @Column(updatable = false)
     private LocalDateTime regDate;
+
     @LastModifiedDate
     private LocalDateTime modDate;
 }
