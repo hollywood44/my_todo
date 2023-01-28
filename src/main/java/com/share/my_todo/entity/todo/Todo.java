@@ -47,4 +47,8 @@ public class Todo extends CommonTime {
         this.todo = dto.getTodo();
         this.finishDate = changeDate;
     }
+
+    public void progressChangeToComplete() {
+        this.progress = TodoProgress.Success;
+    }
 }

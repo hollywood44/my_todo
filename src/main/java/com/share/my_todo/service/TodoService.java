@@ -57,4 +57,11 @@ public interface TodoService {
      */
     Long modifyTodo(TodoDto dto);
 
+    /**
+     * 할일 완료
+     * @param todoId
+     * @return 완료된 할일아이디 리턴
+     */
+    Long completeMyTodo(Long todoId);
+
 }

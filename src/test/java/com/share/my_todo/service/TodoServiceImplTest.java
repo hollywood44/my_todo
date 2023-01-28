@@ -17,6 +17,7 @@ class TodoServiceImplTest {
     @Autowired
     TodoService todoService;
 
+
     @Test
     @Rollback(value = false)
     void todoPostingTest() {
@@ -42,5 +43,11 @@ class TodoServiceImplTest {
                 .build();
 
         System.out.println(todoService.modifyTodo(dto));
+    }
+
+    @Test
+    @Rollback(value = false)
+    void 할일완료() {
+        todoService.completeMyTodo(1L);
     }
 }

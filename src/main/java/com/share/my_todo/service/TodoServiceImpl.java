@@ -25,4 +25,11 @@ public class TodoServiceImpl implements TodoService{
 
         return todoRepository.save(todo).getTodoId();
     }
+
+    @Override
+    public Long completeMyTodo(Long todoId) {
+        Todo todo = todoRepository.findById(todoId).get();
+        todo.progressChangeToComplete();
+        return todoRepository.save(todo).getTodoId();
+    }
 }
