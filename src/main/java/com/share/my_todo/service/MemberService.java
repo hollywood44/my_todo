@@ -66,4 +66,6 @@ public interface MemberService extends UserDetailsService {
      * @return 변경완료 된 아이디 리턴
      */
     String modifyPassword(String memberId ,String password);
+
+    String deleteAccount(String memberId, String password);
 }
