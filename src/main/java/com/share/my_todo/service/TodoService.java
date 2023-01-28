@@ -64,4 +64,6 @@ public interface TodoService {
      */
     Long completeMyTodo(Long todoId);
 
+    TodoDto getTodoDetail(Long todoId);
+
 }

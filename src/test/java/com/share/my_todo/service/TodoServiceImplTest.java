@@ -50,4 +50,9 @@ class TodoServiceImplTest {
     void 할일완료() {
         todoService.completeMyTodo(1L);
     }
+
+    @Test
+    void 할일디테일보기() {
+        System.out.println(todoService.getTodoDetail(1L));
+    }
 }

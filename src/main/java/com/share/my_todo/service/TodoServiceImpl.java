@@ -32,4 +32,12 @@ public class TodoServiceImpl implements TodoService{
         todo.progressChangeToComplete();
         return todoRepository.save(todo).getTodoId();
     }
+
+    @Override
+    public TodoDto getTodoDetail(Long todoId) {
+        Todo todo = todoRepository.findById(todoId).get();
+        TodoDto detail = entityToDto(todo);
+
+        return detail;
+    }
 }
