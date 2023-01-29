@@ -11,6 +11,11 @@ import java.util.List;
 
 public interface FriendService {
 
+    default Member easyMakeMember(String memberId) {
+        Member member = Member.builder().memberId(memberId).build();
+        return member;
+    }
+
     default Friend dtoToEntity(FriendDto dto) {
         Friend entity = Friend.builder()
                 .member(Member.builder().memberId(dto.getMemberId()).build())
@@ -30,6 +35,7 @@ public interface FriendService {
 
     default FriendListDto entityToDtoForList(FriendList entity) {
         List<FriendDto> dtoList = new ArrayList<>();
+
         for (Friend entityFriend : entity.getFriendList()) {
             dtoList.add(entityToDto(entityFriend));
         }
@@ -59,10 +65,21 @@ public interface FriendService {
     Long followRequest(String myId, String followId);
 
     /**
-     * 팔루우 요청 수락
+     * 팔루우 요청 수락<br/>
+     * 1. <br/>팔로우 당한 회원의 FriendList와 그 중에서 팔로우 한 회원의 FriendId 가져옴<br/>
+     * 2. <br/>팔로우 한 회원의 FriendList와 그 중에서 팔로우 당한 회원의 FriendId 가져옴<br/>
+     * 3. <br/>친구목록을 for문을 돌려서 FriendId와 일치하는 Friend 객체 가져옴(팔로우 당한 회원 & 팔로우 한 회원 해서 for문 각각 1번씩)<br/>
+     * 4. <br/>그 Friend객체의 상태를 Accept로 바꾸고 저장(각각 1번씩)<br/>
      * @param followerId 팔로워 아이디
      * @return 성공하면 수락자 친구목록아이디 리턴
      */
     Long followAccept(String myId, String followerId);
+
+    /**
+     * 팔로우 요청목록 반환
+     * @param myId 팔로우 받은 아이디
+     * @return 팔로우 요청온 목록 반환
+     */
+    List<FriendDto> requestedFriendList(String myId);
 
 }

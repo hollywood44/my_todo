@@ -45,4 +45,7 @@ public class Friend {
     public void statusToRequest() {
         this.followStatus = FollowStatus.Requested;
     }
+    public void statusToAccept() {
+        this.followStatus = FollowStatus.Accept;
+    }
 }

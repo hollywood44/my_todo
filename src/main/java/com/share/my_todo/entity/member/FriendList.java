@@ -25,7 +25,7 @@ public class FriendList {
     @JoinColumn(name = "memberId")
     private Member member;
 
-    @OneToMany(mappedBy = "friendId", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "friendList", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
     @Builder.Default
     private List<Friend> friendList = new ArrayList<>();
 

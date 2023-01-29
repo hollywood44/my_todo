@@ -1,5 +1,6 @@
 package com.share.my_todo.service;
 
+import com.share.my_todo.DTO.member.FriendDto;
 import com.share.my_todo.DTO.member.FriendListDto;
 import com.share.my_todo.entity.member.Friend;
 import com.share.my_todo.entity.member.FriendList;
@@ -7,8 +8,12 @@ import com.share.my_todo.entity.member.Member;
 import com.share.my_todo.repository.FriendListRepository;
 import com.share.my_todo.repository.FriendRepository;
 import com.share.my_todo.repository.MemberRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -20,7 +25,7 @@ public class FriendServiceImpl implements FriendService{
 
     @Override
     public FriendListDto getFriendList(String memberId) {
-        FriendList friendList = listRepository.findByMember(Member.builder().memberId(memberId).build()).get();
+        FriendList friendList = listRepository.findByMember(easyMakeMember(memberId)).get();
         FriendListDto friendListDto = entityToDtoForList(friendList);
 
         return friendListDto;
@@ -46,6 +51,39 @@ public class FriendServiceImpl implements FriendService{
 
     @Override
     public Long followAccept(String myId, String followerId) {
-        return null;
+        FriendList friendList = listRepository.findByMember(easyMakeMember(myId)).get();
+        FriendList followerFriendList = listRepository.findByMember(easyMakeMember(followerId)).get();
+
+        Long friendId = friendRepository.findFriendForAccept(friendList,easyMakeMember(followerId));
+        Long myFriendId = friendRepository.findFriendForAccept(followerFriendList,easyMakeMember(myId));
+
+        for(Friend friend : friendList.getFriendList()){
+            if (friend.getFriendId().equals(friendId)) {
+                friend.statusToAccept();
+                friendRepository.save(friend);
+            }
+        }
+
+        for(Friend friend : followerFriendList.getFriendList()){
+            if (friend.getFriendId().equals(myFriendId)) {
+                friend.statusToAccept();
+                friendRepository.save(friend);
+            }
+        }
+
+        return friendId;
+    }
+
+    @Override
+    public List<FriendDto> requestedFriendList(String myId) {
+        FriendList friendList = listRepository.findByMember(Member.builder().memberId(myId).build()).get();
+        List<FriendDto> requestedList = new ArrayList<>();
+
+        for (Friend friend : friendList.getFriendList()) {
+            if (friend.getFollowStatus().equals(Friend.FollowStatus.Requested)) {
+                requestedList.add(entityToDto(friend));
+            }
+        }
+        return requestedList;
     }
 }
