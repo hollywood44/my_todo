@@ -8,6 +8,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * 고유아이디, 친구아이디, 팔로우상태, 소속된 친구목록 아이디
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,6 +18,8 @@ import lombok.NoArgsConstructor;
 public class FriendDto {
 
     private Long friendId;
-    private Long friendListId;
     private String memberId;
+    private String Status;
+    private Long friendListId;
+
 }

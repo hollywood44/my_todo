@@ -15,6 +15,7 @@ import java.util.List;
 public class FriendListDto {
 
     private Long friendListId;
+    private String memberId;
     private List<FriendDto> friendList;
 
 }

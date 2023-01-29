@@ -6,6 +6,9 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 친구목록 고유아이디, 친구목록 소유자 아이디, 친구목록 리스트
+ */
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -18,7 +21,16 @@ public class FriendList {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long friendListId;
 
+    @ManyToOne(targetEntity = Member.class,fetch = FetchType.LAZY)
+    @JoinColumn(name = "memberId")
+    private Member member;
+
     @OneToMany(mappedBy = "friendId", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<Friend> friendList = new ArrayList<>();
+
+    public void addFriend(Friend friend) {
+        friend.setFriendList(this);
+        this.friendList.add(friend);
+    }
 }

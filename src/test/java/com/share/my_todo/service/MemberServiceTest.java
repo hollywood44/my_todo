@@ -34,11 +34,11 @@ class MemberServiceTest {
 //                .build();
 
         MemberDto dto = MemberDto.builder()
-                .memberId("member1")
+                .memberId("member4")
                 .password("1234")
-                .phone("010-0000-0001")
-                .email("member1@sharetodo.com")
-                .name("member1")
+                .phone("010-0000-0004")
+                .email("member2@sharetodo.com")
+                .name("member4")
                 .auth(Auth.Member)
                 .build();
 
