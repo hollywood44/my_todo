@@ -82,4 +82,12 @@ public interface FriendService {
      */
     List<FriendDto> requestedFriendList(String myId);
 
+    /**
+     * 팔로우 거절
+     * @param myId 거절 하는 사람 아이디
+     * @param followerId 거절 받는 사람 아이디
+     * @return
+     */
+    Long followReject(String myId, String followerId);
+
 }

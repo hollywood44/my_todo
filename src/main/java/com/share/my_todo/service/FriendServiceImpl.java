@@ -32,6 +32,7 @@ public class FriendServiceImpl implements FriendService{
     }
 
     @Override
+    @Transactional
     public Long followRequest(String myId, String followId) {
         FriendList friendList = listRepository.findByMember(Member.builder().memberId(myId).build()).get();
         Friend followFriend = Friend.builder().member(Member.builder().memberId(followId).build()).build();
@@ -50,6 +51,7 @@ public class FriendServiceImpl implements FriendService{
     }
 
     @Override
+    @Transactional
     public Long followAccept(String myId, String followerId) {
         FriendList friendList = listRepository.findByMember(easyMakeMember(myId)).get();
         FriendList followerFriendList = listRepository.findByMember(easyMakeMember(followerId)).get();
@@ -85,5 +87,30 @@ public class FriendServiceImpl implements FriendService{
             }
         }
         return requestedList;
+    }
+
+    @Override
+    public Long followReject(String myId, String followerId) {
+        FriendList friendList = listRepository.findByMember(easyMakeMember(myId)).get();
+        FriendList followerFriendList = listRepository.findByMember(easyMakeMember(followerId)).get();
+
+        Long friendId = friendRepository.findFriendForAccept(friendList,easyMakeMember(followerId));
+        Long myFriendId = friendRepository.findFriendForAccept(followerFriendList,easyMakeMember(myId));
+
+        for(Friend friend : friendList.getFriendList()){
+            if (friend.getFriendId().equals(friendId)) {
+                friend.statusToReject();
+                friendRepository.save(friend);
+            }
+        }
+
+        for(Friend friend : followerFriendList.getFriendList()){
+            if (friend.getFriendId().equals(myFriendId)) {
+                friend.statusToReject();
+                friendRepository.save(friend);
+            }
+        }
+
+        return friendId;
     }
 }

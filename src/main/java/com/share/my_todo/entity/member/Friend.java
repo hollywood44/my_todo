@@ -37,15 +37,16 @@ public class Friend {
     public void setFriendList(FriendList friendList) {
         this.friendList = friendList;
     }
-
     public void statusToWaiting() {
         this.followStatus = FollowStatus.Waiting;
     }
-
     public void statusToRequest() {
         this.followStatus = FollowStatus.Requested;
     }
     public void statusToAccept() {
         this.followStatus = FollowStatus.Accept;
+    }
+    public void statusToReject() {
+        this.followStatus = FollowStatus.Reject;
     }
 }
