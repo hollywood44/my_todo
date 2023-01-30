@@ -26,5 +26,8 @@ public interface NoticeService {
 
     Long sendTodoProgressNotice(String memberId, int percent);
 
-    Long sendFollowRequestNotice(String followerId, String targetMemberId);
+    Long sendFollowRequestNotice(String sendMemberId, String targetMemberId);
+    Long sendFollowAcceptNotice(String sendMemberId, String targetMemberId);
+    Long sendFollowRejectNotice(String sendMemberId, String targetMemberId);
+    // TODO: 2023-01-30 팔로우 취소
 }

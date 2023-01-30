@@ -19,8 +19,22 @@ public class NoticeServiceImpl implements NoticeService{
     }
 
     @Override
-    public Long sendFollowRequestNotice(String followerId, String targetMemberId) {
-        Notice notice = makeFollowStatusNotice(followerId,targetMemberId,FollowNoticeMessage.FollowRequest);
+    public Long sendFollowRequestNotice(String sendMemberId, String targetMemberId) {
+        Notice notice = makeFollowStatusNotice(sendMemberId,targetMemberId,FollowNoticeMessage.FollowRequest);
+
+        return noticeRepository.save(notice).getNoticeId();
+    }
+
+    @Override
+    public Long sendFollowAcceptNotice(String sendMemberId, String targetMemberId) {
+        Notice notice = makeFollowStatusNotice(sendMemberId,targetMemberId,FollowNoticeMessage.FollowAccept);
+
+        return noticeRepository.save(notice).getNoticeId();
+    }
+
+    @Override
+    public Long sendFollowRejectNotice(String sendMemberId, String targetMemberId) {
+        Notice notice = makeFollowStatusNotice(sendMemberId,targetMemberId,FollowNoticeMessage.FollowReject);
 
         return noticeRepository.save(notice).getNoticeId();
     }

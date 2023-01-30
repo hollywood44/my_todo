@@ -52,6 +52,7 @@ public class FriendServiceImpl implements FriendService{
         follower.statusToRequest();
         followerFriendList.addFriend(follower);
 
+        // 알림 보냄
         noticeService.sendFollowRequestNotice(myId, followId);
 
         // 친구목록 저장
@@ -62,6 +63,9 @@ public class FriendServiceImpl implements FriendService{
     @Override
     @Transactional
     public Long followAccept(String myId, String followerId) {
+
+        noticeService.sendFollowAcceptNotice(myId, followerId);
+
         FriendList friendList = listRepository.findByMember(easyMakeMember(myId)).get();
         FriendList followerFriendList = listRepository.findByMember(easyMakeMember(followerId)).get();
 
@@ -78,6 +82,33 @@ public class FriendServiceImpl implements FriendService{
         for(Friend friend : followerFriendList.getFriendList()){
             if (friend.getFriendId().equals(myFriendId)) {
                 friend.statusToAccept();
+                friendRepository.save(friend);
+            }
+        }
+
+        return friendId;
+    }
+
+    @Override
+    public Long followReject(String myId, String followerId) {
+        noticeService.sendFollowRejectNotice(myId, followerId);
+
+        FriendList friendList = listRepository.findByMember(easyMakeMember(myId)).get();
+        FriendList followerFriendList = listRepository.findByMember(easyMakeMember(followerId)).get();
+
+        Long friendId = friendRepository.findFriendForAccept(friendList,easyMakeMember(followerId));
+        Long myFriendId = friendRepository.findFriendForAccept(followerFriendList,easyMakeMember(myId));
+
+        for(Friend friend : friendList.getFriendList()){
+            if (friend.getFriendId().equals(friendId)) {
+                friend.statusToReject();
+                friendRepository.save(friend);
+            }
+        }
+
+        for(Friend friend : followerFriendList.getFriendList()){
+            if (friend.getFriendId().equals(myFriendId)) {
+                friend.statusToReject();
                 friendRepository.save(friend);
             }
         }
@@ -98,28 +129,5 @@ public class FriendServiceImpl implements FriendService{
         return requestedList;
     }
 
-    @Override
-    public Long followReject(String myId, String followerId) {
-        FriendList friendList = listRepository.findByMember(easyMakeMember(myId)).get();
-        FriendList followerFriendList = listRepository.findByMember(easyMakeMember(followerId)).get();
 
-        Long friendId = friendRepository.findFriendForAccept(friendList,easyMakeMember(followerId));
-        Long myFriendId = friendRepository.findFriendForAccept(followerFriendList,easyMakeMember(myId));
-
-        for(Friend friend : friendList.getFriendList()){
-            if (friend.getFriendId().equals(friendId)) {
-                friend.statusToReject();
-                friendRepository.save(friend);
-            }
-        }
-
-        for(Friend friend : followerFriendList.getFriendList()){
-            if (friend.getFriendId().equals(myFriendId)) {
-                friend.statusToReject();
-                friendRepository.save(friend);
-            }
-        }
-
-        return friendId;
-    }
 }

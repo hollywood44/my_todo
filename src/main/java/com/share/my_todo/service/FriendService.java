@@ -90,4 +90,6 @@ public interface FriendService {
      */
     Long followReject(String myId, String followerId);
 
+    // TODO: 2023-01-30 팔로우 취소
+
 }
