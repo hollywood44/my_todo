@@ -129,5 +129,21 @@ public class FriendServiceImpl implements FriendService{
         return requestedList;
     }
 
+    @Override
+    @Transactional
+    public List<Long> unFollow(String myId, String followId) {
+        FriendList friendList = listRepository.findByMember(easyMakeMember(myId)).get();
+        FriendList followerFriendList = listRepository.findByMember(easyMakeMember(followId)).get();
 
+        Long friendId = friendRepository.findFriendForAccept(friendList,easyMakeMember(followId));
+        Long myFriendId = friendRepository.findFriendForAccept(followerFriendList,easyMakeMember(myId));
+
+        List<Long> deleteList = new ArrayList<>();
+        deleteList.add(friendId);
+        deleteList.add(myFriendId);
+
+        friendRepository.deleteAllById(deleteList);
+
+        return deleteList;
+    }
 }

@@ -82,6 +82,7 @@ public interface FriendService {
      */
     List<FriendDto> requestedFriendList(String myId);
 
+    // TODO: 2023-01-30 팔로우 거절 시 1일 뒤 서로의 친구목록에서 삭제하게하는 기능 추가해야함
     /**
      * 팔로우 거절
      * @param myId 거절 하는 사람 아이디
@@ -90,6 +91,12 @@ public interface FriendService {
      */
     Long followReject(String myId, String followerId);
 
-    // TODO: 2023-01-30 팔로우 취소
+    /**
+     * 팔로우 해제
+     * @param myId 팔로우 해제하는 멤버 아이디
+     * @param followId 팔로우 해제당하는 멤버 아이디
+     * @return 삭제된 Friend.friendId 2개가 담긴 List<Long>타입 반환
+     */
+    List<Long> unFollow(String myId, String followId);
 
 }

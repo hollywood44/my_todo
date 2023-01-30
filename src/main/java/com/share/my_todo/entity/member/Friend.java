@@ -1,5 +1,6 @@
 package com.share.my_todo.entity.member;
 
+import com.share.my_todo.entity.common.CommonTime;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,7 +13,7 @@ import lombok.*;
 @Builder
 @Getter
 @Table(name = "friend_tbl")
-public class Friend {
+public class Friend extends CommonTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

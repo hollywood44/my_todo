@@ -52,14 +52,12 @@ class FriendServiceImplTest {
     }
 
     @Test
-    void 테스트() {
-        FriendList friendList = listRepository.findByMember(Member.builder().memberId("member7").build()).get();
-//        List<Friend> friendList = friendRepository.findAll();
-        for (Friend friend : friendList.getFriendList()) {
-            System.out.println("list Id : " + friend.getFriendList().getFriendListId());
-        }
-//                    System.out.println("list Id : " + friendList.getFriendListId());
-
+    @Rollback(value = false)
+    void 팔로우취소() {
+        friendService.unFollow("member7","member2");
     }
 
-    }
+
+
+
+}
