@@ -22,6 +22,8 @@ public class FriendServiceImpl implements FriendService{
     private final MemberRepository memberRepository;
     private final FriendListRepository listRepository;
     private final FriendRepository friendRepository;
+    private final NoticeService noticeService;
+
 
     @Override
     public FriendListDto getFriendList(String memberId) {
@@ -34,18 +36,25 @@ public class FriendServiceImpl implements FriendService{
     @Override
     @Transactional
     public Long followRequest(String myId, String followId) {
+        // 팔로우 건 회원 친구목록 불러옴 그리고 여기 담길 Friend객체 생성
         FriendList friendList = listRepository.findByMember(Member.builder().memberId(myId).build()).get();
         Friend followFriend = Friend.builder().member(Member.builder().memberId(followId).build()).build();
 
+        // 팔로우 상태 세팅
         followFriend.statusToWaiting();
         friendList.addFriend(followFriend);
 
+        // 팔로우 걸린 회원 친구목록 불러옴 그리고 여기 담길 Friend객체 생성
         FriendList followerFriendList = listRepository.findByMember(Member.builder().memberId(followId).build()).get();
         Friend follower = Friend.builder().member(Member.builder().memberId(myId).build()).build();
 
+        // 팔로우 상태 세팅
         follower.statusToRequest();
         followerFriendList.addFriend(follower);
 
+        noticeService.sendFollowRequestNotice(myId, followId);
+
+        // 친구목록 저장
         listRepository.save(followerFriendList);
         return listRepository.save(friendList).getFriendListId();
     }

@@ -35,7 +35,7 @@ class FriendServiceImplTest {
 
     @Test
     @Rollback(value = false)
-    void 친구추가() {
+    void 팔로우요청() {
         friendService.followRequest("member7", "member2");
     }
 

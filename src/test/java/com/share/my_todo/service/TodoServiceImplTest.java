@@ -2,6 +2,7 @@ package com.share.my_todo.service;
 
 import com.share.my_todo.DTO.todo.TodoDto;
 import com.share.my_todo.entity.common.TodoProgress;
+import com.share.my_todo.entity.common.TodoProgressNoticeMessage;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
