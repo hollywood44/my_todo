@@ -4,8 +4,8 @@ package com.share.my_todo.repository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.share.my_todo.entity.member.Member;
 import com.share.my_todo.entity.todo.Todo;
-import jakarta.persistence.EntityManager;
 
+import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;

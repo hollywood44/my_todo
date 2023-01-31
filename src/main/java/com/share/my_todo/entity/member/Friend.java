@@ -1,8 +1,9 @@
 package com.share.my_todo.entity.member;
 
 import com.share.my_todo.entity.common.CommonTime;
-import jakarta.persistence.*;
 import lombok.*;
+
+import javax.persistence.*;
 
 /**
  * 고유아이디, 소속된 친구목록 아이디, 친구 아이디, 팔로우 상태

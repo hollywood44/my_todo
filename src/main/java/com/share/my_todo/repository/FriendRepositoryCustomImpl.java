@@ -4,7 +4,8 @@ package com.share.my_todo.repository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.share.my_todo.entity.member.FriendList;
 import com.share.my_todo.entity.member.Member;
-import jakarta.persistence.EntityManager;
+
+import javax.persistence.EntityManager;
 
 import static com.share.my_todo.entity.member.QFriend.friend;
 

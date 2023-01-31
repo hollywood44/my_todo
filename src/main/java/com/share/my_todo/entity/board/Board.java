@@ -3,8 +3,9 @@ package com.share.my_todo.entity.board;
 import com.share.my_todo.DTO.board.BoardDto;
 import com.share.my_todo.entity.common.CommonTime;
 import com.share.my_todo.entity.member.Member;
-import jakarta.persistence.*;
 import lombok.*;
+
+import javax.persistence.*;
 
 /**
  * 멤버 : 게시글아이디, 제목, 내용, 글쓴이

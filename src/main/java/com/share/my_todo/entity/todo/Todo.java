@@ -4,7 +4,7 @@ import com.share.my_todo.DTO.todo.TodoDto;
 import com.share.my_todo.entity.common.CommonTime;
 import com.share.my_todo.entity.common.TodoProgress;
 import com.share.my_todo.entity.member.Member;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;

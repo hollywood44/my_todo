@@ -2,8 +2,9 @@ package com.share.my_todo.entity.notice;
 
 import com.share.my_todo.entity.common.CommonTime;
 import com.share.my_todo.entity.member.Member;
-import jakarta.persistence.*;
 import lombok.*;
+
+import javax.persistence.*;
 
 @Entity
 @AllArgsConstructor

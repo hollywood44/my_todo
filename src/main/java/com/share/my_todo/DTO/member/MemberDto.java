@@ -1,9 +1,6 @@
 package com.share.my_todo.DTO.member;
 
 import com.share.my_todo.entity.common.Auth;
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
