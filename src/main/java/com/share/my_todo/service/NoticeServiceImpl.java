@@ -38,4 +38,13 @@ public class NoticeServiceImpl implements NoticeService{
 
         return noticeRepository.save(notice).getNoticeId();
     }
+
+    @Override
+    public Notice makeFinishDateTomorrowNotice(String targetMemberId, String todoContent) {
+        Notice notice = Notice.builder()
+                .notice(todoContent + " 의 마감일이 내일입니다.")
+                .member(Member.builder().memberId(targetMemberId).build())
+                .build();
+        return notice;
+    }
 }

@@ -25,4 +25,6 @@ public class Notice extends CommonTime {
     @JoinColumn(name = "memberId")
     private Member member;
 
+    //TODO read_at (읽은날짜) 추가해야함
+
 }

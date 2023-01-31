@@ -13,6 +13,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -27,14 +28,17 @@ class TodoServiceImplTest {
     @Test
     @Rollback(value = false)
     void todoPostingTest() {
-        TodoDto dto = TodoDto.builder()
-                .todo("todo 6")
-                .progress(TodoProgress.Proceeding)
-                .finishDate("20230129")
-                .memberId("member1")
-                .build();
+        IntStream.rangeClosed(1,3).forEach(i ->{
+            TodoDto dto = TodoDto.builder()
+                    .todo("todo "+i)
+                    .progress(TodoProgress.Proceeding)
+                    .finishDate("20230202")
+                    .memberId("member1")
+                    .build();
+            todoService.postingTodo(dto);
+                }
+        );
 
-        System.out.println(todoService.postingTodo(dto));
     }
 
     @Test

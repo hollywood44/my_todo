@@ -24,10 +24,13 @@ public interface NoticeService {
         return notice;
     }
 
+
     Long sendTodoProgressNotice(String memberId, int percent);
 
     Long sendFollowRequestNotice(String sendMemberId, String targetMemberId);
     Long sendFollowAcceptNotice(String sendMemberId, String targetMemberId);
     Long sendFollowRejectNotice(String sendMemberId, String targetMemberId);
     // TODO: 2023-01-30 팔로우 취소
+
+    Notice makeFinishDateTomorrowNotice(String targetMemberId, String todoContent);
 }

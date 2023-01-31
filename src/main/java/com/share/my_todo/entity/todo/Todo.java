@@ -51,4 +51,7 @@ public class Todo extends CommonTime {
     public void progressChangeToComplete() {
         this.progress = TodoProgress.Success;
     }
+    public void progressChangeToFailed() {
+        this.progress = TodoProgress.Failed;
+    }
 }
