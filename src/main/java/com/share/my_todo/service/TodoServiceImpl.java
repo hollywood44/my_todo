@@ -8,7 +8,10 @@ import com.share.my_todo.repository.TodoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -56,12 +59,21 @@ public class TodoServiceImpl implements TodoService{
     }
 
     @Override
-    public int getAchievementRate(String memberId) {
-        List<Todo> entityList = todoRepository.findAllByMember(Member.builder().memberId(memberId).build());
-
-        int totalCount = entityList.size();
-        int completeThing = Long.valueOf(Optional.ofNullable(entityList.stream().filter(todo -> todo.getProgress().equals(TodoProgress.Success)).count()).orElse(0L)).intValue();
+    public int getAchievementRate(List<Todo> todoList) {
+        int totalCount = todoList.size();
+        int completeThing = Long.valueOf(Optional.ofNullable(todoList.stream().filter(todo -> todo.getProgress().equals(TodoProgress.Success)).count()).orElse(0L)).intValue();
 
         return (int)((double) completeThing / (double) totalCount * 100.0);
+    }
+
+    @Override
+    public List<Todo> getLastWeekTodoList(String memberId) {
+        Map<String, LocalDate> lastWeek = getLastWeekDate();
+
+        List<Todo> lastWeekTodoList = todoRepository
+                .lastWeekTodoListByMemberId(Member.builder().memberId(memberId).build()
+                        , lastWeek.get("monday"), lastWeek.get("sunday"));
+
+        return lastWeekTodoList;
     }
 }
