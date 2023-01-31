@@ -23,9 +23,9 @@ class TodoServiceImplTest {
     @Rollback(value = false)
     void todoPostingTest() {
         TodoDto dto = TodoDto.builder()
-                .todo("todo 1")
+                .todo("todo 3")
                 .progress(TodoProgress.Proceeding)
-                .finishDate("20230129")
+                .finishDate("20230131")
                 .memberId("member1")
                 .build();
 
@@ -55,5 +55,16 @@ class TodoServiceImplTest {
     @Test
     void 할일디테일보기() {
         System.out.println(todoService.getTodoDetail(1L));
+    }
+
+    @Test
+    void 달성률보기() {
+        System.out.println(todoService.getAchievementRate("member1"));
+    }
+
+    @Test
+    void 목록보기() {
+        System.out.println(todoService.getTodoList("member1"));
+
     }
 }

@@ -8,6 +8,7 @@ import javax.swing.text.DateFormatter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public interface TodoService {
 
@@ -64,6 +65,24 @@ public interface TodoService {
      */
     Long completeMyTodo(Long todoId);
 
+    /**
+     * 할일 상세보기
+     * @param todoId
+     * @return
+     */
     TodoDto getTodoDetail(Long todoId);
 
+    /**
+     * 할일 목록 가져오기
+     * @param memberId
+     * @return
+     */
+    List<TodoDto> getTodoList(String memberId);
+
+    /**
+     * 달성률 계산하기
+     * @param todoList
+     * @return
+     */
+    int getAchievementRate(String memberId);
 }
