@@ -90,6 +90,7 @@ public class FriendServiceImpl implements FriendService{
     }
 
     @Override
+    @Transactional
     public Long followReject(String myId, String followerId) {
         noticeService.sendFollowRejectNotice(myId, followerId);
 
