@@ -10,6 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 @RequiredArgsConstructor
 public class BoardServiceImpl implements BoardService{
@@ -48,4 +50,17 @@ public class BoardServiceImpl implements BoardService{
 
         return boardList;
     }
+
+    @Override
+    @Transactional
+    public Long deletePost(Long boardId){
+        try {
+            boardRepository.deleteById(boardId);
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new RuntimeException("게시물 삭제 중 오류 발생");
+        }
+        return boardId;
+    }
+
 }

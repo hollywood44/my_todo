@@ -49,5 +49,18 @@ public interface BoardService {
      */
     BoardDto postDetail(Long boardId);
 
+    /**
+     * 페이지 번호와 사이즈를 받아서 페이징된 게시물 목록을 반환
+     * @param page 페이지 번호(1페이지, 2페이지...)
+     * @param size 한 페이지에 게시물을 몇개씩 보여 줄 지(10 -> 10개씩 보여주겠다)
+     * @return 페이징이 된 게시물 목록
+     */
     Page<BoardDto> getAllBoardList(int page,int size);
+
+    /**
+     * 게시물번호를 가지고 게시물 삭제
+     * @param boardId 게시물 번호
+     * @return 삭제된 게시물 번호
+     */
+    Long deletePost(Long boardId);
 }
