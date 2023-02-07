@@ -37,6 +37,9 @@ class FriendServiceImplTest {
     @Rollback(value = false)
     void 팔로우요청() {
         friendService.followRequest("member7", "member8");
+        friendService.followRequest("member7", "member6");
+        friendService.followRequest("member7", "member2");
+
     }
 
     @Test
@@ -49,6 +52,8 @@ class FriendServiceImplTest {
     @Rollback(value = false)
     void 팔로우거부() {
         friendService.followReject("member8", "member7");
+        friendService.followReject("member6", "member7");
+        friendService.followReject("member2", "member7");
     }
 
     @Test
