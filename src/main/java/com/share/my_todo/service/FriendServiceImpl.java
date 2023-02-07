@@ -27,7 +27,7 @@ public class FriendServiceImpl implements FriendService{
 
     @Override
     public FriendListDto getFriendList(String memberId) {
-        FriendList friendList = listRepository.findByMember(easyMakeMember(memberId)).get();
+        FriendList friendList = listRepository.findByMemberAndStatus(easyMakeMember(memberId),Friend.FollowStatus.Accept).get();
         FriendListDto friendListDto = entityToDtoForList(friendList);
 
         return friendListDto;

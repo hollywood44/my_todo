@@ -6,10 +6,9 @@ import com.share.my_todo.entity.member.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
-@Repository
-public interface FriendListRepository extends JpaRepository<FriendList,Long>, FriendListRepositoryCustom {
-    Optional<FriendList> findByMember(Member member);
+
+public interface FriendListRepositoryCustom {
+    Optional<FriendList> findByMemberAndStatus(Member member, Friend.FollowStatus status);
 }
