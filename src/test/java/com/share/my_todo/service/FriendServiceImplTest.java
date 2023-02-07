@@ -29,8 +29,10 @@ class FriendServiceImplTest {
 
     @Test
     void 친구목록가져오기() {
-        FriendListDto friendList = friendService.getFriendList("member6");
+        FriendListDto friendList = friendService.getFriendList("member7");
+        System.out.println("************************");
         System.out.println(friendList.getFriendList());
+        System.out.println("************************");
     }
 
     @Test
@@ -46,6 +48,7 @@ class FriendServiceImplTest {
     @Rollback(value = false)
     void 팔로우수락() {
         friendService.followAccept("member2", "member7");
+        friendService.followAccept("member6", "member7");
     }
 
     @Test

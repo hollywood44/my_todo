@@ -2,6 +2,7 @@ package com.share.my_todo.service;
 
 import com.share.my_todo.DTO.member.FriendDto;
 import com.share.my_todo.DTO.member.FriendListDto;
+import com.share.my_todo.DTO.todo.TodoDto;
 import com.share.my_todo.entity.member.Friend;
 import com.share.my_todo.entity.member.FriendList;
 import com.share.my_todo.entity.member.Member;
@@ -23,12 +24,21 @@ public class FriendServiceImpl implements FriendService{
     private final FriendListRepository listRepository;
     private final FriendRepository friendRepository;
     private final NoticeService noticeService;
+    private final TodoService todoService;
 
 
     @Override
+    @Transactional
     public FriendListDto getFriendList(String memberId) {
         FriendList friendList = listRepository.findByMemberAndStatus(easyMakeMember(memberId),Friend.FollowStatus.Accept).get();
         FriendListDto friendListDto = entityToDtoForList(friendList);
+        for (FriendDto friend : friendListDto.getFriendList()) {
+            int archievement = todoService.getAchievementRate(todoService.getWeekTodoList(friend.getMemberId(),1));
+            friend.setLastWeekRate(archievement);
+
+            archievement = todoService.getAchievementRate(todoService.getWeekTodoList(friend.getMemberId(),0));
+            friend.setThisWeekRate(archievement);
+        }
 
         return friendListDto;
     }

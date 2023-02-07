@@ -9,10 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -67,13 +64,23 @@ public class TodoServiceImpl implements TodoService{
     }
 
     @Override
-    public List<Todo> getLastWeekTodoList(String memberId) {
-        Map<String, LocalDate> lastWeek = getLastWeekDate();
+    public List<Todo> getWeekTodoList(String memberId,int week) {
+        List<Todo> weekTodoList = new ArrayList<>();
 
-        List<Todo> lastWeekTodoList = todoRepository
-                .lastWeekTodoListByMemberId(Member.builder().memberId(memberId).build()
-                        , lastWeek.get("monday"), lastWeek.get("sunday"));
+        if (week == 0) {
+            Map<String, LocalDate> thisWeek = getWeekDate(0);
 
-        return lastWeekTodoList;
+            weekTodoList = todoRepository
+                    .lastWeekTodoListByMemberId(Member.builder().memberId(memberId).build()
+                            , thisWeek.get("monday"), thisWeek.get("sunday"));
+        } else {
+            Map<String, LocalDate> lastWeek = getWeekDate(1);
+
+            weekTodoList = todoRepository
+                    .lastWeekTodoListByMemberId(Member.builder().memberId(memberId).build()
+                            , lastWeek.get("monday"), lastWeek.get("sunday"));
+        }
+
+        return weekTodoList;
     }
 }

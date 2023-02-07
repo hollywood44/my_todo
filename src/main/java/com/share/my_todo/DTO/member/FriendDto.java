@@ -20,5 +20,7 @@ public class FriendDto {
     private String memberId;
     private String Status;
     private Long friendListId;
+    private int thisWeekRate;
+    private int lastWeekRate;
 
 }

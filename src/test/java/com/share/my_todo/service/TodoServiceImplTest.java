@@ -33,7 +33,7 @@ class TodoServiceImplTest {
                     .todo("todo "+i)
                     .progress(TodoProgress.Proceeding)
                     .finishDate("20230202")
-                    .memberId("member1")
+                    .memberId("member2")
                     .build();
             todoService.postingTodo(dto);
                 }
@@ -68,9 +68,11 @@ class TodoServiceImplTest {
 
     @Test
     void 달성률보기() {
-        List<Todo> lastweeklist = todoService.getLastWeekTodoList("member1");
+        List<Todo> thisWeeklist = todoService.getWeekTodoList("member2",1);
+        System.out.println("저번주 달성률은 " + todoService.getAchievementRate(thisWeeklist) + "% 입니다!");
 
-        System.out.println("달성률은 " + todoService.getAchievementRate(lastweeklist) + "% 입니다!");
+        List<Todo> lastweeklist = todoService.getWeekTodoList("member2",0);
+        System.out.println("이번주 달성률은 " + todoService.getAchievementRate(lastweeklist) + "% 입니다!");
     }
 
     @Test
@@ -80,8 +82,12 @@ class TodoServiceImplTest {
 
     @Test
     void 날짜테스트() {
-        Map<String, LocalDate> lastWeek = todoService.getLastWeekDate();
-        System.out.println("월요일 : " + lastWeek.get("monday"));
-        System.out.println("일요일 : " + lastWeek.get("sunday"));
+        Map<String, LocalDate> lastWeek = todoService.getWeekDate(1);
+        System.out.println("지난주 월요일 : " + lastWeek.get("monday"));
+        System.out.println("지난주 일요일 : " + lastWeek.get("sunday"));
+
+        Map<String, LocalDate> ThisWeek = todoService.getWeekDate(0);
+        System.out.println("이번주 월요일 : " + ThisWeek.get("monday"));
+        System.out.println("이번주 일요일 : " + ThisWeek.get("sunday"));
     }
 }

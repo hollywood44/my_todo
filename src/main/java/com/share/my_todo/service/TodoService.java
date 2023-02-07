@@ -47,31 +47,52 @@ public interface TodoService {
         return changeDate;
     }
 
-    default Map<String,LocalDate> getLastWeekDate() {
-        Map<String, LocalDate> lastWeek = new HashMap<>();
+    /**
+     * { 지난주 || 이번주 } 월,일 날짜 구함
+     * @param week 0 : 이번주 || 이외 : 지난주
+     * @return map< key : { monday || sunday }, value : 해당 날짜 >
+     */
+    default Map<String,LocalDate> getWeekDate(int week) {
+        Map<String, LocalDate> weekDate = new HashMap<>();
         Calendar cal = Calendar.getInstance();
+        String weekFrom = "";
+        String weekTo = "";
+        int nMonth = 0;
 
-        cal.add(Calendar.DATE,-7);
-        int nWeek = cal.get(Calendar.DAY_OF_WEEK);
+        if (week == 0) {
+            cal.add(Calendar.DATE, 2 - cal.get(Calendar.DAY_OF_WEEK));
+            nMonth = cal.get(Calendar.MONDAY) + 1;
+            weekFrom = cal.get(Calendar.YEAR) + (nMonth<10?"0"+nMonth:nMonth+"") + (cal.get(Calendar.DATE)<10?"0"+cal.get(Calendar.DATE):cal.get(Calendar.DATE)+"");
+            weekDate.put("monday", stringToDate(weekFrom));
 
-        cal.add(Calendar.DATE,2-nWeek);
-        int nMonth = cal.get(Calendar.MONDAY) + 1;
-        String dayLastWeekFrom = cal.get(Calendar.YEAR) + (nMonth<10?"0"+nMonth:nMonth+"") + (cal.get(Calendar.DATE)<10?"0"+cal.get(Calendar.DATE):cal.get(Calendar.DATE)+"");
-        lastWeek.put("monday", stringToDate(dayLastWeekFrom));
+            cal.add(Calendar.DATE, 6);
+            nMonth  = cal.get(Calendar.MONTH)+1;
+            weekTo = cal.get(Calendar.YEAR) + (nMonth<10?"0"+nMonth:nMonth+"") + (cal.get(Calendar.DATE)<10?"0"+cal.get(Calendar.DATE):cal.get(Calendar.DATE)+"");
+            weekDate.put("sunday", stringToDate(weekTo));
+        } else {
+            cal.add(Calendar.DATE,-7);
 
-        cal.add(Calendar.DATE, 6);//월요일 부터 일요일까지의 날짜 더함
-        nMonth  = cal.get(Calendar.MONTH)+1;
-        String dayLastWeekTo = cal.get(Calendar.YEAR) + (nMonth<10?"0"+nMonth:nMonth+"") + (cal.get(Calendar.DATE)<10?"0"+cal.get(Calendar.DATE):cal.get(Calendar.DATE)+"");
-        lastWeek.put("sunday", stringToDate(dayLastWeekTo));
+            cal.add(Calendar.DATE,2-cal.get(Calendar.DAY_OF_WEEK));
+            nMonth = cal.get(Calendar.MONDAY) + 1;
+            weekFrom = cal.get(Calendar.YEAR) + (nMonth<10?"0"+nMonth:nMonth+"") + (cal.get(Calendar.DATE)<10?"0"+cal.get(Calendar.DATE):cal.get(Calendar.DATE)+"");
+            weekDate.put("monday", stringToDate(weekFrom));
 
-        return lastWeek;
+            cal.add(Calendar.DATE, 6);//월요일 부터 일요일까지의 날짜 더함
+            nMonth  = cal.get(Calendar.MONTH)+1;
+            weekTo = cal.get(Calendar.YEAR) + (nMonth<10?"0"+nMonth:nMonth+"") + (cal.get(Calendar.DATE)<10?"0"+cal.get(Calendar.DATE):cal.get(Calendar.DATE)+"");
+            weekDate.put("sunday", stringToDate(weekTo));
+        }
+
+
+        return weekDate;
     }
 
     /**
-     * 지난주 할일 불러옴
+     * 지난주 또는 이번주 할일목록 불러옴
+     * @param week 0 : 이번주 || 이외 : 지난주
      * @return
      */
-    List<Todo> getLastWeekTodoList(String memberId);
+    List<Todo> getWeekTodoList(String memberId,int week);
 
     /**
      * 할일 등록
