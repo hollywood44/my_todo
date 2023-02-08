@@ -8,6 +8,7 @@ import com.share.my_todo.repository.TodoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -37,6 +38,18 @@ public class TodoServiceImpl implements TodoService{
         Todo todo = todoRepository.findById(todoId).get();
         todo.progressChangeToComplete();
         return todoRepository.save(todo).getTodoId();
+    }
+
+    @Override
+    @Transactional
+    public Long deleteTodo(Long todoId) {
+        try {
+            todoRepository.deleteById(todoId);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            throw new RuntimeException("할일 삭제 중 오류 발생");
+        }
+        return todoId;
     }
 
     @Override

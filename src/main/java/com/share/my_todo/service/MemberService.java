@@ -68,4 +68,6 @@ public interface MemberService extends UserDetailsService {
     String modifyPassword(String memberId ,String password);
 
     String deleteAccount(String memberId, String password);
+
+
 }

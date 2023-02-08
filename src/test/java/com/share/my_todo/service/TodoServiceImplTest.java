@@ -90,4 +90,10 @@ class TodoServiceImplTest {
         System.out.println("이번주 월요일 : " + ThisWeek.get("monday"));
         System.out.println("이번주 일요일 : " + ThisWeek.get("sunday"));
     }
+
+    @Test
+    @Rollback(value = false)
+    void 할일삭제() {
+        System.out.println(todoService.deleteTodo(37L));
+    }
 }

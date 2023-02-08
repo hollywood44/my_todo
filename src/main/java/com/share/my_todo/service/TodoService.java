@@ -135,4 +135,11 @@ public interface TodoService {
      * @return 달성률
      */
     int getAchievementRate(List<Todo> todoList);
+
+    /**
+     * 할일 삭제
+     * @param todoId
+     * @return 삭제된 할일의 번호
+     */
+    Long deleteTodo(Long todoId);
 }
