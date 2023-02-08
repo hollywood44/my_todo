@@ -10,8 +10,6 @@ public interface MemberService extends UserDetailsService {
         Member entity = Member.builder()
                 .memberId(dto.getMemberId())
                 .password(dto.getPassword())
-                .email(dto.getEmail())
-                .phone(dto.getPhone())
                 .name(dto.getName())
                 .auth(dto.getAuth())
                 .build();
@@ -21,8 +19,6 @@ public interface MemberService extends UserDetailsService {
     default MemberDto entityToDto(Member entity) {
         MemberDto dto = MemberDto.builder()
                 .memberId(entity.getMemberId())
-                .email(entity.getEmail())
-                .phone(entity.getPhone())
                 .name(entity.getName())
                 .auth(entity.getAuth())
                 .regDate(entity.getRegDate())
@@ -38,6 +34,8 @@ public interface MemberService extends UserDetailsService {
      * @return memberId : String 타입
      */
     String signUp(MemberDto memberDto);
+
+    boolean idCheck(String memberId);
 
     /**
      * 내 정보 불러오기

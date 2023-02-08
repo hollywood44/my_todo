@@ -23,11 +23,11 @@ public class SecurityConfig {
                 .and()
                 .formLogin() // 로그인 관련 설정
                 .loginPage("/member/signIn") //로그인 페이지
-                .loginProcessingUrl("/member/signIn") //로그인 form의 action url 기본값은 '/login'
+                .loginProcessingUrl("/api/member/signIn") //로그인 form의 action url 기본값은 '/login'
                 .defaultSuccessUrl("/member/main") //로그인에 성공하면 이동할 페이지
                 .and()
                 .logout() // 로그아웃 설정
-                .logoutUrl("member/signOut") //로그아웃 form의 action url
+                .logoutUrl("/api/member/signOut") //로그아웃 form의 action url
                 .logoutSuccessUrl("/member/main") // 로그아웃 성공하면 이동할 페이지
                 .invalidateHttpSession(true) // 세션 관련
                 .and()

@@ -9,9 +9,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 회원 Entity <br/>
@@ -35,20 +33,17 @@ public class Member extends CommonTime implements UserDetails {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
-    private String email;
-
-    @Column(nullable = false)
-    private String phone;
 
     @Enumerated(EnumType.STRING)
     private Auth auth;
 
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
+    @Builder.Default
+    private List<FriendList> friendList = new ArrayList<>();
+
+
     public void modifyInfo(MemberDto dto) {
         this.name = dto.getName();
-        this.email = dto.getEmail();
-        this.phone = dto.getPhone();
-        this.auth = dto.getAuth();
     }
 
     public void modifyPassword(String password) {

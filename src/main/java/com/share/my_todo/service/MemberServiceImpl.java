@@ -1,6 +1,7 @@
 package com.share.my_todo.service;
 
 import com.share.my_todo.DTO.member.MemberDto;
+import com.share.my_todo.entity.common.Auth;
 import com.share.my_todo.entity.member.FriendList;
 import com.share.my_todo.entity.member.Member;
 import com.share.my_todo.repository.FriendListRepository;
@@ -35,6 +36,7 @@ public class MemberServiceImpl implements MemberService{
         if (!check.isPresent()) {
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
             memberDto.setPassword(encoder.encode(memberDto.getPassword()));
+            memberDto.setAuth(Auth.Member);
             Member member = dtoToEntity(memberDto);
 
             memberRepository.save(member);
@@ -45,11 +47,15 @@ public class MemberServiceImpl implements MemberService{
             } catch (RuntimeException e) {
                 throw new RuntimeException("오류 발생 - 1");
             }
-
             return memberDto.getMemberId();
         }else {
             throw new RuntimeException("이미 존재하는 아이디입니다.");
         }
+    }
+
+    @Override
+    public boolean idCheck(String memberId) {
+        return memberRepository.existsById(memberId);
     }
 
     @Override
@@ -89,7 +95,8 @@ public class MemberServiceImpl implements MemberService{
         if (encoder.matches(password, check.getPassword())) {
             memberRepository.delete(check);
         } else {
-            throw new RuntimeException("비밀번호가 일치하지 않습니다.");
+            String message = "error";
+            return message;
         }
         return check.getMemberId();
     }

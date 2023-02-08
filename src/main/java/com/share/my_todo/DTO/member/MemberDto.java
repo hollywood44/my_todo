@@ -17,8 +17,6 @@ public class MemberDto {
     private String memberId;
     private String password;
     private String name;
-    private String email;
-    private String phone;
     private Auth auth;
     private LocalDateTime regDate;
     private LocalDateTime modDate;
