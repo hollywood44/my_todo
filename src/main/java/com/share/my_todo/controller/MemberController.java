@@ -5,15 +5,27 @@ import com.share.my_todo.entity.member.Member;
 import com.share.my_todo.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@Controller
 @RequiredArgsConstructor
-@RequestMapping("/api/member")
+@RequestMapping("/member")
 public class MemberController {
 
 
     private final MemberService memberService;
+
+    @GetMapping("/signIn")
+    public String loginPage() {
+        return "login";
+    }
+
+    @GetMapping("/signUp")
+    public String signUpPage() {
+        return "singUp";
+    }
 
     /**
      * 회원가입

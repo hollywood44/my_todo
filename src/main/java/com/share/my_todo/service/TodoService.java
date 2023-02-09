@@ -43,7 +43,7 @@ public interface TodoService {
     }
 
     default String dateToString(LocalDate date) {
-        String changeDate = date.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        String changeDate = date.format(DateTimeFormatter.ofPattern("~yyyy-MM-dd"));
         return changeDate;
     }
 
@@ -99,14 +99,14 @@ public interface TodoService {
      * @param dto [할일(String), 목표날짜(yyyyMMdd), 진행도(Progress), 회원아이디(String)]
      * @return 할일 아이디
      */
-    Long postingTodo(TodoDto dto);
+    Long postingTodo(TodoDto dto,Member member);
 
     /**
      * 할일 수정
      * @param dto [할일아이디(Long), 할일(String), 목표날짜(yyyyMMdd), 진행도(Progress), 회원아이디(String)]
      * @return 할일 아이디
      */
-    Long modifyTodo(TodoDto dto);
+    Long modifyTodo(TodoDto dto,Member member);
 
     /**
      * 할일 완료

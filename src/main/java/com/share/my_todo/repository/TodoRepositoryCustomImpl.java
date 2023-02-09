@@ -2,6 +2,7 @@ package com.share.my_todo.repository;
 
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.share.my_todo.entity.common.TodoProgress;
 import com.share.my_todo.entity.member.Member;
 import com.share.my_todo.entity.todo.Todo;
 
@@ -29,6 +30,16 @@ public class TodoRepositoryCustomImpl implements TodoRepositoryCustom{
                 .where(
                         todo1.member.eq(memberId)
                         .and(todo1.finishDate.between(mon,sun))
+                ).fetch();
+        return result;
+    }
+
+    @Override
+    public List<Todo> findByMemberAndProgress(Member member, TodoProgress todoProgress) {
+        List<Todo> result = queryFactory
+                .selectFrom(todo1)
+                .where(
+                        todo1.member.eq(member),todo1.progress.eq(todoProgress)
                 ).fetch();
         return result;
     }

@@ -37,8 +37,6 @@ class MemberServiceTest {
         MemberDto dto = MemberDto.builder()
                 .memberId("member8")
                 .password("1234")
-                .phone("010-0000-0008")
-                .email("member8@sharetodo.com")
                 .name("member8")
                 .auth(Auth.Member)
                 .build();
@@ -56,8 +54,6 @@ class MemberServiceTest {
     void modifyMemberInfo() {
         MemberDto dto = MemberDto.builder()
                 .memberId("member1")
-                .phone("010-0000-0001")
-                .email("member1@sharetodo.com")
                 .name("member1-modified1")
                 .auth(Auth.Member)
                 .build();

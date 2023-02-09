@@ -20,13 +20,23 @@ public class TodoServiceImpl implements TodoService{
     private final TodoRepository todoRepository;
 
     @Override
-    public Long postingTodo(TodoDto dto) {
+    public Long postingTodo(TodoDto dto,Member member) {
+        dto.setFinishDate(dto.getFinishDate().replace("-",""));
+        dto.setProgress(TodoProgress.Proceeding);
+        dto.setMemberId(member.getMemberId());
+
+        System.out.println(dto);
+
         Todo todo = dtoToEntity(dto);
         return todoRepository.save(todo).getTodoId();
     }
 
     @Override
-    public Long modifyTodo(TodoDto dto) {
+    public Long modifyTodo(TodoDto dto,Member member) {
+        dto.setFinishDate(dto.getFinishDate().replace("-",""));
+        dto.setProgress(TodoProgress.Proceeding);
+        dto.setMemberId(member.getMemberId());
+
         Todo todo = todoRepository.findById(dto.getTodoId()).get();
         todo.modifyTodo(dto);
 
@@ -62,7 +72,7 @@ public class TodoServiceImpl implements TodoService{
 
     @Override
     public List<TodoDto> getTodoList(String memberId) {
-        List<Todo> entityList = todoRepository.findAllByMember(Member.builder().memberId(memberId).build());
+        List<Todo> entityList = todoRepository.findByMemberAndProgress(Member.builder().memberId(memberId).build(),TodoProgress.Proceeding);
         List<TodoDto> todoList = entityList.stream().map(entity -> entityToDto(entity)).collect(Collectors.toList());
 
         return todoList;

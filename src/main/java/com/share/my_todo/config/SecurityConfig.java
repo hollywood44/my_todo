@@ -1,8 +1,11 @@
 package com.share.my_todo.config;
 
+import com.share.my_todo.service.MemberService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -12,7 +15,10 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final MemberService memberService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -23,18 +29,16 @@ public class SecurityConfig {
                 .and()
                 .formLogin() // 로그인 관련 설정
                 .loginPage("/member/signIn") //로그인 페이지
-                .loginProcessingUrl("/api/member/signIn") //로그인 form의 action url 기본값은 '/login'
-                .defaultSuccessUrl("/member/main") //로그인에 성공하면 이동할 페이지
+                .loginProcessingUrl("/member/signIn") //로그인 form의 action url 기본값은 '/login.thml'
+                .defaultSuccessUrl("/todo/main") //로그인에 성공하면 이동할 페이지
                 .and()
                 .logout() // 로그아웃 설정
-                .logoutUrl("/api/member/signOut") //로그아웃 form의 action url
+                .logoutUrl("/member/signOut") //로그아웃 form의 action url
                 .logoutSuccessUrl("/member/main") // 로그아웃 성공하면 이동할 페이지
                 .invalidateHttpSession(true) // 세션 관련
                 .and()
                 .exceptionHandling() // 예외 핸들러
                 .accessDeniedPage("/member/deniedPage"); // 권한없는 접근시 이동할 페이지
-
-        http.csrf().disable();
 
         return http.build();
     }

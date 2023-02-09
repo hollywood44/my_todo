@@ -3,7 +3,9 @@ package com.share.my_todo.service;
 import com.share.my_todo.DTO.todo.TodoDto;
 import com.share.my_todo.entity.common.TodoProgress;
 import com.share.my_todo.entity.common.TodoProgressNoticeMessage;
+import com.share.my_todo.entity.member.Member;
 import com.share.my_todo.entity.todo.Todo;
+import com.share.my_todo.repository.TodoRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,6 +26,9 @@ class TodoServiceImplTest {
     @Autowired
     TodoService todoService;
 
+    @Autowired
+    TodoRepository todoRepository;
+
 
     @Test
     @Rollback(value = false)
@@ -35,7 +40,7 @@ class TodoServiceImplTest {
                     .finishDate("20230202")
                     .memberId("member2")
                     .build();
-            todoService.postingTodo(dto);
+//            todoService.postingTodo(dto);
                 }
         );
 
@@ -52,7 +57,7 @@ class TodoServiceImplTest {
                 .memberId("member1")
                 .build();
 
-        System.out.println(todoService.modifyTodo(dto));
+//        System.out.println(todoService.modifyTodo(dto));
     }
 
     @Test
@@ -77,7 +82,12 @@ class TodoServiceImplTest {
 
     @Test
     void 목록보기() {
-        System.out.println(todoService.getTodoList("member1"));
+        List<TodoDto> list = todoService.getTodoList("member10");
+
+        for (TodoDto todo : list) {
+            System.out.println(todo.getTodoId());
+        }
+
     }
 
     @Test
