@@ -37,3 +37,4 @@ out/
 .vscode/
 application.properties
 todofront\
+application-oauth.properties
