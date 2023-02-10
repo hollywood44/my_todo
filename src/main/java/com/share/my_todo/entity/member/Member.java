@@ -13,7 +13,7 @@ import java.util.*;
 
 /**
  * 회원 Entity <br/>
- * 아이디, 패스워드, 이름, 이메일, 폰번호, 권한을 멤버로 가진다.
+ * 아이디, 패스워드, 이름, 권한을 멤버로 가진다.
  */
 @Entity
 @AllArgsConstructor

@@ -5,6 +5,8 @@ import com.share.my_todo.entity.common.FollowNoticeMessage;
 import com.share.my_todo.entity.member.Member;
 import com.share.my_todo.entity.notice.Notice;
 
+import java.util.List;
+
 public interface NoticeService {
 
     default NoticeDto entityToDto(Notice entity) {
@@ -25,12 +27,49 @@ public interface NoticeService {
     }
 
 
+    /**
+     * 회원 아이디, 진행률을 받아서 알림을 보낸다.
+     * @param memberId 회원 아이디
+     * @param percent 진행률
+     * @return 보낸 알림 아이디
+     */
     Long sendTodoProgressNotice(String memberId, int percent);
 
+    /**
+     * 팔로우 요청 알림을 보낸다.
+     * @param sendMemberId 팔로우 한 회원 아이디
+     * @param targetMemberId 팔로우 당한 회원 아이디
+     * @return 보낸 알림 아이디
+     */
     Long sendFollowRequestNotice(String sendMemberId, String targetMemberId);
+
+    /**
+     * 팔로우 수락 알림을 보낸다.
+     * @param sendMemberId 수락한 회원 아이디
+     * @param targetMemberId 수락받은 회원 아이디
+     * @return 보낸 알림 아이디
+     */
     Long sendFollowAcceptNotice(String sendMemberId, String targetMemberId);
+
+    /**
+     * 팔로우 거절 알림을 보낸다.
+     * @param sendMemberId 팔로우 거절한 회원 아이디
+     * @param targetMemberId 팔로우 거절당한 회원 아이디
+     * @return 보낸 알림 아이디
+     */
     Long sendFollowRejectNotice(String sendMemberId, String targetMemberId);
+
     // TODO: 2023-01-30 팔로우 취소
 
+    /**
+     * 완료 기한이 내일까지인 할일이 있다고 알림을 보낸다.
+     * @param targetMemberId 받는 회원 아이디
+     * @param todoContent 해야할 할일
+     * @return 알림
+     */
     Notice makeFinishDateTomorrowNotice(String targetMemberId, String todoContent);
+
+    List<NoticeDto> getNotReadNoticeList(Member member);
+
+    void readNotice(Member member);
 }

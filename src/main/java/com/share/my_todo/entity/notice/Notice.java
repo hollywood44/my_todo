@@ -5,6 +5,8 @@ import com.share.my_todo.entity.member.Member;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @AllArgsConstructor
@@ -25,6 +27,10 @@ public class Notice extends CommonTime {
     @JoinColumn(name = "memberId")
     private Member member;
 
-    //TODO read_at (읽은날짜) 추가해야함
+    private LocalDateTime readAt;
+
+    public void readNotice() {
+        this.readAt = LocalDateTime.now();
+    }
 
 }

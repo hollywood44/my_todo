@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basicLayout}"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Notice List</title>
+</head>
+<body>
+
+<section layout:fragment="content">
+    <div class="container px-lg-5">
+        <div class="p-4 p-lg-5 bg-light rounded" style="text-align-last: center;">
+
+            <div class="alert alert-success" th:each="notice : ${noticeList}" th:if="${!#lists.isEmpty(noticeList)}">
+                    [[${notice.notice}]]
+            </div>
+            <h2 th:if="${#lists.isEmpty(noticeList)}" id="notingNotice">
+                읽지 않은 알림이 없습니다!
+            </h2>
+
+            <h4>
+                <a href="#">이전 알림 보기</a>
+            </h4>
+
+        </div>
+    </div>
+    <script>
+        $(function(){
+            let isIt = $('#notingNotice').val();
+
+            console.log(isIt);
+
+            if(isIt == null){
+                $.get("/notice/readNotice",
+                    function(status){
+                        console.log(status);
+                    }
+                )
+
+            }
+        })
+    </script>
+</section>
+
+</body>
+</html>
