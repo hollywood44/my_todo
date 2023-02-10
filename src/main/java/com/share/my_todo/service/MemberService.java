@@ -56,7 +56,7 @@ public interface MemberService extends UserDetailsService {
      * @param dto : 기존 필드에서 password 제외하고 변경된 값이 적용되서 넘어온 수정된 회원정보
      * @return MemberDto : 수정이 완료된 회원정보
      */
-    MemberDto modifyMemberInfo(MemberDto dto);
+    String modifyMemberInfo(MemberDto dto);
 
     /**
      * 비밀번호 변경

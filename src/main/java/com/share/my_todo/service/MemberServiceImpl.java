@@ -71,11 +71,11 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public MemberDto modifyMemberInfo(MemberDto dto) {
+    public String modifyMemberInfo(MemberDto dto) {
         Member modifiedMember = memberRepository.findById(dto.getMemberId()).get();
         modifiedMember.modifyInfo(dto);
-        memberRepository.save(modifiedMember);
-        return entityToDto(modifiedMember);
+
+        return memberRepository.save(modifiedMember).getMemberId();
     }
 
     @Override

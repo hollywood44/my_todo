@@ -8,6 +8,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequiredArgsConstructor
@@ -27,6 +28,13 @@ public class MemberController {
         return "singUp";
     }
 
+    @GetMapping("/my-info")
+    public String myInfoPage(@AuthenticationPrincipal Member member,Model model) {
+        model.addAttribute("member", memberService.getMyInfo(member.getMemberId()));
+
+        return "myInfo";
+    }
+
     /**
      * 회원가입
      * @param signUpData 회원가입에 필요한 데이터
@@ -34,6 +42,7 @@ public class MemberController {
      */
     @PostMapping("/signup")
     public String signUp(MemberDto signUpData) {
+
         return memberService.signUp(signUpData);
     }
 
@@ -53,18 +62,16 @@ public class MemberController {
      * @return 바뀐 데이터
      */
     @PostMapping("/modify-info")
-    public MemberDto modifyInfo(MemberDto modifyData) {
-        return memberService.modifyMemberInfo(modifyData);
-    }
+    public String modifyInfo(MemberDto modifyData,RedirectAttributes redirectAttributes) {
+        String status = memberService.modifyMemberInfo(modifyData);
 
-    /**
-     * 내 정보 보기
-     * @param member 로그인된 회원정보
-     * @return 내 정보
-     */
-    @GetMapping("/my-info")
-    public MemberDto getMyInfo(@AuthenticationPrincipal Member member) {
-        return memberService.getMyInfo(member.getMemberId());
+        if (!status.isEmpty()) {
+            redirectAttributes.addFlashAttribute("msg", "변경에 성공하였습니다!");
+            return "redirect:/member/my-info";
+        } else {
+            redirectAttributes.addFlashAttribute("err", "변경에 실패하였습니다!");
+            return "redirect:/member/my-info";
+        }
     }
 
     /**
@@ -74,11 +81,15 @@ public class MemberController {
      * @return 성공 true, 실패 false
      */
     @PostMapping("/modify-password")
-    public boolean modifyPassword(@RequestParam("password")String password,@AuthenticationPrincipal Member member) {
-        if (!memberService.modifyPassword(member.getMemberId(), password).isEmpty()) {
-            return true;
+    public String modifyPassword(@RequestParam("password")String password, @AuthenticationPrincipal Member member, RedirectAttributes redirectAttributes) {
+        String status = memberService.modifyPassword(member.getMemberId(), password);
+
+        if (!status.isEmpty()) {
+            redirectAttributes.addFlashAttribute("msg", "변경에 성공하였습니다!");
+            return "redirect:/member/my-info";
         } else {
-            return false;
+            redirectAttributes.addFlashAttribute("err", "변경에 실패하였습니다!");
+            return "redirect:/member/my-info";
         }
     }
 

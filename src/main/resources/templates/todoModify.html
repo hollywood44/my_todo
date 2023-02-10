@@ -6,7 +6,7 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>Main</title>
+    <title>todo modify page</title>
 </head>
 <body>
 
@@ -15,7 +15,7 @@
         <form method="post" th:action="@{/todo/modify}">
             <sec:csrfInput />
             <div class="input-group mb-3">
-                <span class="input-group-text">할일 작성</span>
+                <span class="input-group-text">할일 수정</span>
                 <input type="text" class="form-control" maxlength="30" name="todo" th:value="${item.todo}">
             </div>
             <div class="input-group mb-3">
