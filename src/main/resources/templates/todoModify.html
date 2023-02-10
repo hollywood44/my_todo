@@ -12,7 +12,9 @@
 
 <section layout:fragment="content">
     <div class="container px-lg-5">
-        <form method="post" th:action="@{/todo/modify}">
+        <div class="p-4 p-lg-5 bg-light rounded">
+
+            <form method="post" th:action="@{/todo/modify}">
             <sec:csrfInput />
             <div class="input-group mb-3">
                 <span class="input-group-text">할일 수정</span>
@@ -27,6 +29,8 @@
                 <input type="hidden" th:value="${item.todoId}" name="todoId">
             </div>
         </form>
+
+        </div>
     </div>
 
 </section>

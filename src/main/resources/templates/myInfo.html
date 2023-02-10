@@ -12,20 +12,20 @@
 
 <section layout:fragment="content">
     <div class="container px-lg-5">
+        <div class="p-4 p-lg-5 bg-light rounded">
+            <form th:action="@{/member/modify-info}" method="post">
+                <div class="input-group mb-3">
+                    <span class="input-group-text">아이디</span>
+                    <input type="text" name="memberId" th:value="${member.memberId}" class="form-control" readonly />
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">이름</span>
+                    <input type="text" name="name" th:value="${member.name}" class="form-control">
+                    <button class="btn btn-success" type="submit">수정하기</button>
+                </div>
+            </form>
 
-        <form th:action="@{/member/modify-info}" method="post">
-            <div class="input-group mb-3">
-                <span class="input-group-text">아이디</span>
-                <input type="text" name="memberId" th:value="${member.memberId}" class="form-control" readonly />
-            </div>
-            <div class="input-group mb-3">
-                <span class="input-group-text">이름</span>
-                <input type="text" name="name" th:value="${member.name}" class="form-control">
-                <button class="btn btn-success" type="submit">수정하기</button>
-            </div>
-        </form>
-
-        <form th:action="@{/member/modify-password}" method="post">
+            <form th:action="@{/member/modify-password}" method="post">
             <div class="input-group mb-3">
                 <span class="input-group-text">비밀번호</span>
                 <input type="password" name="password" class="form-control"/>
@@ -33,7 +33,7 @@
             </div>
 
         </form>
-
+        </div>
     </div>
 
 <!--    스크립트-->
