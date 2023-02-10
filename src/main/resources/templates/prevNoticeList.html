@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basicLayout}"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Previous Notice List</title>
+</head>
+<body>
+
+<section layout:fragment="content">
+    <div class="container px-lg-5">
+        <div class="p-4 p-lg-5 bg-light rounded" style="text-align-last: center;">
+
+            <div class="alert alert-success" th:each="notice : ${noticeList}" th:if="${!#lists.isEmpty(noticeList)}">
+                    [[${notice.notice}]]
+            </div>
+
+            <h2 th:unless="${!#lists.isEmpty(noticeList)}" id="notingNotice">
+                이전 알림이 없습니다!
+            </h2>
+
+<!--            paging-->
+            <th:block th:if="${not #strings.isEmpty(noticeList)}">
+                <nav aria-label="Page navigation" id="board-pagenation">
+                    <ul class="pagination justify-content-center"
+                        th:with="start=${(noticeList.number/maxPage)*maxPage + 1}, end=(${(noticeList.totalPages == 0) ? 1 : (start + (maxPage - 1) < noticeList.totalPages ? start + (maxPage - 1) : noticeList.totalPages)})"
+                    >
+
+                        <li class="page-item" th:if="${start > 1}">
+                            <a class="page-link" th:href="@{|?page=${noticeList.number}|}">Prev</a>
+                        </li>
+
+                        <li class="page-item"
+                            th:each="page: ${#numbers.sequence(start, end)}">
+                            <a class="page-link"
+                               th:text="${page}"
+                               th:href="@{|?page=${page}|}">1</a>
+                        </li>
+
+                        <li class="page-item" th:if="${end < noticeList.totalPages}">
+                            <a class="page-link" th:href="@{|?page=${noticeList.number+2}|}">Next</a>
+                        </li>
+
+                    </ul>
+                </nav>
+            </th:block>
+
+        </div>
+    </div>
+</section>
+
+</body>
+</html>

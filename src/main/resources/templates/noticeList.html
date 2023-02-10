@@ -17,13 +17,13 @@
             <div class="alert alert-success" th:each="notice : ${noticeList}" th:if="${!#lists.isEmpty(noticeList)}">
                     [[${notice.notice}]]
             </div>
-            <h2 th:if="${#lists.isEmpty(noticeList)}" id="notingNotice">
+            <h2 th:unless="${!#lists.isEmpty(noticeList)}" id="notingNotice">
                 읽지 않은 알림이 없습니다!
             </h2>
 
-            <h4>
-                <a href="#">이전 알림 보기</a>
-            </h4>
+            <h5>
+                <a href="/notice/prev-list">이전 알림 보기</a>
+            </h5>
 
         </div>
     </div>

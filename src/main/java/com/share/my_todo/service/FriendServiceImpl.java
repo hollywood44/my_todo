@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -30,17 +31,19 @@ public class FriendServiceImpl implements FriendService{
     @Override
     @Transactional
     public FriendListDto getFriendList(String memberId) {
-        FriendList friendList = listRepository.findByMemberAndStatus(easyMakeMember(memberId),Friend.FollowStatus.Accept).get();
-        FriendListDto friendListDto = entityToDtoForList(friendList);
-        for (FriendDto friend : friendListDto.getFriendList()) {
-            int archievement = todoService.getAchievementRate(todoService.getWeekTodoList(friend.getMemberId(),1));
-            friend.setLastWeekRate(archievement);
+        Optional<FriendList> friendList = listRepository.findByMemberAndStatus(easyMakeMember(memberId),Friend.FollowStatus.Accept);
+        if (friendList.isPresent()) {
+            FriendListDto friendListDto = entityToDtoForList(friendList.get());
+            for (FriendDto friend : friendListDto.getFriendList()) {
+                int archievement = todoService.getAchievementRate(todoService.getWeekTodoList(friend.getMemberId(),1));
+                friend.setLastWeekRate(archievement);
 
-            archievement = todoService.getAchievementRate(todoService.getWeekTodoList(friend.getMemberId(),0));
-            friend.setThisWeekRate(archievement);
+                archievement = todoService.getAchievementRate(todoService.getWeekTodoList(friend.getMemberId(),0));
+                friend.setThisWeekRate(archievement);
+            }
         }
 
-        return friendListDto;
+        return new FriendListDto();
     }
 
     @Override

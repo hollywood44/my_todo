@@ -30,7 +30,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http.authorizeRequests()
-                .antMatchers("/**").permitAll()
+                .antMatchers("/member/signIn").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin() // 로그인 관련 설정
@@ -40,7 +40,7 @@ public class SecurityConfig {
                 .and()
                 .logout() // 로그아웃 설정
                 .logoutUrl("/member/signOut") //로그아웃 form의 action url
-                .logoutSuccessUrl("/member/main") // 로그아웃 성공하면 이동할 페이지
+                .logoutSuccessUrl("/member/signIn") // 로그아웃 성공하면 이동할 페이지
                 .invalidateHttpSession(true) // 세션 관련
                 .and()
                 .exceptionHandling() // 예외 핸들러

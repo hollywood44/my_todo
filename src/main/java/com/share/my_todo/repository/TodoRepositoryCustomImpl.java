@@ -30,7 +30,9 @@ public class TodoRepositoryCustomImpl implements TodoRepositoryCustom{
                 .where(
                         todo1.member.eq(memberId)
                         .and(todo1.finishDate.between(mon,sun))
-                ).fetch();
+                )
+                .orderBy(todo1.finishDate.asc())
+                .fetch();
         return result;
     }
 
@@ -40,7 +42,9 @@ public class TodoRepositoryCustomImpl implements TodoRepositoryCustom{
                 .selectFrom(todo1)
                 .where(
                         todo1.member.eq(member),todo1.progress.eq(todoProgress)
-                ).fetch();
+                )
+                .orderBy(todo1.finishDate.asc())
+                .fetch();
         return result;
     }
 }

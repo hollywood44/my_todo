@@ -4,6 +4,7 @@ import com.share.my_todo.DTO.notice.NoticeDto;
 import com.share.my_todo.entity.common.FollowNoticeMessage;
 import com.share.my_todo.entity.member.Member;
 import com.share.my_todo.entity.notice.Notice;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -72,4 +73,6 @@ public interface NoticeService {
     List<NoticeDto> getNotReadNoticeList(Member member);
 
     void readNotice(Member member);
+
+    Page<NoticeDto> getPrevNoticeList(Member member,int page);
 }

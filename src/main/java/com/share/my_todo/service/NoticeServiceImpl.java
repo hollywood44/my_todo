@@ -6,6 +6,10 @@ import com.share.my_todo.entity.member.Member;
 import com.share.my_todo.entity.notice.Notice;
 import com.share.my_todo.repository.NoticeRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -72,5 +76,19 @@ public class NoticeServiceImpl implements NoticeService{
             notice.readNotice();
         }
         noticeRepository.saveAll(list);
+    }
+
+    @Override
+    public Page<NoticeDto> getPrevNoticeList(Member member,int page) {
+        Sort sort = Sort.by("noticeId").descending();
+        Pageable pageable = PageRequest.of(page,30,sort); // page(번호)부터 10개씩 잘라서 보겠다
+        Page<Notice> entityList = noticeRepository.findAllByMemberAndReadAtIsNotNull(member,pageable);
+        if (!entityList.isEmpty()) {
+            Page<NoticeDto> noticeList = entityList.map(e -> entityToDto(e));
+            return noticeList;
+        } else {
+            Page<NoticeDto> noticeList = Page.empty();
+            return noticeList;
+        }
     }
 }
