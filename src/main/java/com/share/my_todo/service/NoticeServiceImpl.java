@@ -70,12 +70,19 @@ public class NoticeServiceImpl implements NoticeService{
     }
 
     @Override
-    public void readNotice(Member member) {
+    public int readNotice(Member member) {
         List<Notice> list = noticeRepository.findAllByMemberAndReadAtIsNull(member);
         for (Notice notice : list) {
             notice.readNotice();
         }
-        noticeRepository.saveAll(list);
+        return noticeRepository.saveAll(list).size();
+    }
+
+    @Override
+    public int checkNotice(Member member) {
+        List<Notice> list = noticeRepository.findAllByMemberAndReadAtIsNull(member);
+
+        return list.size();
     }
 
     @Override

@@ -72,7 +72,9 @@ public interface NoticeService {
 
     List<NoticeDto> getNotReadNoticeList(Member member);
 
-    void readNotice(Member member);
+    int readNotice(Member member);
 
     Page<NoticeDto> getPrevNoticeList(Member member,int page);
+
+    int checkNotice(Member member);
 }

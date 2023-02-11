@@ -14,6 +14,7 @@
         <li class="nav-item"><a class="nav-link" href="/friend/list" style="color: black;font-weight: bold;">친구 목록</a></li>
         <li class="nav-item"><a class="nav-link" href="#!" style="color: black;font-weight: bold;">건의하기</a></li>
         <li class="nav-item"><a class="nav-link" href="/member/my-info" style="color: black;font-weight: bold;">내 정보</a></li>
+        <li class="nav-item"><a class="nav-link" href="/notice/list" style="color: black;font-weight: bold;" id="noticeCount">알림:0건</a></li>
         <th:block sec:authorize="isAnonymous()">
           <li class="nav-item"><a class="nav-link" href="#!" style="color: black;font-weight: bold;">로그인</a></li>
         </th:block>
@@ -52,5 +53,16 @@
       </div>
     </div>
   </div>
+
+  <script>
+        $(function(){
+                $.get("/notice/checkNotice",
+                    function(noticeCount){
+                        console.log("noticeCount =" + noticeCount);
+                        $("#noticeCount").text('알림:'+noticeCount+'건');
+                    }
+                )
+        })
+    </script>
 
 </nav>

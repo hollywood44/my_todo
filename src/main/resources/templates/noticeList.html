@@ -31,8 +31,6 @@
         $(function(){
             let isIt = $('#notingNotice').val();
 
-            console.log(isIt);
-
             if(isIt == null){
                 $.get("/notice/readNotice",
                     function(status){
