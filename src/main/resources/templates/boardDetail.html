@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basicLayout}"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Suggest Detail</title>
+</head>
+<body>
+<section layout:fragment="content">
+    <div class="container px-lg-5">
+        <div class="p-4 p-lg-5 bg-light rounded-3">
+
+            <div class="row border rounded-3 mb-2">
+                <h2 class="col-12" th:text="${detail.title}"></h2>
+                <div class="col-12 text-end" th:text="|작성자 : ${detail.writer}|"></div>
+            </div>
+
+            <div class="row mb-2">
+                <div class="col-12 border rounded-3 p-2" th:utext="${detail.content}" style="min-height:400px;"></div>
+            </div>
+
+            <div class="row">
+                <div class="col-5" th:text="|최초 작성일 : ${detail.regDate}|"></div>
+                <div class="col-7 text-end"><a class="btn btn-primary" href="/board">돌아가기</a></div>
+                <div class="col-5" th:text="|최종 수정일 : ${detail.modDate}|"></div>
+                <div class="col-7 text-end" th:if="${#authentication.name == detail.writer}"><a href="#" class="btn btn-danger">수정하기</a></div>
+            </div>
+    </div>
+</section>
+
+</body>
+</html>

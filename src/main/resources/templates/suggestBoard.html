@@ -30,7 +30,7 @@
             <tbody>
             <tr th:each="board :${boardList}">
                 <td>[[${board.boardId}]]</td>
-                <td>[[${board.title}]]</td>
+                <td><a th:href="@{|/board/suggest-detail?boardId=${board.boardId}|}">[[${board.title}]]</a></td>
                 <td>[[${board.writer}]]</td>
                 <td>[[${board.modDate}]]</td>
             </tr>

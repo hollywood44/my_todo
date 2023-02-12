@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basicLayout}"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Posting Page</title>
+</head>
+<body>
+<section layout:fragment="content">
+    <div class="container px-lg-5">
+        <div class="p-4 p-lg-5 bg-light rounded-3">
+            <div class="m-4 m-lg-5">
+                <form method="post" th:action="@{/board/suggest-posting}">
+                        <sec:csrfInput />
+                    <div class="input-group justify-content-center">
+                        <h3>건의사항 작성</h3>
+                    </div>
+                        <div class="input-group justify-content-center">
+                            <div class="col-8">
+                                <h5>제목</h5>
+                                <input type="text" class="form-control" placeholder="title" name="title"/>
+                            </div>
+                        </div>
+
+                        <div class="input-group justify-content-center mt-4">
+                            <div class="col-8">
+                                <h5>내용</h5>
+                                <textarea class="form-control" placeholder="content" id="board-posting-content" style="height: 400px;resize: none;" name="content"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="input-group justify-content-center mt-4">
+                            <div class="col-8 text-end" id="board-submit">
+                                <input type="submit" value="등록" class="btn btn-secondary">
+                            </div>
+                        </div>
+                    </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+</body>
+</html>

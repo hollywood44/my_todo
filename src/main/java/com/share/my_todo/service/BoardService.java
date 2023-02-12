@@ -5,26 +5,35 @@ import com.share.my_todo.entity.board.Board;
 import com.share.my_todo.entity.member.Member;
 import org.springframework.data.domain.Page;
 
+import javax.swing.text.DateFormatter;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public interface BoardService {
 
     default BoardDto entityToDto(Board entity) {
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
         BoardDto dto = BoardDto.builder()
                 .boardId(entity.getBoardId())
                 .title(entity.getTitle())
                 .content(entity.getContent())
                 .writer(entity.getWriter().getMemberId())
-                .regDate(entity.getRegDate())
-                .modDate(entity.getModDate())
+                .regDate(entity.getRegDate().format(format))
+                .modDate(entity.getModDate().format(format))
                 .build();
         return dto;
     }
 
     default BoardDto entityToDtoForList(Board entity) {
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
         BoardDto dto = BoardDto.builder()
                 .boardId(entity.getBoardId())
                 .title(entity.getTitle())
                 .writer(entity.getWriter().getMemberId())
-                .modDate(entity.getModDate())
+                .modDate(entity.getModDate().format(format))
                 .build();
         return dto;
     }
