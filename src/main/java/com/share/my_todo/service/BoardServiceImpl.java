@@ -46,7 +46,7 @@ public class BoardServiceImpl implements BoardService{
         Sort sort = Sort.by("boardId").descending();
         Pageable pageable = PageRequest.of(page, size, sort);
         Page<Board> entityList = boardRepository.findAll(pageable);
-        Page<BoardDto> boardList = entityList.map(entity -> entityToDto(entity));
+        Page<BoardDto> boardList = entityList.map(entity -> entityToDtoForList(entity));
 
         return boardList;
     }

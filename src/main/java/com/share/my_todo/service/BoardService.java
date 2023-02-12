@@ -19,6 +19,16 @@ public interface BoardService {
         return dto;
     }
 
+    default BoardDto entityToDtoForList(Board entity) {
+        BoardDto dto = BoardDto.builder()
+                .boardId(entity.getBoardId())
+                .title(entity.getTitle())
+                .writer(entity.getWriter().getMemberId())
+                .modDate(entity.getModDate())
+                .build();
+        return dto;
+    }
+
     default Board dtoToEntity(BoardDto dto) {
         Board entity = Board.builder()
                 .title(dto.getTitle())

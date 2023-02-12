@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basicLayout}"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Suggest Board</title>
+</head>
+<body>
+
+<section layout:fragment="content">
+    <div class="container px-lg-5 position-relative">
+        <div class="p-4 p-lg-5 bg-light rounded" style="min-height:40vh;">
+            <!--            content-->
+            <div class="text-end">
+                <a href="#" class="btn btn-success">건의하기</a>
+            </div>
+            <table class="table">
+            <thead>
+            <tr>
+                <th>게시물 번호</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>최종 수정일</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr th:each="board :${boardList}">
+                <td>[[${board.boardId}]]</td>
+                <td>[[${board.title}]]</td>
+                <td>[[${board.writer}]]</td>
+                <td>[[${board.modDate}]]</td>
+            </tr>
+
+            </tbody>
+        </table>
+            <!--            paging-->
+            <div th:if="${not #strings.isEmpty(boardList)}" class="position-absolute bottom-0 start-50" style="transform: translate(-50%, 0%);">
+                <nav aria-label="Page navigation" id="board-pagenation" style="width:100%;">
+                    <ul class="pagination justify-content-center"
+                        th:with="start=${(boardList.number/maxPage)*maxPage + 1}, end=(${(boardList.totalPages == 0) ? 1 : (start + (maxPage - 1) < boardList.totalPages ? start + (maxPage - 1) : boardList.totalPages)})"
+                    >
+
+                        <li class="page-item" th:if="${start > 1}">
+                            <a class="page-link" th:href="@{|?page=${boardList.number}|}">Prev</a>
+                        </li>
+
+                        <li class="page-item"
+                            th:each="page: ${#numbers.sequence(start, end)}">
+                            <a class="page-link"
+                               th:text="${page}"
+                               th:href="@{|?page=${page}|}">1</a>
+                        </li>
+
+                        <li class="page-item" th:if="${end < boardList.totalPages}">
+                            <a class="page-link" th:href="@{|?page=${boardList.number+2}|}">Next</a>
+                        </li>
+
+                    </ul>
+                </nav>
+            </div>
+
+        </div>
+
+
+    </div>
+</section>
+
+</body>
+</html>

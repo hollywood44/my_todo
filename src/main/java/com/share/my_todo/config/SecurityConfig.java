@@ -30,7 +30,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http.authorizeRequests()
-                .antMatchers("/member/signIn").permitAll()
+                .antMatchers("/member/signIn","/notice/checkNotice").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin() // 로그인 관련 설정

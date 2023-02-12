@@ -44,9 +44,13 @@ public class NoticeController {
     @GetMapping("/checkNotice")
     @ResponseBody
     public int checkNotice(@AuthenticationPrincipal Member member) {
-        int noticeCount = noticeService.checkNotice(member);
+        if (member.getMemberId().isEmpty()) {
+            return 0;
+        } else {
+            int noticeCount = noticeService.checkNotice(member);
+            return noticeCount;
+        }
 
-        return noticeCount;
     }
 
     @GetMapping("/prev-list")
