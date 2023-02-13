@@ -26,8 +26,7 @@
                 <div class="col-5" th:text="|최초 작성일 : ${detail.regDate}|"></div>
                 <div class="col-7 text-end"><a class="btn btn-primary" href="/board">돌아가기</a></div>
                 <div class="col-5" th:text="|최종 수정일 : ${detail.modDate}|"></div>
-                <div class="col-7 text-end" th:if="${#authentication.name == detail.writer}"><a href="#"
-                                                                                                class="btn btn-danger">수정하기</a>
+                <div class="col-7 text-end" th:if="${#authentication.name == detail.writer}"><a th:href="@{|/board/suggest-modify?boardId=${detail.boardId}|}" class="btn btn-danger">수정하기</a>
                 </div>
             </div>
         </div>

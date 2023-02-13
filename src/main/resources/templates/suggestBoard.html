@@ -68,6 +68,19 @@
 
 
     </div>
+
+    <script th:inline="javascript">
+
+    /*<![CDATA[*/
+
+    var msg = [[${msg}]];
+    if(msg != null){
+    alert(msg);
+
+    }
+    /*]]>*/
+
+    </script>
 </section>
 
 </body>

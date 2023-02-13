@@ -60,7 +60,6 @@ public interface NoticeService {
      */
     Long sendFollowRejectNotice(String sendMemberId, String targetMemberId);
 
-    // TODO: 2023-01-30 팔로우 취소
 
     /**
      * 완료 기한이 내일까지인 할일이 있다고 알림을 보낸다.

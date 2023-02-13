@@ -8,6 +8,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequiredArgsConstructor
@@ -17,9 +18,9 @@ public class BoardController {
     private final BoardService boardService;
 
     @GetMapping
-    public String suggestPageMain(Model model, @RequestParam(name = "page",defaultValue = "1")int page) {
-        page = page-1;
-        model.addAttribute("boardList",boardService.getAllBoardList(page,10));
+    public String suggestPageMain(Model model, @RequestParam(name = "page", defaultValue = "1") int page) {
+        page = page - 1;
+        model.addAttribute("boardList", boardService.getAllBoardList(page, 10));
         model.addAttribute("maxPage", 10);
         return "suggestBoard";
     }
@@ -29,11 +30,25 @@ public class BoardController {
         return "boardPosting";
     }
 
-    @GetMapping("suggest-detail")
-    public String suggestPostingDetailPage(@RequestParam("boardId")Long boardId,Model model) {
+    @GetMapping("/suggest-detail")
+    public String suggestPostingDetailPage(@RequestParam("boardId") Long boardId, Model model) {
         model.addAttribute("detail", boardService.postDetail(boardId));
 
         return "boardDetail";
+    }
+
+    @GetMapping("/suggest-modify")
+    public String suggestModifyPage(Model model, @RequestParam("boardId")Long boardId, @AuthenticationPrincipal Member member, RedirectAttributes redirectAttributes) {
+        BoardDto board = boardService.postDetail(boardId);
+
+        if (member.getMemberId().equals(board.getWriter())) {
+            board.setContent(board.getContent().replace("<br>", "\n"));
+            model.addAttribute("board", boardService.postDetail(boardId));
+            return "boardModify";
+        } else {
+            redirectAttributes.addFlashAttribute("msg", "권한없는 접근입니다!");
+            return "redirect:/board";
+        }
     }
 
     @PostMapping("/suggest-posting")
@@ -45,6 +60,11 @@ public class BoardController {
         return "redirect:/board";
     }
 
+    @PostMapping("/suggest-modify")
+    public String suggestModify(BoardDto boardDto) {
+        boardDto.setContent(boardDto.getContent().replace("\n", "<br>"));
+        boardService.modifyPost(boardDto);
 
-
+        return "redirect:/board";
+    }
 }
