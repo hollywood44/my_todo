@@ -6,9 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -23,4 +21,13 @@ public class FriendController {
 
         return "friendList";
     }
+
+    @PostMapping("/unfollow")
+    public String unfollow(@RequestParam("unfollowMemberId")String unfollowMemberId,@AuthenticationPrincipal Member member) {
+        friendService.unFollow(member.getMemberId(), unfollowMemberId);
+
+        return "redirect:/friend/list";
+    }
+
+
 }

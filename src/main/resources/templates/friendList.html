@@ -21,7 +21,7 @@
                 <div class="d-flex" style="align-items: center;">
                     <div class="mx-3">저번주 달성률 : [[${friend.lastWeekRate}]]%</div>
                     <div class="mx-3">이번주 달성률 : [[${friend.thisWeekRate}]]%</div>
-                    <a class="btn btn-success" th:href="@{|/friend/unfollow?friendId=${friend.friendId}|}">UN-FOLLOW</a>
+                    <a class="open-unfollow-modal btn btn-danger" href="#" data-bs-toggle="modal" data-bs-target="#unfollowModal" th:data-id="${friend.memberId}">UnFollow</a>
                 </div>
             </div>
 
@@ -31,6 +31,47 @@
 
         </div>
     </div>
+
+    <!-- unfollow Modal -->
+    <div class="modal fade" id="unfollowModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">팔로우 취소</h4>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body" id="unfollowBody">
+                    ~님을 언팔로우 하시겠습니까?
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <form th:action="@{/friend/unfollow}" method="post" >
+                        <sec:csrfInput />
+                        <input type="hidden" value="" id="unfollow-friendId" name="unfollowMemberId">
+                        <input type="submit" value="Yes" class="btn btn-danger" />
+                    </form>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">No</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script th:inline="javascript">
+
+        $(function(){
+            $('.open-unfollow-modal').on('click',function(){
+             let unfollowMemberId = $(this).data('id');
+             $('#unfollow-friendId').val(unfollowMemberId);
+             $('#unfollowBody').text(unfollowMemberId + '님을 언팔로우 하시겠습니까?');
+             console.log(unfollowMemberId);
+            })
+        })
+
+    </script>
 </section>
 
 </body>

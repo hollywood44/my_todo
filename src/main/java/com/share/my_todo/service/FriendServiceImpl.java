@@ -41,6 +41,7 @@ public class FriendServiceImpl implements FriendService{
                 archievement = todoService.getAchievementRate(todoService.getWeekTodoList(friend.getMemberId(),0));
                 friend.setThisWeekRate(archievement);
             }
+            return friendListDto;
         }
 
         return new FriendListDto();
