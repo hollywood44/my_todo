@@ -29,7 +29,7 @@
                         </form>
                     </div>
                     <div class="col-12 text-end">
-                        <a href="#" class="btn btn-secondary">보낸 요청</a>
+                        <a href="/friend/request-list" class="btn btn-secondary">보낸 요청</a>
                         <a href="/friend/requested-list" class="btn btn-secondary">받은 요청</a>
                     </div>
                 </div>
@@ -82,8 +82,14 @@
         </div>
     </div>
     <script th:inline="javascript">
+    /*<![CDATA[*/
 
         $(function(){
+            let msg = [[${msg}]];
+            if(msg != null){
+            alert(msg);
+            }
+
             $('.open-unfollow-modal').on('click',function(){
              let unfollowMemberId = $(this).data('id');
              $('#unfollow-friendId').val(unfollowMemberId);
@@ -92,6 +98,9 @@
             })
         })
 
+
+
+    /*]]>*/
     </script>
 </section>
 

@@ -16,22 +16,21 @@
 
             <div class="alert bg-light px-5">
                 <div class="text-center">
-                    <h3>팔로우 수락대기 목록</h3>
+                    <h3>팔로우 요청 목록</h3>
                 </div>
             </div>
 
             <div class="alert alert-success d-flex justify-content-between px-5"
-                 th:each="friend : ${requestedList}" style="align-items: center;"
-                 th:if="${!#lists.isEmpty(requestedList)}">
+                 th:each="friend : ${requestList}" style="align-items: center;"
+                 th:if="${!#lists.isEmpty(requestList)}">
                 <strong>[[${friend.memberId}]]</strong>
                 <div class="d-flex" style="align-items: end;">
-                    <a th:href="@{|/friend/follow-accept?followerId=${friend.memberId}|}" class="btn btn-success">요청 수락</a>
-                    <a th:href="@{|/friend/follow-reject?followerId=${friend.memberId}|}" class="btn btn-danger">요청 거절</a>
+                    <a th:href="@{|/friend/request-cancel?followId=${friend.memberId}|}" class="btn btn-danger">요청 취소</a>
                 </div>
             </div>
 
-            <h4 th:if="${#lists.isEmpty(requestedList)}" class="text-center">
-                받은 요청이 없습니다!
+            <h4 th:if="${#lists.isEmpty(requestList)}" class="text-center">
+                보낸 요청이 없습니다!
             </h4>
 
         </div>

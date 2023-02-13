@@ -83,6 +83,13 @@ public interface FriendService {
     List<FriendDto> requestedFriendList(String myId);
 
     /**
+     * 내가 팔로우 요청한 목록 반환
+     * @param myId 팔로우 한 아이디
+     * @return 내가 팔로우 요청한 목록 반환
+     */
+    List<FriendDto> requestFriendList(String myId);
+
+    /**
      * 팔로우 거절
      * @param myId 거절 하는 사람 아이디
      * @param followerId 거절 받는 사람 아이디

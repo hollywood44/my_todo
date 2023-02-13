@@ -27,6 +27,7 @@ public class FriendListRepositoryCustomImpl implements FriendListRepositoryCusto
                 .selectFrom(friendList)
                 .join(friendList.friendList,friend).fetchJoin()
                 .where(friendList.member.eq(member),friend.followStatus.eq(status))
+                .distinct()
                 .stream().findAny();
         return result;
     }

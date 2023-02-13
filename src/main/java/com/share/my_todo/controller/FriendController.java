@@ -36,6 +36,13 @@ public class FriendController {
         return "followRequested";
     }
 
+    @GetMapping("/request-list")
+    public String followRequestList(@AuthenticationPrincipal Member member,Model model) {
+        model.addAttribute("requestList", friendService.requestFriendList(member.getMemberId()));
+
+        return "followRequest";
+    }
+
     @GetMapping("/follow-accept")
     public String followAccept(@RequestParam("followerId") String followerId, @AuthenticationPrincipal Member member) {
         friendService.followAccept(member.getMemberId(), followerId);
@@ -50,6 +57,12 @@ public class FriendController {
         return "redirect:/friend/list";
     }
 
+    @GetMapping("/request-cancel")
+    public String followRequestCancel(@RequestParam("followId") String followId, @AuthenticationPrincipal Member member) {
+        friendService.unFollow(member.getMemberId(), followId);
+
+        return "redirect:/friend/list";
+    }
 
     @PostMapping("/follow-request")
     public String followRequest(@RequestParam("followId") String followId, @AuthenticationPrincipal Member member, RedirectAttributes redirectAttributes) {
@@ -57,6 +70,9 @@ public class FriendController {
 
         if (status == 0000L) {
             redirectAttributes.addFlashAttribute("msg", "이미 친구목록에 있는 친구입니다.");
+            return "redirect:/friend/list";
+        } else if (status == 0001L) {
+            redirectAttributes.addFlashAttribute("msg", "상대방이 팔로우 거절시 이틀 후 자정부터 다시 팔로우 요청이 가능합니다.");
             return "redirect:/friend/list";
         } else {
             return "redirect:/friend/list";

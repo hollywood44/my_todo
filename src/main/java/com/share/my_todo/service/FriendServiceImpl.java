@@ -55,6 +55,9 @@ public class FriendServiceImpl implements FriendService{
         Friend followFriend = Friend.builder().member(Member.builder().memberId(followId).build()).build();
 
         for (Friend friend : friendList.getFriendList()) {
+            if (friend.getFollowStatus().equals(Friend.FollowStatus.Reject)) {
+                return 0001L;
+            }
             if (friend.getMember().getMemberId().equals(followId)) {
                 return 0000L;
             }
@@ -147,6 +150,20 @@ public class FriendServiceImpl implements FriendService{
             }
         }
         return requestedList;
+    }
+
+    @Override
+    public List<FriendDto> requestFriendList(String myId) {
+        Optional<FriendList> friendList = listRepository.findByMemberAndStatus(easyMakeMember(myId), Friend.FollowStatus.Waiting);
+        List<FriendDto> requestList = new ArrayList<>();
+
+        if (friendList.isPresent()) {
+            for (Friend friend : friendList.get().getFriendList()) {
+                requestList.add(entityToDto(friend));
+            }
+        }
+
+        return requestList;
     }
 
     @Override
