@@ -15,20 +15,20 @@
         <div class="p-4 p-lg-5 bg-light rounded">
 
             <form method="post" th:action="@{/todo/modify}">
-            <sec:csrfInput />
-            <div class="input-group mb-3">
-                <span class="input-group-text">할일 수정</span>
-                <input type="text" class="form-control" maxlength="30" name="todo" th:value="${item.todo}">
-            </div>
-            <div class="input-group mb-3">
-                <span class="input-group-text">목표 날짜</span>
-                <input type="date" class="form-control" name="finishDate">
-                <button class="btn btn-success" type="submit">TODO!</button>
-            </div>
-            <div class="input-group mb-3">
-                <input type="hidden" th:value="${item.todoId}" name="todoId">
-            </div>
-        </form>
+                <sec:csrfInput/>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">할일 수정</span>
+                    <input type="text" class="form-control" maxlength="30" name="todo" th:value="${item.todo}">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">목표 날짜</span>
+                    <input type="date" class="form-control" name="finishDate">
+                    <button class="btn btn-success" type="submit">TODO!</button>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="hidden" th:value="${item.todoId}" name="todoId">
+                </div>
+            </form>
 
         </div>
     </div>

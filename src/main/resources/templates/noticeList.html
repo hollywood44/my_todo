@@ -15,7 +15,7 @@
         <div class="p-4 p-lg-5 bg-light rounded" style="text-align-last: center;">
 
             <div class="alert alert-success" th:each="notice : ${noticeList}" th:if="${!#lists.isEmpty(noticeList)}">
-                    [[${notice.notice}]]
+                [[${notice.notice}]]
             </div>
             <h2 th:unless="${!#lists.isEmpty(noticeList)}" id="notingNotice">
                 읽지 않은 알림이 없습니다!
@@ -40,6 +40,7 @@
 
             }
         })
+
     </script>
 </section>
 

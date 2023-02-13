@@ -11,13 +11,13 @@
 <body>
 
 <section layout:fragment="content">
-<!--    할일 작성-->
+    <!--    할일 작성-->
     <div class="container px-lg-5">
         <div class="p-4 p-lg-5 bg-light rounded-top" id="todo-list-input">
             <div class="m-4 m-lg-5">
-<!--                할일 작성 폼-->
+                <!--                할일 작성 폼-->
                 <form method="post" th:action="@{/todo/posting}">
-                    <sec:csrfInput />
+                    <sec:csrfInput/>
                     <div class="input-group mb-3">
                         <span class="input-group-text">할일 작성</span>
                         <input type="text" class="form-control" maxlength="30" name="todo">
@@ -32,16 +32,18 @@
             </div>
         </div>
 
-<!--        할일 목록-->
+        <!--        할일 목록-->
         <div class="p-2 p-lg-5 bg-light rounded-bottom" id="todo-list-div">
             <div class="m-4 m-lg-5">
-<!--                할일 아이템-->
+                <!--                할일 아이템-->
 
                 <div class="input-group mb-3" th:each="item : ${todoList}">
                     <span class="input-group-text" th:text="${item.finishDate}">~ 2022-02-15</span>
                     <input type="text" class="form-control" th:value="${item.todo}" readonly disabled>
-                    <a class="btn btn-warning" type="button" th:href="@{|/todo/modify-todo?todoId=${item.todoId}|}">수정</a>
-                    <a class="btn btn-primary" type="button" th:href="@{|/todo/complete-todo?todoId=${item.todoId}|}">완료</a>
+                    <a class="btn btn-warning" type="button"
+                       th:href="@{|/todo/modify-todo?todoId=${item.todoId}|}">수정</a>
+                    <a class="btn btn-primary" type="button"
+                       th:href="@{|/todo/complete-todo?todoId=${item.todoId}|}">완료</a>
                 </div>
 
 
@@ -60,6 +62,7 @@
     location.replace('/todo/main');
     }
     /*]]>*/
+
 
     </script>
 </section>

@@ -16,7 +16,7 @@
             <form th:action="@{/member/modify-info}" method="post">
                 <div class="input-group mb-3">
                     <span class="input-group-text">아이디</span>
-                    <input type="text" name="memberId" th:value="${member.memberId}" class="form-control" readonly />
+                    <input type="text" name="memberId" th:value="${member.memberId}" class="form-control" readonly/>
                 </div>
                 <div class="input-group mb-3">
                     <span class="input-group-text">이름</span>
@@ -26,17 +26,17 @@
             </form>
 
             <form th:action="@{/member/modify-password}" method="post">
-            <div class="input-group mb-3">
-                <span class="input-group-text">비밀번호</span>
-                <input type="password" name="password" class="form-control"/>
-                <button class="btn btn-success" type="submit">비밀번호 수정</button>
-            </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">비밀번호</span>
+                    <input type="password" name="password" class="form-control"/>
+                    <button class="btn btn-success" type="submit">비밀번호 수정</button>
+                </div>
 
-        </form>
+            </form>
         </div>
     </div>
 
-<!--    스크립트-->
+    <!--    스크립트-->
     <script th:inline="javascript">
 
     /*<![CDATA[*/
@@ -52,6 +52,7 @@
     }
 
     /*]]>*/
+
 
     </script>
 

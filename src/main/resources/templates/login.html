@@ -16,7 +16,7 @@
         <div class="p-4 p-lg-5 bg-light rounded-3">
             <div class="m-4 m-lg-5">
                 <form method="post" th:action="@{/member/signIn}" name="signInForm" id="signInForm">
-                    <sec:csrfInput />
+                    <sec:csrfInput/>
                     <h3 style="text-align: center;">로그인</h3>
 
                     <div class="mb-3 mt-3">
@@ -25,7 +25,8 @@
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">비밀번호:</label>
-                        <input type="password" class="form-control" id="password" placeholder="Enter password" name="password">
+                        <input type="password" class="form-control" id="password" placeholder="Enter password"
+                               name="password">
                     </div>
 
                     <input type="submit" class="btn btn-primary form-control" style="margin-top:5px;" value="로그인">

@@ -18,27 +18,28 @@
                 <a href="#" class="btn btn-success">건의하기</a>
             </div>
             <table class="table">
-            <thead>
-            <tr>
-                <th>게시물 번호</th>
-                <th>제목</th>
-                <th>작성자</th>
-                <th>최종 수정일</th>
-            </tr>
-            </thead>
+                <thead>
+                <tr>
+                    <th>게시물 번호</th>
+                    <th>제목</th>
+                    <th>작성자</th>
+                    <th>최종 수정일</th>
+                </tr>
+                </thead>
 
-            <tbody>
-            <tr th:each="board :${boardList}">
-                <td>[[${board.boardId}]]</td>
-                <td><a th:href="@{|/board/suggest-detail?boardId=${board.boardId}|}">[[${board.title}]]</a></td>
-                <td>[[${board.writer}]]</td>
-                <td>[[${board.modDate}]]</td>
-            </tr>
+                <tbody>
+                <tr th:each="board :${boardList}">
+                    <td>[[${board.boardId}]]</td>
+                    <td><a th:href="@{|/board/suggest-detail?boardId=${board.boardId}|}">[[${board.title}]]</a></td>
+                    <td>[[${board.writer}]]</td>
+                    <td>[[${board.modDate}]]</td>
+                </tr>
 
-            </tbody>
-        </table>
+                </tbody>
+            </table>
             <!--            paging-->
-            <div th:if="${not #strings.isEmpty(boardList)}" class="position-absolute bottom-0 start-50" style="transform: translate(-50%, 0%);">
+            <div th:if="${not #strings.isEmpty(boardList)}" class="position-absolute bottom-0 start-50"
+                 style="transform: translate(-50%, 0%);">
                 <nav aria-label="Page navigation" id="board-pagenation" style="width:100%;">
                     <ul class="pagination justify-content-center"
                         th:with="start=${(boardList.number/maxPage)*maxPage + 1}, end=(${(boardList.totalPages == 0) ? 1 : (start + (maxPage - 1) < boardList.totalPages ? start + (maxPage - 1) : boardList.totalPages)})"

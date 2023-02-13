@@ -15,15 +15,16 @@
         <div class="p-4 p-lg-5 bg-light rounded" style="text-align-last: center; min-height:40vh;">
 
             <div class="alert alert-success" th:each="notice : ${noticeList}" th:if="${!#lists.isEmpty(noticeList)}">
-                    [[${notice.notice}]]
+                [[${notice.notice}]]
             </div>
 
             <h2 th:unless="${!#lists.isEmpty(noticeList)}" id="notingNotice">
                 이전 알림이 없습니다!
             </h2>
 
-<!--            paging-->
-            <div th:if="${not #strings.isEmpty(noticeList)}" class="position-absolute bottom-0 start-50" style="transform: translate(-50%, 0%);">
+            <!--            paging-->
+            <div th:if="${not #strings.isEmpty(noticeList)}" class="position-absolute bottom-0 start-50"
+                 style="transform: translate(-50%, 0%);">
                 <nav aria-label="Page navigation" id="board-pagenation">
                     <ul class="pagination justify-content-center"
                         th:with="start=${(noticeList.number/maxPage)*maxPage + 1}, end=(${(noticeList.totalPages == 0) ? 1 : (start + (maxPage - 1) < noticeList.totalPages ? start + (maxPage - 1) : noticeList.totalPages)})"

@@ -14,30 +14,31 @@
         <div class="p-4 p-lg-5 bg-light rounded-3">
             <div class="m-4 m-lg-5">
                 <form method="post" th:action="@{/board/suggest-posting}">
-                        <sec:csrfInput />
+                    <sec:csrfInput/>
                     <div class="input-group justify-content-center">
                         <h3>건의사항 작성</h3>
                     </div>
-                        <div class="input-group justify-content-center">
-                            <div class="col-8">
-                                <h5>제목</h5>
-                                <input type="text" class="form-control" placeholder="title" name="title"/>
-                            </div>
+                    <div class="input-group justify-content-center">
+                        <div class="col-8">
+                            <h5>제목</h5>
+                            <input type="text" class="form-control" placeholder="title" name="title"/>
                         </div>
+                    </div>
 
-                        <div class="input-group justify-content-center mt-4">
-                            <div class="col-8">
-                                <h5>내용</h5>
-                                <textarea class="form-control" placeholder="content" id="board-posting-content" style="height: 400px;resize: none;" name="content"></textarea>
-                            </div>
+                    <div class="input-group justify-content-center mt-4">
+                        <div class="col-8">
+                            <h5>내용</h5>
+                            <textarea class="form-control" placeholder="content" id="board-posting-content"
+                                      style="height: 400px;resize: none;" name="content"></textarea>
                         </div>
+                    </div>
 
-                        <div class="input-group justify-content-center mt-4">
-                            <div class="col-8 text-end" id="board-submit">
-                                <input type="submit" value="등록" class="btn btn-secondary">
-                            </div>
+                    <div class="input-group justify-content-center mt-4">
+                        <div class="col-8 text-end" id="board-submit">
+                            <input type="submit" value="등록" class="btn btn-secondary">
                         </div>
-                    </form>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

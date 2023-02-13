@@ -14,11 +14,13 @@
     <div class="container px-lg-5">
         <div class="p-4 p-lg-5 bg-light rounded">
 
-            <div class="alert alert-success d-flex  justify-content-between px-5" th:each="friend : ${friendList.friendList}" style="align-items: center;" th:if="${!#lists.isEmpty(friendList.friendList)}">
+            <div class="alert alert-success d-flex  justify-content-between px-5"
+                 th:each="friend : ${friendList.friendList}" style="align-items: center;"
+                 th:if="${!#lists.isEmpty(friendList.friendList)}">
                 <strong>[[${friend.memberId}]]</strong>
                 <div class="d-flex" style="align-items: center;">
-                    <div class="mx-3">저번주 달성률 : [[${friend.lastWeekRate}]]% </div>
-                    <div class="mx-3">이번주 달성률 : [[${friend.thisWeekRate}]]% </div>
+                    <div class="mx-3">저번주 달성률 : [[${friend.lastWeekRate}]]%</div>
+                    <div class="mx-3">이번주 달성률 : [[${friend.thisWeekRate}]]%</div>
                     <a class="btn btn-success" th:href="@{|/friend/unfollow?friendId=${friend.friendId}|}">UN-FOLLOW</a>
                 </div>
             </div>
