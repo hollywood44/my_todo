@@ -14,6 +14,27 @@
     <div class="container px-lg-5">
         <div class="p-4 p-lg-5 bg-light rounded">
 
+            <div class="alert bg-light px-5">
+                <div class="text-center">
+                    <h3>친구 목록</h3>
+                </div>
+                <div class="row">
+                    <div class="col-12 mb-3" style="text-align: -webkit-center;">
+                        <form style="max-width:70%;text-align-last: center;" method="post" th:action="@{/friend/follow-request}">
+                            <sec:csrfInput/>
+                            <div class="input-group mb-3">
+                                <input class="form-control" type="text" name="followId" placeholder="팔로우 할 아이디를 입력 해 주세요">
+                                <input type="submit" class="btn btn-success" value="요청" />
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-12 text-end">
+                        <a href="#" class="btn btn-secondary">보낸 요청</a>
+                        <a href="/friend/requested-list" class="btn btn-secondary">받은 요청</a>
+                    </div>
+                </div>
+            </div>
+
             <div class="alert alert-success d-flex  justify-content-between px-5"
                  th:each="friend : ${friendList.friendList}" style="align-items: center;"
                  th:if="${!#lists.isEmpty(friendList.friendList)}">

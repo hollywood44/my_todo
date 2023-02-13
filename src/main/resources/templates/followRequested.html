@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basicLayout}"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Follow Requested</title>
+</head>
+<body>
+
+<section layout:fragment="content">
+    <div class="container px-lg-5">
+        <div class="p-4 p-lg-5 bg-light rounded">
+
+            <div class="alert bg-light px-5">
+                <div class="text-center">
+                    <h3>팔로우 요청</h3>
+                </div>
+            </div>
+
+            <div class="alert alert-success d-flex justify-content-between px-5"
+                 th:each="friend : ${requestedList}" style="align-items: center;"
+                 th:if="${!#lists.isEmpty(requestedList)}">
+                <strong>[[${friend.memberId}]]</strong>
+                <div class="d-flex" style="align-items: end;">
+                    <a th:href="@{|/friend/follow-accept?followerId=${friend.memberId}|}" class="btn btn-success">요청 수락</a>
+                    <a th:href="@{|/friend/follow-reject?followerId=${friend.memberId}|}" class="btn btn-danger">요청 거절</a>
+                </div>
+            </div>
+
+            <h4 th:if="${#lists.isEmpty(requestedList)}" class="text-center">
+                받은 요청이 없습니다!
+            </h4>
+
+        </div>
+    </div>
+
+</section>
+
+</body>
+</html>

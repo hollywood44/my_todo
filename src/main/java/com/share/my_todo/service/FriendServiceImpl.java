@@ -54,6 +54,11 @@ public class FriendServiceImpl implements FriendService{
         FriendList friendList = listRepository.findByMember(Member.builder().memberId(myId).build()).get();
         Friend followFriend = Friend.builder().member(Member.builder().memberId(followId).build()).build();
 
+        for (Friend friend : friendList.getFriendList()) {
+            if (friend.getMember().getMemberId().equals(followId)) {
+                return 0000L;
+            }
+        }
         // 팔로우 상태 세팅
         followFriend.statusToWaiting();
         friendList.addFriend(followFriend);

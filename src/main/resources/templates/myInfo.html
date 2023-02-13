@@ -14,6 +14,7 @@
     <div class="container px-lg-5">
         <div class="p-4 p-lg-5 bg-light rounded">
             <form th:action="@{/member/modify-info}" method="post">
+                <sec:csrfInput/>
                 <div class="input-group mb-3">
                     <span class="input-group-text">아이디</span>
                     <input type="text" name="memberId" th:value="${member.memberId}" class="form-control" readonly/>
