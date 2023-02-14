@@ -65,7 +65,7 @@
                 <div class="modal-footer">
                     <form th:action="@{/board/delete}" method="post" >
                         <sec:csrfInput />
-                        <input type="hidden" th:value="board.boardId" name="boardId">
+                        <input type="hidden" th:value="${board.boardId}" name="boardId">
                         <input type="submit" value="Yes" class="btn btn-danger" />
                     </form>
                     <button type="button" class="btn btn-primary" data-bs-dismiss="modal">No</button>

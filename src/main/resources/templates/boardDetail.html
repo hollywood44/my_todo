@@ -12,6 +12,10 @@
 <section layout:fragment="content">
     <div class="container px-lg-5">
         <div class="p-4 p-lg-5 bg-light rounded-3">
+            <div class="text-end" th:if="${!detail.answer}"><a
+                    class="btn btn-success"
+                    th:href="@{|/admin/suggest-answer?boardId=${detail.boardId}|}"
+                    th:if="${#strings.contains(#authentication.authorities,'Admin')}">답변달기</a></div>
 
             <div class="row border rounded-3 mb-2">
                 <h2 class="col-12" th:text="${detail.title}"></h2>
@@ -27,6 +31,26 @@
                 <div class="col-7 text-end"><a class="btn btn-primary" href="/board">돌아가기</a></div>
                 <div class="col-5" th:text="|최종 수정일 : ${detail.modDate}|"></div>
                 <div class="col-7 text-end" th:if="${#authentication.name == detail.writer}"><a th:href="@{|/board/suggest-modify?boardId=${detail.boardId}|}" class="btn btn-danger">수정하기</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="p-4 p-lg-5 bg-light rounded-3 mt-3" th:if="${detail.answer}">
+
+            <div class="row border rounded-3 mb-2">
+                <h2 class="col-12" th:text="${detail.answerBoard.title}"></h2>
+                <div class="col-12 text-end" th:text="|작성자 : ${detail.answerBoard.writer}|"></div>
+            </div>
+
+            <div class="row mb-2">
+                <div class="col-12 border rounded-3 p-2" th:utext="${detail.answerBoard.content}" style="min-height:400px;"></div>
+            </div>
+
+            <div class="row">
+                <div class="col-5" th:text="|최초 작성일 : ${detail.answerBoard.regDate}|"></div>
+                <div class="col-7 text-end"><a class="btn btn-primary" href="/board">돌아가기</a></div>
+                <div class="col-5" th:text="|최종 수정일 : ${detail.answerBoard.modDate}|"></div>
+                <div class="col-7 text-end" th:if="${#authentication.name == detail.answerBoard.writer}"><a th:href="@{|/board/suggest-modify?boardId=${detail.answerBoard.boardId}|}" class="btn btn-danger">수정하기</a>
                 </div>
             </div>
         </div>

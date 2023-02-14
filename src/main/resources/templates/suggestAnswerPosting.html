@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basicLayout}"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Suggest Answer Posting Page</title>
+</head>
+<body>
+<section layout:fragment="content">
+    <div class="container px-lg-5">
+        <div class="p-4 p-lg-5 bg-light rounded-3">
+            <div class="m-4 m-lg-5">
+                <form method="post" th:action="@{/admin/suggest-answer}">
+                    <sec:csrfInput/>
+                    <div class="input-group justify-content-center">
+                        <h3>[[${parentId}]]번 게시물 답변 작성</h3>
+                        <input type="hidden" th:value="${parentId}" name="parentId"/>
+                    </div>
+                    <div class="input-group justify-content-center">
+                        <div class="col-8">
+                            <h5>답변 제목</h5>
+                            <input type="text" class="form-control" placeholder="title" name="title"/>
+                        </div>
+                    </div>
+
+                    <div class="input-group justify-content-center mt-4">
+                        <div class="col-8">
+                            <h5>답변 내용</h5>
+                            <textarea class="form-control" placeholder="content" id="board-posting-content"
+                                      style="height: 400px;resize: none;" name="content"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="input-group justify-content-center mt-4">
+                        <div class="col-8 text-end" id="board-submit">
+                            <input type="submit" value="등록" class="btn btn-secondary">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+</body>
+</html>

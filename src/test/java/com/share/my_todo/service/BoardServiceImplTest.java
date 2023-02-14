@@ -25,9 +25,9 @@ class BoardServiceImplTest {
     @Rollback(value = false)
     void postingTest() {
         BoardDto dto = BoardDto.builder()
-                .title("posting test 1")
-                .content("post test content 1")
-                .writer("member1")
+                .title("posting test 6")
+                .content("post test content 6")
+                .writer("member7")
                 .build();
         System.out.println(boardService.boardPosting(dto));
     }
@@ -46,7 +46,7 @@ class BoardServiceImplTest {
 
     @Test
     void detailTest() {
-        System.out.println(boardService.postDetail(2L));
+        System.out.println(boardService.postDetail(4L));
     }
 
     @Test

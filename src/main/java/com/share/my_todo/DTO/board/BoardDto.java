@@ -17,8 +17,12 @@ public class BoardDto {
     private Long boardId;
     private String title;
     private String content;
+    private Long parentId;
+    private boolean answer;
     private String writer;
     private String regDate;
     private String modDate;
+
+    private BoardDto answerBoard;
 
 }

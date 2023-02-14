@@ -28,6 +28,10 @@ public class Board extends CommonTime {
     @Column(nullable = false)
     private String content;
 
+    private Long parentId;
+
+    private boolean answer;
+
     @ManyToOne(targetEntity = Member.class,fetch = FetchType.LAZY)
     @JoinColumn(name = "writer")
     private Member writer;
@@ -35,5 +39,9 @@ public class Board extends CommonTime {
     public void modifyPost(BoardDto dto) {
         this.title = dto.getTitle();
         this.content = dto.getContent();
+    }
+
+    public void setAnswer(boolean status) {
+        this.answer = status;
     }
 }

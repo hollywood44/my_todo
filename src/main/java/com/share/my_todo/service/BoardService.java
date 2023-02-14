@@ -19,7 +19,9 @@ public interface BoardService {
                 .boardId(entity.getBoardId())
                 .title(entity.getTitle())
                 .content(entity.getContent())
+                .parentId(entity.getParentId())
                 .writer(entity.getWriter().getMemberId())
+                .answer(entity.isAnswer())
                 .regDate(entity.getRegDate().format(format))
                 .modDate(entity.getModDate().format(format))
                 .build();
@@ -32,7 +34,9 @@ public interface BoardService {
         BoardDto dto = BoardDto.builder()
                 .boardId(entity.getBoardId())
                 .title(entity.getTitle())
+                .parentId(entity.getParentId())
                 .writer(entity.getWriter().getMemberId())
+                .answer(entity.isAnswer())
                 .modDate(entity.getModDate().format(format))
                 .build();
         return dto;
@@ -42,6 +46,8 @@ public interface BoardService {
         Board entity = Board.builder()
                 .title(dto.getTitle())
                 .content(dto.getContent())
+                .parentId(dto.getParentId())
+                .answer(dto.isAnswer())
                 .writer(Member.builder().memberId(dto.getWriter()).build())
                 .build();
         return entity;
@@ -53,6 +59,8 @@ public interface BoardService {
      * @return Long타입의 작성이 완료된 글의 게시글 번호
      */
     Long boardPosting(BoardDto dto);
+
+    Long answerPosting(BoardDto dto);
 
     /**
      * 게시글 수정

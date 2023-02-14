@@ -15,7 +15,7 @@
         <div class="p-4 p-lg-5 bg-light rounded" style="min-height:40vh;">
             <!--            content-->
             <div class="text-end">
-                <a href="#" class="btn btn-success">건의하기</a>
+                <a href="/board/suggest-posting" class="btn btn-success">건의하기</a>
             </div>
             <table class="table">
                 <thead>
@@ -24,6 +24,7 @@
                     <th>제목</th>
                     <th>작성자</th>
                     <th>최종 수정일</th>
+                    <th>답변</th>
                 </tr>
                 </thead>
 
@@ -33,6 +34,8 @@
                     <td><a th:href="@{|/board/suggest-detail?boardId=${board.boardId}|}">[[${board.title}]]</a></td>
                     <td>[[${board.writer}]]</td>
                     <td>[[${board.modDate}]]</td>
+                    <td th:if="${board.answer}">O</td>
+                    <td th:unless="${board.answer}">X</td>
                 </tr>
 
                 </tbody>
