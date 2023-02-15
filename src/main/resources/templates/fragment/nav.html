@@ -57,12 +57,15 @@
   <script th:inline="javascript">
         $(function(){
 
-          $.get("/notice/checkNotice",
-                      function(noticeCount){
-                          console.log("noticeCount =" + noticeCount);
-                          $("#noticeCount").text('알림:'+noticeCount+'건');
-                      }
-                  )
+          /*<![CDATA[*/
+        let isLogin = /*[[ ${#authentication.name} ]]*/;
+        /*]]*/
+
+          if(isLogin!=null && isLogin!="anonymousUser"){
+            $.get("/notice/checkNotice",function(noticeCount){
+                    $("#noticeCount").text('알림:'+noticeCount+'건');
+          })}
+
 
         })
 

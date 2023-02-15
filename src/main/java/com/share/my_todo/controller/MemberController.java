@@ -45,10 +45,10 @@ public class MemberController {
      * @param signUpData 회원가입에 필요한 데이터
      * @return 회원가입 완료된 아이디
      */
-    @PostMapping("/signup")
+    @PostMapping("/signUp")
     public String signUp(MemberDto signUpData) {
-
-        return memberService.signUp(signUpData);
+        memberService.signUp(signUpData);
+        return "redirect:/member/signIn";
     }
 
     /**
