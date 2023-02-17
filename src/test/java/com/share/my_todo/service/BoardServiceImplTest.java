@@ -1,7 +1,8 @@
 package com.share.my_todo.service;
 
 import com.share.my_todo.DTO.board.BoardDto;
-import com.share.my_todo.repository.BoardRepository;
+import com.share.my_todo.repository.board.BoardRepository;
+import com.share.my_todo.service.board.BoardService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,8 +10,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.test.annotation.Rollback;
 
 import javax.transaction.Transactional;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional

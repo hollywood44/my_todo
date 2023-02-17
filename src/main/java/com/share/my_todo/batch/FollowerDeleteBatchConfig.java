@@ -1,34 +1,22 @@
 package com.share.my_todo.batch;
 
 import com.share.my_todo.entity.member.Friend;
-import com.share.my_todo.entity.notice.Notice;
-import com.share.my_todo.entity.todo.Todo;
-import com.share.my_todo.repository.FriendRepository;
-import com.share.my_todo.repository.NoticeRepository;
-import com.share.my_todo.repository.TodoRepository;
-import com.share.my_todo.service.NoticeService;
-import com.share.my_todo.service.TodoService;
+import com.share.my_todo.repository.friend.FriendRepository;
+import com.share.my_todo.service.todo.TodoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.*;
-import org.springframework.batch.item.ItemProcessor;
-import org.springframework.batch.item.ItemWriter;
-import org.springframework.batch.item.data.RepositoryItemWriter;
-import org.springframework.batch.item.data.builder.RepositoryItemWriterBuilder;
 import org.springframework.batch.item.database.JpaItemWriter;
 import org.springframework.batch.item.database.JpaPagingItemReader;
-import org.springframework.batch.item.database.builder.JpaItemWriterBuilder;
 import org.springframework.batch.item.database.builder.JpaPagingItemReaderBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import java.time.LocalDate;
-import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor

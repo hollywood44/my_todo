@@ -2,8 +2,7 @@ package com.share.my_todo.controller;
 
 import com.share.my_todo.DTO.notice.NoticeDto;
 import com.share.my_todo.entity.member.Member;
-import com.share.my_todo.service.NoticeService;
-import io.micrometer.core.ipc.http.HttpSender;
+import com.share.my_todo.service.notice.NoticeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -11,8 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.PrintWriter;
 import java.util.List;
 
 @Controller

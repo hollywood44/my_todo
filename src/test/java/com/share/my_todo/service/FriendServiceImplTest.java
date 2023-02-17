@@ -1,20 +1,15 @@
 package com.share.my_todo.service;
 
 import com.share.my_todo.DTO.member.FriendListDto;
-import com.share.my_todo.entity.member.Friend;
-import com.share.my_todo.entity.member.FriendList;
-import com.share.my_todo.entity.member.Member;
-import com.share.my_todo.repository.FriendListRepository;
-import com.share.my_todo.repository.FriendRepository;
+import com.share.my_todo.repository.friend.FriendListRepository;
+import com.share.my_todo.repository.friend.FriendRepository;
+import com.share.my_todo.service.friend.FriendService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 
 import javax.transaction.Transactional;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional

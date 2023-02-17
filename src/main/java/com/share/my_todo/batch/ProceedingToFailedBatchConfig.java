@@ -1,9 +1,7 @@
 package com.share.my_todo.batch;
 
-import com.share.my_todo.entity.notice.Notice;
 import com.share.my_todo.entity.todo.Todo;
-import com.share.my_todo.service.NoticeService;
-import com.share.my_todo.service.TodoService;
+import com.share.my_todo.service.todo.TodoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.batch.core.Job;

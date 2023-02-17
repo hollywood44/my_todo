@@ -2,10 +2,9 @@ package com.share.my_todo.service;
 
 import com.share.my_todo.DTO.todo.TodoDto;
 import com.share.my_todo.entity.common.TodoProgress;
-import com.share.my_todo.entity.common.TodoProgressNoticeMessage;
-import com.share.my_todo.entity.member.Member;
 import com.share.my_todo.entity.todo.Todo;
-import com.share.my_todo.repository.TodoRepository;
+import com.share.my_todo.repository.todo.TodoRepository;
+import com.share.my_todo.service.todo.TodoService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,8 +15,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional

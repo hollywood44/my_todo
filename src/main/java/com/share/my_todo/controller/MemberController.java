@@ -2,7 +2,7 @@ package com.share.my_todo.controller;
 
 import com.share.my_todo.DTO.member.MemberDto;
 import com.share.my_todo.entity.member.Member;
-import com.share.my_todo.service.MemberService;
+import com.share.my_todo.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;

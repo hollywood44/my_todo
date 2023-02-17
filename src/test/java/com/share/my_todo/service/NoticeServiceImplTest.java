@@ -2,8 +2,8 @@ package com.share.my_todo.service;
 
 import com.share.my_todo.DTO.notice.NoticeDto;
 import com.share.my_todo.entity.member.Member;
-import com.share.my_todo.entity.notice.Notice;
-import com.share.my_todo.repository.NoticeRepository;
+import com.share.my_todo.repository.notice.NoticeRepository;
+import com.share.my_todo.service.notice.NoticeService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,8 +12,6 @@ import org.springframework.test.annotation.Rollback;
 import javax.transaction.Transactional;
 
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
