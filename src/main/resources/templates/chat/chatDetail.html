@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basicLayout}"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <title>Main</title>
+</head>
+<body>
+
+<section layout:fragment="content">
+<!--    content-->
+    <div class="container px-lg-5">
+        <div class="p-4 p-lg-5 bg-light rounded-3">
+            <div id="chat">
+                <th:block th:each="chat : ${history}">
+                    <div th:if="${#strings.equals(chat.senderId, #authentication.name)}" style="color:blue;">
+                        [[${chat.message}]]
+                    </div>
+                    <div th:unless="${#strings.equals(chat.senderId, #authentication.name)}" style="color:red;">
+                        <div>보낸이 : [[${chat.senderId}]]</div>
+                        [[${chat.message}]]
+                    </div>
+                </th:block>
+            </div>
+            
+            <div id="sendChat">
+                <input type="text" name="message" id="sendMessage" value=""/>
+                <button id="sendChatBtn">보내기</button>
+            </div>
+
+        </div>
+    </div>
+
+
+<!--    script-->
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <script th:inline="javascript">
+        $(function(){
+            connectStomp();
+        });
+
+        let header = $("meta[name='_csrf_header']").attr('content');
+        let token = $("meta[name='_csrf']").attr('content');
+
+        var headers = {};
+        headers[header] = token;
+
+        /*<![CDATA[*/
+        const myId = /*[[ ${#authentication.name} ]]*/;
+        /*]]*/
+        let temp = window.location.pathname.replace("/chat/","").split('/');
+        const roomId = temp[0];
+        const otherId = temp[1];
+
+        let sock = new SockJS(`http://${location.host}/ws/chat`);
+        let ws = Stomp.over(sock);
+
+
+        function connectStomp(){
+            ws.connect(headers,function(){
+                console.log('ws connect!')
+
+                ws.subscribe("/sub/chat/receive/"+roomId,function(event){
+                    let data = JSON.parse(event.body);
+                    let sender = data.senderId;
+                    let message = data.message;
+                    let time = data.chatTime;
+
+                    if(sender != myId){
+                        receiveMessage(sender,message,time);
+                    }
+
+                });
+
+
+            });
+        };
+
+        $('#sendChatBtn').on("click",function(event){
+            sendMessage();
+        });
+
+        function sendMessage(){
+            let message = $('#sendMessage').val();
+            ws.send("/pub/sendMessage/"+roomId+"/"+myId,{},JSON.stringify({
+                "chatRoomId" : roomId,
+                "senderId" : myId,
+                "receiverId" : otherId,
+                "message" : message
+            }));
+
+            sendAndView(message,getTime());
+
+            $('#sendMessage').val('');
+            $('#chat').scrollTop = $('#chat').prop('scrollHeight');
+        ;}
+
+        function getTime(){
+            var today = new Date();
+            var year = today.getFullYear();
+            var month = ('0' + (today.getMonth()+1)).slice(-2);
+            var day = ('0' + (today.getDay()+1)).slice(-2);
+            var hours = ('0' + (today.getHours()+1)).slice(-2);
+            var minutes = ('0' + (today.getMinutes()+1)).slice(-2);
+
+            return year + '-' + month + '-' + day + " " + hours + ":" + minutes; 
+        }
+
+        function sendAndView(message,time){
+            $('#chat').append(`
+                <div style="color:blue;">
+                    ${message}
+                    <span> ${time}</span>
+                </div>
+            `);
+        }
+
+        function receiveMessage(senderId,message,time){
+            $('#chat').append(`
+                <div style="color:red;">
+                    <div>${senderId}</div>
+                    ${message}
+                    <span> ${time}</span>
+                </div>
+            `);
+        }
+
+
+    </script>
+</section>
+
+</body>
+</html>

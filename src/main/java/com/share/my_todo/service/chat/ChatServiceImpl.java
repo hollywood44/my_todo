@@ -57,7 +57,7 @@ public class ChatServiceImpl implements ChatService{
 
     @Override
     public List<ChatDto> getChatHistory(Long chatRoomId) {
-        List<Chat> entityHistory = chatRepository.findAllByChatRoomOrderByChatTimeDesc(ChatRoom.builder().chatroomId(chatRoomId).build());
+        List<Chat> entityHistory = chatRepository.findAllByChatRoomOrderByChatTimeAsc(ChatRoom.builder().chatroomId(chatRoomId).build());
         if (!entityHistory.isEmpty()) {
             List<ChatDto> chatHistory = entityHistory.stream().map(e -> chatEntityToDto(e)).collect(Collectors.toList());
             return chatHistory;

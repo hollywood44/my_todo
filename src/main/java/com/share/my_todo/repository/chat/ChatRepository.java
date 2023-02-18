@@ -12,5 +12,5 @@ public interface ChatRepository extends JpaRepository<Chat,Long> {
 
     Optional<Chat> findBySenderAndReceiver(Member sender, Member receiver);
 
-    List<Chat> findAllByChatRoomOrderByChatTimeDesc(ChatRoom chatRoom);
+    List<Chat> findAllByChatRoomOrderByChatTimeAsc(ChatRoom chatRoom);
 }
