@@ -15,4 +15,7 @@ public class ChatRoomDto {
 
     @Builder.Default
     private List<ChatDto> chatList = new ArrayList<>();
+
+    private String memberOneId;
+    private String memberTwoId;
 }

@@ -23,22 +23,39 @@ public interface ChatService {
         return dto;
     }
 
-    default ChatRoomDto roomEntityToDto(ChatRoom entity) {
-        List<ChatDto> dtoList = new ArrayList<>();
-        for (Chat item : entity.getChatList()) {
-            dtoList.add(chatEntityToDto(item));
-        }
+    /**
+     *
+     * @param entity
+     * @param status 0이면 List<ChatDto>포함, 1이면 포함 안함
+     * @return
+     */
+    default ChatRoomDto roomEntityToDto(ChatRoom entity,Integer status) {
+        if (status.equals(0)) {
+            List<ChatDto> dtoList = new ArrayList<>();
+            for (Chat item : entity.getChatList()) {
+                dtoList.add(chatEntityToDto(item));
+            }
 
-        ChatRoomDto dto = ChatRoomDto.builder()
-                .chatroomId(entity.getChatroomId())
-                .chatList(dtoList)
-                .build();
-        return dto;
+            ChatRoomDto dto = ChatRoomDto.builder()
+                    .chatroomId(entity.getChatroomId())
+                    .chatList(dtoList)
+                    .memberOneId(entity.getMemberOneId().getMemberId())
+                    .memberTwoId(entity.getMemberTwoId().getMemberId())
+                    .build();
+            return dto;
+        } else {
+            ChatRoomDto dto = ChatRoomDto.builder()
+                    .chatroomId(entity.getChatroomId())
+                    .memberOneId(entity.getMemberOneId().getMemberId())
+                    .memberTwoId(entity.getMemberTwoId().getMemberId())
+                    .build();
+            return dto;
+        }
     }
 
     default Chat chatDtoToEntity(ChatDto dto) {
         Chat entity = Chat.builder()
-                .chatRoom(ChatRoom.builder().chatroomId(dto.getChatRoomId()).build())
+                .chatRoom(ChatRoom.builder().chatroomId(dto.getChatRoomId()).memberOneId(Member.builder().memberId(dto.getSenderId()).build()).memberTwoId(Member.builder().memberId(dto.getReceiverId()).build()).build())
                 .sender(Member.builder().memberId(dto.getSenderId()).build())
                 .receiver(Member.builder().memberId(dto.getReceiverId()).build())
                 .message(dto.getMessage())
@@ -53,7 +70,6 @@ public interface ChatService {
             entityList.add(chatDtoToEntity(item));
         }
         ChatRoom entity = ChatRoom.builder()
-                .chatList(entityList)
                 .chatroomId(dto.getChatroomId())
                 .build();
         return entity;
@@ -74,5 +90,9 @@ public interface ChatService {
      * @return
      */
     ChatDto chatSave(ChatDto chat);
+
+    List<ChatRoomDto> getChatRoomList(Member member);
+
+    List<ChatDto> getChatHistory(Long chatRoomId);
 
 }

@@ -1,5 +1,6 @@
 package com.share.my_todo.entity.chat;
 
+import com.share.my_todo.entity.member.Member;
 import lombok.*;
 
 import javax.persistence.*;
@@ -22,4 +23,12 @@ public class ChatRoom {
     @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL)
     @Builder.Default
     private List<Chat> chatList = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "member_one_id")
+    private Member memberOneId;
+
+    @ManyToOne
+    @JoinColumn(name = "member_two_id")
+    private Member memberTwoId;
 }

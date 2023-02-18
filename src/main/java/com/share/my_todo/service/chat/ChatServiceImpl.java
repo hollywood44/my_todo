@@ -1,6 +1,7 @@
 package com.share.my_todo.service.chat;
 
 import com.share.my_todo.DTO.chat.ChatDto;
+import com.share.my_todo.DTO.chat.ChatRoomDto;
 import com.share.my_todo.entity.chat.Chat;
 import com.share.my_todo.entity.chat.ChatRoom;
 import com.share.my_todo.entity.member.Member;
@@ -11,7 +12,10 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,12 +27,12 @@ public class ChatServiceImpl implements ChatService{
 
     @Override
     public Long createRoom(String receiverId, String senderId) {
-        Optional<Chat> chatRoom = chatRepository.findBySenderAndReceiver(Member.builder().memberId(receiverId).build(), Member.builder().memberId(senderId).build());
+        Optional<ChatRoom> chatRoom = roomRepository.findByMemberOneIdAndMemberTwoId(Member.builder().memberId(receiverId).build(), Member.builder().memberId(senderId).build());
         if (!chatRoom.isPresent()) {
-            ChatRoom createRoom = ChatRoom.builder().build();
+            ChatRoom createRoom = ChatRoom.builder().memberOneId(Member.builder().memberId(receiverId).build()).memberTwoId(Member.builder().memberId(senderId).build()).build();
             return roomRepository.save(createRoom).getChatroomId();
         } else {
-            return chatRoom.get().getChatRoom().getChatroomId();
+            return chatRoom.get().getChatroomId();
         }
     }
 
@@ -37,5 +41,29 @@ public class ChatServiceImpl implements ChatService{
         chat.setChatTime(LocalDateTime.now());
         chatRepository.save(chatDtoToEntity(chat));
         return chat;
+    }
+
+    @Override
+    public List<ChatRoomDto> getChatRoomList(Member member) {
+        List<ChatRoom> entityRoomList = roomRepository.findByMemberOneIdOrMemberTwoId(member, member);
+        if (!entityRoomList.isEmpty()) {
+            List<ChatRoomDto> roomList = entityRoomList.stream().map(e -> roomEntityToDto(e, 1)).collect(Collectors.toList());
+            return roomList;
+        } else {
+            List<ChatRoomDto> list = new ArrayList<>();
+            return list;
+        }
+    }
+
+    @Override
+    public List<ChatDto> getChatHistory(Long chatRoomId) {
+        List<Chat> entityHistory = chatRepository.findAllByChatRoomOrderByChatTimeDesc(ChatRoom.builder().chatroomId(chatRoomId).build());
+        if (!entityHistory.isEmpty()) {
+            List<ChatDto> chatHistory = entityHistory.stream().map(e -> chatEntityToDto(e)).collect(Collectors.toList());
+            return chatHistory;
+        } else {
+            List<ChatDto> emptyList = new ArrayList<>();
+            return emptyList;
+        }
     }
 }
