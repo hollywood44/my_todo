@@ -41,6 +41,12 @@ public class ChatController {
         return "chat/chatDetail";
     }
 
+    @GetMapping("/chat/{receiveMember}")
+    public String createRoomOrOpenChatDetail(@AuthenticationPrincipal Member member,@PathVariable String receiveMember) {
+        Long chatRoomId = chatService.createRoom(receiveMember,member.getMemberId());
+        return "redirect:/chat/" + chatRoomId + "/" + receiveMember;
+    }
+
     @MessageMapping("/sendMessage/{roomId}/{senderId}")
     public void message(@RequestBody ChatDto chatDto, @DestinationVariable Long roomId,@DestinationVariable String senderId) {
         ChatDto receive = chatService.chatSave(chatDto);

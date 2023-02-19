@@ -35,13 +35,14 @@
                 </div>
             </div>
 
-            <div class="alert alert-success d-flex  justify-content-between px-5"
+            <div class="alert alert-success d-flex  justify-content-between px-3"
                  th:each="friend : ${friendList.friendList}" style="align-items: center;"
                  th:if="${!#lists.isEmpty(friendList.friendList)}">
                 <strong>[[${friend.memberId}]]</strong>
                 <div class="d-flex" style="align-items: center;">
                     <div class="mx-3">저번주 달성률 : [[${friend.lastWeekRate}]]%</div>
                     <div class="mx-3">이번주 달성률 : [[${friend.thisWeekRate}]]%</div>
+                    <a class="btn btn-primary me-1" th:href="@{|/chat/${friend.memberId}|}">채팅하기</a>
                     <a class="open-unfollow-modal btn btn-danger" href="#" data-bs-toggle="modal" data-bs-target="#unfollowModal" th:data-id="${friend.memberId}">UnFollow</a>
                 </div>
             </div>

@@ -16,5 +16,5 @@ public class ChatDto {
     private String senderId;
     private String receiverId;
     private String message;
-    private LocalDateTime chatTime;
+    private String chatTime;
 }

@@ -9,6 +9,45 @@
     <meta name="_csrf_header" th:content="${_csrf.headerName}">
     <meta name="_csrf" th:content="${_csrf.token}">
     <title>Main</title>
+    <style>
+        #chat{
+            height: 700px; 
+            overflow: auto;
+        }
+        .other-chat{
+            position:relative;
+        }
+        .other-id{
+            position:absolute;
+          top:-6px;
+        }
+        .other-chat-item{
+            border: none;
+          border-radius: 1rem;
+          background-color:#e7e9eb;
+          min-height:50px;
+          max-width:500px;
+          text-align:left;
+        }
+        .other-date{
+            display:flex;
+          align-items:end;
+        }
+        
+        .my-chat-item{
+            border: none;
+          border-radius: 1rem;
+          background-color:#296bfb;
+          color:white;
+          min-height:50px;
+          max-width:500px;
+          text-align:right;
+        }
+        .my-date{
+            display:flex;
+          align-items:end;
+        }
+        </style>
 </head>
 <body>
 
@@ -16,21 +55,37 @@
 <!--    content-->
     <div class="container px-lg-5">
         <div class="p-4 p-lg-5 bg-light rounded-3">
-            <div id="chat">
+
+            <div id="chat" class="px-3">
                 <th:block th:each="chat : ${history}">
-                    <div th:if="${#strings.equals(chat.senderId, #authentication.name)}" style="color:blue;">
-                        [[${chat.message}]]
+
+                    
+                    <!-- 내가 보낸 메시지 -->
+                    <div class="d-flex flex-row-reverse pb-3 my-chat"
+                        th:if="${#strings.equals(chat.senderId, #authentication.name)}">
+                        <div class="my-chat-item p-3">
+                            <div>[[${chat.message}]]</div>
+                        </div>
+                        <div class="my-date me-1">[[${chat.chatTime}]]</div>
                     </div>
-                    <div th:unless="${#strings.equals(chat.senderId, #authentication.name)}" style="color:red;">
-                        <div>보낸이 : [[${chat.senderId}]]</div>
-                        [[${chat.message}]]
+
+                    <!-- 상대가 보낸 메시지 -->
+                    <div class="d-flex flex-row pt-3 other-chat" 
+                        th:unless="${#strings.equals(chat.senderId, #authentication.name)}">
+                        <div class="me-1 other-id">[[${chat.senderId}]]</div>
+                        
+                        <div class="other-chat-item p-3">
+                            <div>[[${chat.message}]]</div>
+                        </div>
+                        <div class="other-date ms-1">[[${chat.chatTime}]]</div>
                     </div>
+
                 </th:block>
             </div>
             
-            <div id="sendChat">
-                <input type="text" name="message" id="sendMessage" value=""/>
-                <button id="sendChatBtn">보내기</button>
+            <div id="sendChat" class="input-group mt-3">
+                <input type="text" name="message" id="sendMessage" value="" class="form-control"/>
+                <button id="sendChatBtn" class="btn btn-success">보내기</button>
             </div>
 
         </div>
@@ -63,6 +118,7 @@
 
 
         function connectStomp(){
+            $("#chat").scrollTop($("#chat")[0].scrollHeight); 
             ws.connect(headers,function(){
                 console.log('ws connect!')
 
@@ -92,41 +148,57 @@
                 "chatRoomId" : roomId,
                 "senderId" : myId,
                 "receiverId" : otherId,
-                "message" : message
+                "message" : message,
+                "chatTime" : getTimeAndSec()
             }));
 
             sendAndView(message,getTime());
 
             $('#sendMessage').val('');
-            $('#chat').scrollTop = $('#chat').prop('scrollHeight');
+            $("#chat").scrollTop($("#chat")[0].scrollHeight); 
         ;}
 
         function getTime(){
             var today = new Date();
             var year = today.getFullYear();
             var month = ('0' + (today.getMonth()+1)).slice(-2);
-            var day = ('0' + (today.getDay()+1)).slice(-2);
-            var hours = ('0' + (today.getHours()+1)).slice(-2);
-            var minutes = ('0' + (today.getMinutes()+1)).slice(-2);
+            var day = ('0' + today.getDate()).slice(-2);
+            var hours = ('0' + (today.getHours())).slice(-2);
+            var minutes = ('0' + (today.getMinutes())).slice(-2);
 
             return year + '-' + month + '-' + day + " " + hours + ":" + minutes; 
         }
 
+        function getTimeAndSec(){
+            var today = new Date();
+            var year = today.getFullYear();
+            var month = ('0' + (today.getMonth()+1)).slice(-2);
+            var day = ('0' + today.getDate()).slice(-2);
+            var hours = ('0' + (today.getHours())).slice(-2);
+            var minutes = ('0' + (today.getMinutes())).slice(-2);
+            var sec = ('0' + (today.getSeconds())).slice(-2);
+            return year + '-' + month + '-' + day + " " + hours + ":" + minutes + ":" + sec; 
+        }
+
         function sendAndView(message,time){
             $('#chat').append(`
-                <div style="color:blue;">
-                    ${message}
-                    <span> ${time}</span>
+                <div class="d-flex flex-row-reverse pb-3 my-chat">
+                <div class="my-chat-item p-3">
+                    <div>${message}</div>
+                </div>
+                <div class="my-date me-1">${time}</div>
                 </div>
             `);
         }
 
         function receiveMessage(senderId,message,time){
             $('#chat').append(`
-                <div style="color:red;">
-                    <div>${senderId}</div>
-                    ${message}
-                    <span> ${time}</span>
+                <div class="d-flex flex-row pt-3 other-chat">
+                <div class="me-1 other-id">${senderId}</div>
+                    <div class="other-chat-item p-3">
+                        <div>${message}</div>
+                    </div>
+                <div class="other-date ms-1">${time}</div>
                 </div>
             `);
         }

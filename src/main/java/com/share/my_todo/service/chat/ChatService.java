@@ -6,19 +6,23 @@ import com.share.my_todo.entity.chat.Chat;
 import com.share.my_todo.entity.chat.ChatRoom;
 import com.share.my_todo.entity.member.Member;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 public interface ChatService {
 
     default ChatDto chatEntityToDto(Chat entity) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
         ChatDto dto = ChatDto.builder()
                 .chatId(entity.getChatId())
                 .chatRoomId(entity.getChatRoom().getChatroomId())
                 .senderId(entity.getSender().getMemberId())
                 .receiverId(entity.getReceiver().getMemberId())
                 .message(entity.getMessage())
-                .chatTime(entity.getChatTime())
+                .chatTime(entity.getChatTime().format(formatter))
                 .build();
         return dto;
     }
@@ -54,13 +58,15 @@ public interface ChatService {
     }
 
     default Chat chatDtoToEntity(ChatDto dto) {
+        LocalDateTime dateTime = LocalDateTime.parse(dto.getChatTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         Chat entity = Chat.builder()
                 .chatRoom(ChatRoom.builder().chatroomId(dto.getChatRoomId()).memberOneId(Member.builder().memberId(dto.getSenderId()).build()).memberTwoId(Member.builder().memberId(dto.getReceiverId()).build()).build())
                 .sender(Member.builder().memberId(dto.getSenderId()).build())
                 .receiver(Member.builder().memberId(dto.getReceiverId()).build())
                 .message(dto.getMessage())
-                .chatTime(dto.getChatTime())
+                .chatTime(dateTime)
                 .build();
+
         return entity;
     }
 

@@ -12,16 +12,18 @@
 
 <section layout:fragment="content">
     <div class="container px-lg-5">
+        <div class="p-4 p-lg-5 bg-light rounded-3">
 
-        <th:block th:each="chatroom : ${chatRoomList}">
-            <div th:if="${#strings.equals(chatroom.memberOneId, #authentication.name)}">
-                <a href="#">[[${chatroom.memberTwoId}]] 님과의 채팅방</a>
+            <th:block th:each="chatroom : ${chatRoomList}">
+            <div th:if="${#strings.equals(chatroom.memberOneId, #authentication.name)}" class="alert alert-primary">
+                <a th:href="@{|/chat/${chatroom.chatroomId}/${chatroom.memberTwoId}|}" style="text-decoration: none;">[[${chatroom.memberTwoId}]] 님과의 채팅방</a>
             </div>
-            <div th:unless="${#strings.equals(chatroom.memberOneId, #authentication.name)}">
-                <a href="#">[[${chatroom.memberOneId}]] 님과의 채팅방</a>
+            <div th:unless="${#strings.equals(chatroom.memberOneId, #authentication.name)}" class="alert alert-primary">
+                <a th:href="@{|/chat/${chatroom.chatroomId}/${chatroom.memberOneId}|}" style="text-decoration: none;">[[${chatroom.memberOneId}]] 님과의 채팅방</a>
             </div>
         </th:block>
 
+        </div>
     </div>
 </section>
 

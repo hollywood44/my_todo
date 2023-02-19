@@ -38,7 +38,6 @@ public class ChatServiceImpl implements ChatService{
 
     @Override
     public ChatDto chatSave(ChatDto chat) {
-        chat.setChatTime(LocalDateTime.now());
         chatRepository.save(chatDtoToEntity(chat));
         return chat;
     }
