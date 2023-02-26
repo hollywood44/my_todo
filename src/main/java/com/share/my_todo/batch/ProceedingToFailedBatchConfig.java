@@ -52,7 +52,7 @@ public class ProceedingToFailedBatchConfig {
     @Bean
     @StepScope
     public JpaPagingItemReader<Todo> PtoFReader(@Value("#{jobParameters[requestDate]}") String requestDate) {
-        String yesterdayDate = todoService.dateToString(LocalDate.now().minusDays(1));
+        String yesterdayDate = todoService.dateToString(LocalDate.now().minusDays(1)).substring(1);
 
         return new JpaPagingItemReaderBuilder<Todo>()
                 .name("jpaPagingItemReaderForPtoFJob")
