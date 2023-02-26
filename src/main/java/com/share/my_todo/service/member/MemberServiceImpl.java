@@ -4,6 +4,8 @@ import com.share.my_todo.DTO.member.MemberDto;
 import com.share.my_todo.entity.common.Auth;
 import com.share.my_todo.entity.member.FriendList;
 import com.share.my_todo.entity.member.Member;
+import com.share.my_todo.exception.ErrorCode;
+import com.share.my_todo.exception.exceptionClass.IdDuplicateException;
 import com.share.my_todo.repository.friend.FriendListRepository;
 import com.share.my_todo.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -40,15 +42,12 @@ public class MemberServiceImpl implements MemberService{
 
             memberRepository.save(member);
 
-            try {
-                FriendList friendList = FriendList.builder().member(member).build();
-                friendListRepository.save(friendList);
-            } catch (RuntimeException e) {
-                throw new RuntimeException("오류 발생 - 1");
-            }
+            FriendList friendList = FriendList.builder().member(member).build();
+            friendListRepository.save(friendList);
+
             return memberDto.getMemberId();
         }else {
-            throw new RuntimeException("이미 존재하는 아이디입니다.");
+            throw new IdDuplicateException("Member Id Duplicated", ErrorCode.ID_DUPLICATION);
         }
     }
 

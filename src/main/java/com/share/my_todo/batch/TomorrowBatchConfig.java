@@ -55,7 +55,7 @@ public class TomorrowBatchConfig {
     @Bean
     @StepScope
     public JpaPagingItemReader<Todo> todoReader(@Value("#{jobParameters[requestDate]}") String requestDate) {
-        String tomorrowDate = todoService.dateToString(LocalDate.now().plusDays(1));
+        String tomorrowDate = todoService.dateToString(LocalDate.now().plusDays(1)).substring(1);
 
         return new JpaPagingItemReaderBuilder<Todo>()
                 .name("jpaPagingItemReader")

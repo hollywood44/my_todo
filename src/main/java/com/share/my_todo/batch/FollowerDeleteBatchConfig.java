@@ -50,7 +50,7 @@ public class FollowerDeleteBatchConfig {
     @Bean
     @StepScope
     public JpaPagingItemReader<Friend> friendReader(@Value("#{jobParameters[requestDate]}") String requestDate) {
-        String oneDaysAgo = todoService.dateToString(LocalDate.now().minusDays(1));
+        String oneDaysAgo = todoService.dateToString(LocalDate.now().minusDays(1)).substring(1);
 
         return new JpaPagingItemReaderBuilder<Friend>()
                 .name("jpaPagingItemReaderForFD")

@@ -16,6 +16,15 @@
 
 
 <section layout:fragment="content" class="py-5" style="flex:1;min-height:94vh" ></section>
+<script th:inline="javascript">
+      /*<![CDATA[*/
 
+        let error = [[${error}]];
+
+        if(error != null){
+            alert(error.message);
+        }
+    /*]]>*/
+</script>
 </body>
 </html>

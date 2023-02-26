@@ -18,11 +18,6 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @GetMapping("/test")
-    public String testPage() {
-        return "test";
-    }
-
     @GetMapping("/signIn")
     public String loginPage() {
         return "login";
