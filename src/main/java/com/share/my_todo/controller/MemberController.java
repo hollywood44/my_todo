@@ -93,6 +93,12 @@ public class MemberController {
         }
     }
 
+    /**
+     * 회원 탈퇴
+     * @param member
+     * @param password
+     * @return
+     */
     @PostMapping("/delete-account")
     public String deleteAccount(@AuthenticationPrincipal Member member,@RequestParam("password") String password) {
         String status = memberService.deleteAccount(member.getMemberId(), password);

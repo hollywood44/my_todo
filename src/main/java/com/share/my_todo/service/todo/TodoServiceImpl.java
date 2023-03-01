@@ -4,6 +4,7 @@ import com.share.my_todo.DTO.todo.TodoDto;
 import com.share.my_todo.entity.common.TodoProgress;
 import com.share.my_todo.entity.member.Member;
 import com.share.my_todo.entity.todo.Todo;
+import com.share.my_todo.exception.exceptionClass.TodoUploadException;
 import com.share.my_todo.repository.todo.TodoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ public class TodoServiceImpl implements TodoService{
     private final TodoRepository todoRepository;
 
     @Override
-    public Long postingTodo(TodoDto dto,Member member) {
+    public Long postingTodo(TodoDto dto,Member member) throws TodoUploadException {
         dto.setFinishDate(dto.getFinishDate().replace("-",""));
         dto.setProgress(TodoProgress.Proceeding);
         dto.setMemberId(member.getMemberId());
