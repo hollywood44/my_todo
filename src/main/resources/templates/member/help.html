@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{./layout/myInfoLayout}"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Main</title>
+</head>
+<body>
+
+<section layout:fragment="content">
+    <div class="container px-lg-5">
+        <div class="p-4 p-lg-5 bg-light rounded">
+            <img src="..." class="img-fluid" alt="...">
+        </div>
+    </div>
+
+    <!--    스크립트-->
+    <script th:inline="javascript">
+    </script>
+
+</section>
+</body>
+</html>

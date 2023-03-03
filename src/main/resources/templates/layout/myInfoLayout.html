@@ -1,0 +1,32 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+  <meta charset="UTF-8">
+  <script src="/js/bootstrap.bundle.js"></script>
+  <link href="/css/bootstrap.min.css" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <meta charset="UTF-8"><title>myInfo layout Page</title>
+</head>
+<body style="background-color:#7D929E;">
+<!-- 네비게이션 -->
+<nav th:replace="fragment/nav :: navFragment"></nav>
+<div th:replace="fragment/infoNav :: infoNavFragment"></div>
+
+<section class="pb-5 pt-1" style="flex:1;min-height:94vh" layout:fragment="content">
+</section>
+
+<script th:inline="javascript">
+      /*<![CDATA[*/
+
+        let error = [[${error}]];
+
+        if(error != null){
+            alert(error.message);
+        }
+    /*]]>*/
+</script>
+</body>
+</html>

@@ -28,11 +28,15 @@ public class MemberController {
         return "signUp";
     }
 
-    @GetMapping("/my-info")
-    public String myInfoPage(@AuthenticationPrincipal Member member,Model model) {
-        model.addAttribute("member", memberService.getMyInfo(member.getMemberId()));
-
-        return "myInfo";
+    @GetMapping("/my-info/{menu}")
+    public String myInfoPage(@AuthenticationPrincipal Member member,Model model,@PathVariable(value = "menu")String menu) {
+        if (menu.equals("help")) {
+            model.addAttribute("helpImg", "uri");
+            return "member/help";
+        }else {
+            model.addAttribute("member", memberService.getMyInfo(member.getMemberId()));
+            return "member/myInfo";
+        }
     }
 
     /**
@@ -101,9 +105,9 @@ public class MemberController {
      */
     @PostMapping("/delete-account")
     public String deleteAccount(@AuthenticationPrincipal Member member,@RequestParam("password") String password) {
-        String status = memberService.deleteAccount(member.getMemberId(), password);
+        memberService.deleteAccount(member.getMemberId(), password);
 
-        return status;
+        return "redirect:/member/signIn";
     }
 
 }
