@@ -42,7 +42,7 @@ public class TodoController {
     }
 
     @GetMapping("/modify-todo")
-    public String modifyTodoPage(@RequestParam("todoId") Long todoId, Model model,@AuthenticationPrincipal Member member,RedirectAttributes redirectAttributes) {
+    public String modifyTodoPage(@RequestParam("todoId") Long todoId, Model model, @AuthenticationPrincipal Member member, RedirectAttributes redirectAttributes) {
         TodoDto item = todoService.getTodoDetail(todoId);
 
         if (!member.getMemberId().equals(item.getMemberId())) {
@@ -56,8 +56,15 @@ public class TodoController {
     }
 
     @PostMapping("/modify")
-    public String modify(TodoDto modify,@AuthenticationPrincipal Member member) {
+    public String modify(TodoDto modify, @AuthenticationPrincipal Member member) {
         todoService.modifyTodo(modify, member);
+
+        return "redirect:/todo/main";
+    }
+
+    @PostMapping("/delete")
+    public String delete(@RequestParam(value = "todoId") Long todoId) {
+        todoService.deleteTodo(todoId);
 
         return "redirect:/todo/main";
     }

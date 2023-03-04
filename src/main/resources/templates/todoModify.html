@@ -29,7 +29,13 @@
                     <input type="hidden" th:value="${item.todoId}" name="todoId">
                 </div>
             </form>
-
+            <div class="text-end">
+                <form method="post" th:action="@{/todo/delete}">
+                    <sec:csrfInput/>
+                    <input type="hidden" th:value="${item.todoId}" name="todoId"/>
+                    <button type="submit" class="btn btn-danger">삭제</button>
+                </form>
+            </div>
         </div>
     </div>
 

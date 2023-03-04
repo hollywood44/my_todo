@@ -2,7 +2,11 @@ package com.share.my_todo.service.board;
 
 import com.share.my_todo.DTO.board.BoardDto;
 import com.share.my_todo.entity.board.Board;
+import com.share.my_todo.entity.common.CommonNotice;
+import com.share.my_todo.entity.member.Member;
+import com.share.my_todo.entity.notice.Notice;
 import com.share.my_todo.repository.board.BoardRepository;
+import com.share.my_todo.repository.notice.NoticeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,6 +23,7 @@ import java.util.List;
 public class BoardServiceImpl implements BoardService{
 
     private final BoardRepository boardRepository;
+    private final NoticeRepository noticeRepository;
 
     @Override
     public Long boardPosting(BoardDto dto) {
@@ -41,6 +46,9 @@ public class BoardServiceImpl implements BoardService{
         saveList.add(answer);
 
         boardRepository.saveAll(saveList);
+
+        Notice notice = Notice.builder().member(Member.builder().memberId(dto.getWriter()).build()).notice(CommonNotice.SUGGEST_ANSWER.getStatus()).build();
+        noticeRepository.save(notice);
 
         return dto.getParentId();
     }
