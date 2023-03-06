@@ -3,8 +3,6 @@ package com.share.my_todo.repository.friend;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.share.my_todo.entity.member.*;
 
-
-
 import javax.persistence.EntityManager;
 import java.util.Optional;
 

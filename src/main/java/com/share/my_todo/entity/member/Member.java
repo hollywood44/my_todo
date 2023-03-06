@@ -42,6 +42,9 @@ public class Member extends CommonTime implements UserDetails {
     private List<FriendList> friendList = new ArrayList<>();
 
 
+    public static Member easyMakeMember(String id) {
+        return Member.builder().memberId(id).build();
+    }
     public void modifyInfo(MemberDto dto) {
         this.name = dto.getName();
     }

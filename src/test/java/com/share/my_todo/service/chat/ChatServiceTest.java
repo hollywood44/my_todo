@@ -11,6 +11,7 @@ import org.springframework.test.annotation.Rollback;
 import javax.transaction.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -45,5 +46,13 @@ class ChatServiceTest {
     void getChatHistory() {
         List<ChatDto> history = chatService.getChatHistory(3L);
         history.stream().forEach(i -> System.out.println(i));
+    }
+
+    @Test
+    void 채팅방하나만생성하는지(){
+        Long roomId = chatService.createRoom("member10", "member7");
+        System.out.println(roomId);
+        Long roomId2 = chatService.createRoom("member7", "member10");
+        System.out.println(roomId2);
     }
 }

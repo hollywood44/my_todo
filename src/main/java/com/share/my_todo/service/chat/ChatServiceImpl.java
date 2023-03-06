@@ -27,7 +27,7 @@ public class ChatServiceImpl implements ChatService{
 
     @Override
     public Long createRoom(String receiverId, String senderId) {
-        Optional<ChatRoom> chatRoom = roomRepository.findByMemberOneIdAndMemberTwoId(Member.builder().memberId(receiverId).build(), Member.builder().memberId(senderId).build());
+        Optional<ChatRoom> chatRoom = roomRepository.findChatRoom(Member.easyMakeMember(receiverId),Member.easyMakeMember(senderId));
         if (!chatRoom.isPresent()) {
             ChatRoom createRoom = ChatRoom.builder().memberOneId(Member.builder().memberId(receiverId).build()).memberTwoId(Member.builder().memberId(senderId).build()).build();
             return roomRepository.save(createRoom).getChatroomId();
