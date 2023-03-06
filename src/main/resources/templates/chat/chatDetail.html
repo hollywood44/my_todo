@@ -113,7 +113,7 @@
         const roomId = temp[0];
         const otherId = temp[1];
 
-        let sock = new SockJS(`http://${location.host}/ws/chat`);
+        let sock = new SockJS(`https://${location.host}/ws/chat`);
         let ws = Stomp.over(sock);
 
 
