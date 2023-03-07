@@ -18,6 +18,7 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.persistence.EntityManagerFactory;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Configuration
 @RequiredArgsConstructor
@@ -52,13 +53,14 @@ public class ProceedingToFailedBatchConfig {
     @Bean
     @StepScope
     public JpaPagingItemReader<Todo> PtoFReader(@Value("#{jobParameters[requestDate]}") String requestDate) {
-        String yesterdayDate = todoService.dateToString(LocalDate.now().minusDays(1)).substring(1);
+        LocalDate yesterdayOrigin = LocalDate.now().minusDays(1);
+        String yesterday = yesterdayOrigin.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
 
         return new JpaPagingItemReaderBuilder<Todo>()
                 .name("jpaPagingItemReaderForPtoFJob")
                 .entityManagerFactory(entityManagerFactory)
                 .pageSize(1000)
-                .queryString("SELECT t FROM Todo t WHERE finish_date = " + yesterdayDate + " AND NOT Progress = 'Failed' ORDER BY todo_id ASC")
+                .queryString("SELECT t FROM Todo t WHERE finish_date = " + yesterday + " AND NOT Progress = 'Failed' ORDER BY todo_id ASC")
                 .build();
     }
 

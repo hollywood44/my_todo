@@ -20,6 +20,7 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.persistence.EntityManagerFactory;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Configuration
 @RequiredArgsConstructor
@@ -55,13 +56,14 @@ public class TomorrowBatchConfig {
     @Bean
     @StepScope
     public JpaPagingItemReader<Todo> todoReader(@Value("#{jobParameters[requestDate]}") String requestDate) {
-        String tomorrowDate = todoService.dateToString(LocalDate.now().plusDays(1)).substring(1);
+        LocalDate tomorrowOrigin = LocalDate.now().plusDays(1);
+        String tomorrow = tomorrowOrigin.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
 
         return new JpaPagingItemReaderBuilder<Todo>()
                 .name("jpaPagingItemReader")
                 .entityManagerFactory(entityManagerFactory) //DataSource가 아닌 EntityManagerFactory를 통한 접근
                 .pageSize(1000)
-                .queryString("SELECT t FROM Todo t WHERE finish_date = " + tomorrowDate + " ORDER BY todo_id ASC")  //ORDER 조건은 필수!
+                .queryString("SELECT t FROM Todo t WHERE finish_date = " + tomorrow + " ORDER BY todo_id ASC")  //ORDER 조건은 필수!
                 .build();
     }
 

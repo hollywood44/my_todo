@@ -17,6 +17,7 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.persistence.EntityManagerFactory;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Configuration
 @RequiredArgsConstructor
@@ -50,13 +51,14 @@ public class FollowerDeleteBatchConfig {
     @Bean
     @StepScope
     public JpaPagingItemReader<Friend> friendReader(@Value("#{jobParameters[requestDate]}") String requestDate) {
-        String oneDaysAgo = todoService.dateToString(LocalDate.now().minusDays(1)).substring(1);
+        LocalDate yesterdayOrigin = LocalDate.now().minusDays(1);
+        String yesterday = yesterdayOrigin.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
 
         return new JpaPagingItemReaderBuilder<Friend>()
                 .name("jpaPagingItemReaderForFD")
                 .entityManagerFactory(entityManagerFactory) //DataSource가 아닌 EntityManagerFactory를 통한 접근
                 .pageSize(1000)
-                .queryString("SELECT f FROM Friend f WHERE follow_status = 'Reject' and mod_date < " + oneDaysAgo + " ORDER BY friend_id ASC")  //ORDER 조건은 필수!
+                .queryString("SELECT f FROM Friend f WHERE follow_status = 'Reject' and mod_date < " + yesterday + " ORDER BY friend_id ASC")  //ORDER 조건은 필수!
                 .build();
     }
 

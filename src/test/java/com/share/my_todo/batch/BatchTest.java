@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Transactional
 @SpringBootTest
@@ -17,7 +18,8 @@ public class BatchTest {
 
     @Test
     void 배치날짜테스트() {
-        String tomorrowDate = todoService.dateToString(LocalDate.now().plusDays(1)).substring(1);
-        System.out.println(tomorrowDate);
+        LocalDate yesterday = LocalDate.now().minusDays(1);
+        String changeDate = yesterday.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        System.out.println(changeDate);
     }
 }
