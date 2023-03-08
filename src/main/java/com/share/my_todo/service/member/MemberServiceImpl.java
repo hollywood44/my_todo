@@ -74,6 +74,10 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     public String modifyMemberInfo(MemberDto dto)throws InfoModifyException {
+        if (dto.getName().isEmpty()) {
+            throw new CommonException(ErrorCode.MODIFY_INFO_NOT_EMPTY.getMessage(), ErrorCode.MODIFY_INFO_NOT_EMPTY);
+        }
+
         Member modifiedMember = memberRepository.findById(dto.getMemberId()).get();
         modifiedMember.modifyInfo(dto);
 
@@ -82,6 +86,9 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     public String modifyPassword(String memberId, String password)throws InfoModifyException {
+        if (password.isEmpty()) {
+            throw new CommonException(ErrorCode.MODIFY_INFO_NOT_EMPTY.getMessage(), ErrorCode.MODIFY_INFO_NOT_EMPTY);
+        }
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         Member member = memberRepository.findById(memberId).get();
         member.modifyPassword(encoder.encode(password));

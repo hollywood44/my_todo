@@ -25,6 +25,7 @@ public class GlobalExceptionHandler {
 
         switch (ex.getErrorCode()) {
             case MEMBER_DELETE_PASSWORD_WRONG_ERROR : return "redirect:/member/my-info/info";
+            case MODIFY_INFO_NOT_EMPTY : return "redirect:/member/my-info/info";
             default: return "redirect:/todo/main";
         }
     }
