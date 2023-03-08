@@ -28,7 +28,7 @@ public class BatchScheduler {
     private final JobLauncher jobLauncher;
 
     // 초 분 시 날짜 월 요일
-    @Scheduled(cron = "0 20 1 * * ?")
+    @Scheduled(cron = "0 55 1 * * ?")
     public void tomorrowNotificationSchedule() {
         try {
             Map <String, JobParameter> jobParametersMap = new HashMap <> ();
@@ -54,7 +54,7 @@ public class BatchScheduler {
         }
     }
 
-    @Scheduled(cron = "0 20 1 * * ?")
+    @Scheduled(cron = "0 55 1 * * ?")
     public void proceedingToFailedSchedule() {
         try {
             Map <String, JobParameter> jobParametersMap = new HashMap <> ();
@@ -80,7 +80,7 @@ public class BatchScheduler {
         }
     }
 
-    @Scheduled(cron = "0 20 1 * * ?")
+    @Scheduled(cron = "0 55 1 * * ?")
     public void followerDeleteSchedule() {
         try {
             Map <String, JobParameter> jobParametersMap = new HashMap <> ();
