@@ -65,4 +65,13 @@ public class GlobalExceptionHandler {
         return "redirect:/todo/main";
     }
 
+    @ExceptionHandler(InfoModifyException.class)
+    public String handleInfoModifyException(InfoModifyException ex, RedirectAttributes redirectAttributes) {
+        log.error("InfoModifyException",ex);
+        ErrorResponse response = new ErrorResponse(ex.getErrorCode());
+        redirectAttributes.addFlashAttribute("error", response);
+
+        return "redirect:/member/my-info/info";
+    }
+
 }

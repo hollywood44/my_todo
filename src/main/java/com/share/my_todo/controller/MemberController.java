@@ -50,7 +50,7 @@ public class MemberController {
     }
 
     @GetMapping("/my-info/{menu}")
-    public String myInfoPage(@AuthenticationPrincipal Member member,Model model,@PathVariable(value = "menu")String menu) {
+    public String myInfoPage(@AuthenticationPrincipal Member member,Model model,@PathVariable String menu) {
         if (menu.equals("help")) {
             model.addAttribute("helpImg", "uri");
             return "member/help";
@@ -88,15 +88,10 @@ public class MemberController {
      */
     @PostMapping("/modify-info")
     public String modifyInfo(MemberDto modifyData,RedirectAttributes redirectAttributes) {
-        String status = memberService.modifyMemberInfo(modifyData);
+        memberService.modifyMemberInfo(modifyData);
 
-        if (!status.isEmpty()) {
-            redirectAttributes.addFlashAttribute("msg", "변경에 성공하였습니다!");
-            return "redirect:/member/my-info";
-        } else {
-            redirectAttributes.addFlashAttribute("err", "변경에 실패하였습니다!");
-            return "redirect:/member/my-info";
-        }
+        redirectAttributes.addFlashAttribute("message", "변경에 성공하였습니다!");
+        return "redirect:/member/my-info/info";
     }
 
     /**
@@ -107,15 +102,11 @@ public class MemberController {
      */
     @PostMapping("/modify-password")
     public String modifyPassword(@RequestParam("password")String password, @AuthenticationPrincipal Member member, RedirectAttributes redirectAttributes) {
-        String status = memberService.modifyPassword(member.getMemberId(), password);
+        memberService.modifyPassword(member.getMemberId(), password);
 
-        if (!status.isEmpty()) {
-            redirectAttributes.addFlashAttribute("msg", "변경에 성공하였습니다!");
-            return "redirect:/member/my-info";
-        } else {
-            redirectAttributes.addFlashAttribute("err", "변경에 실패하였습니다!");
-            return "redirect:/member/my-info";
-        }
+        redirectAttributes.addFlashAttribute("message", "변경에 성공하였습니다!");
+        return "redirect:/member/my-info/info";
+
     }
 
     /**

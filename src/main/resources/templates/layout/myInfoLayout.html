@@ -21,6 +21,12 @@
 <script th:inline="javascript">
       /*<![CDATA[*/
 
+        let message = [[${message}]];
+
+        if(message != null){
+            alert(message);
+        }
+
         let error = [[${error}]];
 
         if(error != null){

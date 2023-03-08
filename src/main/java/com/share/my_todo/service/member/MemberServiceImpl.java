@@ -8,6 +8,7 @@ import com.share.my_todo.exception.ErrorCode;
 import com.share.my_todo.exception.exceptionClass.AccountDeleteException;
 import com.share.my_todo.exception.exceptionClass.CommonException;
 import com.share.my_todo.exception.exceptionClass.IdDuplicateException;
+import com.share.my_todo.exception.exceptionClass.InfoModifyException;
 import com.share.my_todo.repository.friend.FriendListRepository;
 import com.share.my_todo.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -72,7 +73,7 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public String modifyMemberInfo(MemberDto dto) {
+    public String modifyMemberInfo(MemberDto dto)throws InfoModifyException {
         Member modifiedMember = memberRepository.findById(dto.getMemberId()).get();
         modifiedMember.modifyInfo(dto);
 
@@ -80,7 +81,7 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public String modifyPassword(String memberId, String password) {
+    public String modifyPassword(String memberId, String password)throws InfoModifyException {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         Member member = memberRepository.findById(memberId).get();
         member.modifyPassword(encoder.encode(password));
