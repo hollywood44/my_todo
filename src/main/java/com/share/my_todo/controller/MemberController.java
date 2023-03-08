@@ -2,6 +2,8 @@ package com.share.my_todo.controller;
 
 import com.share.my_todo.DTO.member.MemberDto;
 import com.share.my_todo.entity.member.Member;
+import com.share.my_todo.exception.ErrorCode;
+import com.share.my_todo.exception.ErrorResponse;
 import com.share.my_todo.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -9,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.net.URLDecoder;
 
 @Controller
 @RequiredArgsConstructor
@@ -24,7 +28,19 @@ public class MemberController {
     }
 
     @GetMapping("/signIn")
-    public String loginPage() {
+    public String loginPage(@RequestParam(value = "error",required = false) String isError,@RequestParam(value = "message",required = false)String error,
+                            RedirectAttributes redirectAttributes) {
+        if (isError != null) {
+            ErrorResponse errorResponse;
+            switch (error) {
+                case "LOGIN_ERROR_ID_PASSWORD" : errorResponse = new ErrorResponse(ErrorCode.LOGIN_ERROR_ID_PASSWORD);break;
+                case "LOGIN_ERROR_ID_NOT_PRESENT" : errorResponse = new ErrorResponse(ErrorCode.LOGIN_ERROR_ID_NOT_PRESENT);break;
+                default: errorResponse = new ErrorResponse(ErrorCode.LOGIN_ERROR_UNDEFINED);
+            }
+            redirectAttributes.addFlashAttribute("error", errorResponse);
+            return "redirect:/member/signIn";
+        }
+
         return "login";
     }
 
