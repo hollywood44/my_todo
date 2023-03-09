@@ -4,6 +4,8 @@ import com.share.my_todo.DTO.todo.TodoDto;
 import com.share.my_todo.entity.common.TodoProgress;
 import com.share.my_todo.entity.member.Member;
 import com.share.my_todo.entity.todo.Todo;
+import com.share.my_todo.exception.ErrorCode;
+import com.share.my_todo.exception.exceptionClass.CommonException;
 import com.share.my_todo.exception.exceptionClass.TodoUploadException;
 import com.share.my_todo.repository.todo.TodoRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,11 +24,14 @@ public class TodoServiceImpl implements TodoService{
 
     @Override
     public Long postingTodo(TodoDto dto,Member member) throws TodoUploadException {
+        if (dto.getFinishDate() == null || dto.getFinishDate().isEmpty())
+            throw new CommonException(ErrorCode.POST_VALUE_NOT_EMPTY.getMessage(), ErrorCode.POST_VALUE_NOT_EMPTY);
+        if(dto.getTodo() == null || dto.getTodo().isEmpty())
+            throw new CommonException(ErrorCode.POST_VALUE_NOT_EMPTY.getMessage(), ErrorCode.POST_VALUE_NOT_EMPTY);
+
         dto.setFinishDate(dto.getFinishDate().replace("-",""));
         dto.setProgress(TodoProgress.Proceeding);
         dto.setMemberId(member.getMemberId());
-
-        System.out.println(dto);
 
         Todo todo = dtoToEntity(dto);
         return todoRepository.save(todo).getTodoId();
@@ -34,6 +39,11 @@ public class TodoServiceImpl implements TodoService{
 
     @Override
     public Long modifyTodo(TodoDto dto,Member member) {
+        if (dto.getFinishDate() == null || dto.getFinishDate().isEmpty())
+            throw new CommonException(ErrorCode.POST_VALUE_NOT_EMPTY.getMessage(), ErrorCode.POST_VALUE_NOT_EMPTY);
+        if(dto.getTodo() == null || dto.getTodo().isEmpty())
+            throw new CommonException(ErrorCode.POST_VALUE_NOT_EMPTY.getMessage(), ErrorCode.POST_VALUE_NOT_EMPTY);
+
         dto.setFinishDate(dto.getFinishDate().replace("-",""));
         dto.setProgress(TodoProgress.Proceeding);
         dto.setMemberId(member.getMemberId());

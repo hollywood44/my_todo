@@ -18,14 +18,17 @@ import javax.servlet.http.HttpServletRequest;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(CommonException.class)
-    public String handleCommonException(CommonException ex, RedirectAttributes redirectAttributes) {
+    public String handleCommonException(CommonException ex, RedirectAttributes redirectAttributes,HttpServletRequest request) {
         log.error(ex.getMessage(), ex);
+        String requestPath = request.getRequestURI();
+
         ErrorResponse response = new ErrorResponse(ex.getErrorCode());
         redirectAttributes.addFlashAttribute("error", response);
 
         switch (ex.getErrorCode()) {
             case MEMBER_DELETE_PASSWORD_WRONG_ERROR : return "redirect:/member/my-info/info";
             case MODIFY_INFO_NOT_EMPTY : return "redirect:/member/my-info/info";
+            case POST_VALUE_NOT_EMPTY : if(requestPath.contains("todo")) return "redirect:/todo/main";
             default: return "redirect:/todo/main";
         }
     }
