@@ -6,7 +6,13 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark" style="background-color:#D3CBBE;" th:fragment="navFragment">
   <div class="container px-lg-5">
-    <a class="navbar-brand" href="/todo/main" style="color: black;font-weight: bold;">SHARE MY TODO</a>
+    <th:block sec:authorize="isAnonymous()">
+      <a class="navbar-brand" href="/member/main" style="color: black;font-weight: bold;">SHARE MY TODO</a>
+    </th:block>
+    <th:block sec:authorize="isAuthenticated()">
+      <a class="navbar-brand" href="/todo/main" style="color: black;font-weight: bold;">SHARE MY TODO</a>
+    </th:block>
+
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
@@ -16,7 +22,7 @@
         <li class="nav-item"><a class="nav-link" href="/member/my-info/info" style="color: black;font-weight: bold;">내 정보</a></li>
         <li class="nav-item"><a class="nav-link" href="/notice/list" style="color: black;font-weight: bold;" id="noticeCount">알림:0건</a></li>
         <th:block sec:authorize="isAnonymous()">
-          <li class="nav-item"><a class="nav-link" href="#!" style="color: black;font-weight: bold;">로그인</a></li>
+          <li class="nav-item"><a class="nav-link" href="/member/signIn" style="color: black;font-weight: bold;">로그인</a></li>
         </th:block>
         <th:block sec:authorize="isAuthenticated()">
           <li class="nav-item"><a class="nav-link" href="#" style="color: black;font-weight: bold;" data-bs-toggle="modal" data-bs-target="#signOutModal">로그아웃</a></li>
