@@ -63,7 +63,7 @@ public class TomorrowBatchConfig {
                 .name("jpaPagingItemReader")
                 .entityManagerFactory(entityManagerFactory) //DataSource가 아닌 EntityManagerFactory를 통한 접근
                 .pageSize(1000)
-                .queryString("SELECT t FROM Todo t WHERE finish_date = " + tomorrow + " ORDER BY todo_id ASC")  //ORDER 조건은 필수!
+                .queryString("SELECT t FROM Todo t WHERE finish_date = " + tomorrow + " AND PROGRESS = 'Proceeding' ORDER BY todo_id ASC")  //ORDER 조건은 필수!
                 .build();
     }
 
