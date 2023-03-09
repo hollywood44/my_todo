@@ -22,19 +22,19 @@ public class BoardController {
         page = page - 1;
         model.addAttribute("boardList", boardService.getAllBoardList(page, 10));
         model.addAttribute("maxPage", 10);
-        return "suggestBoard";
+        return "suggestBoard/suggestBoard";
     }
 
     @GetMapping("/suggest-posting")
     public String suggestPostingPage() {
-        return "boardPosting";
+        return "suggestBoard/boardPosting";
     }
 
     @GetMapping("/suggest-detail")
     public String suggestPostingDetailPage(@RequestParam("boardId") Long boardId, Model model) {
         model.addAttribute("detail", boardService.postDetail(boardId));
 
-        return "boardDetail";
+        return "suggestBoard/boardDetail";
     }
 
     @GetMapping("/suggest-modify")
@@ -44,7 +44,7 @@ public class BoardController {
         if (member.getMemberId().equals(board.getWriter())) {
             board.setContent(board.getContent().replace("<br>", "\n"));
             model.addAttribute("board", boardService.postDetail(boardId));
-            return "boardModify";
+            return "suggestBoard/boardModify";
         } else {
             redirectAttributes.addFlashAttribute("msg", "권한없는 접근입니다!");
             return "redirect:/board";

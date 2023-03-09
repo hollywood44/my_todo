@@ -41,12 +41,12 @@ public class MemberController {
             return "redirect:/member/signIn";
         }
 
-        return "login";
+        return "member/login";
     }
 
     @GetMapping("/signUp")
     public String signUpPage() {
-        return "signUp";
+        return "member/signUp";
     }
 
     @GetMapping("/my-info/{menu}")

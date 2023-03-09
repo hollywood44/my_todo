@@ -24,7 +24,7 @@ public class TodoController {
         List<TodoDto> notYetList = todoService.getTodoList(member.getMemberId());
         model.addAttribute("todoList", notYetList);
 
-        return "main";
+        return "todo/main";
     }
 
     @PostMapping("/posting")
@@ -50,7 +50,7 @@ public class TodoController {
             return "redirect:/todo/main";
         } else {
             model.addAttribute("item", item);
-            return "todoModify";
+            return "todo/todoModify";
         }
 
     }

@@ -24,7 +24,7 @@ public class NoticeController {
         List<NoticeDto> list = noticeService.getNotReadNoticeList(member);
         model.addAttribute("noticeList", list);
 
-        return "noticeList";
+        return "notice/noticeList";
     }
 
     @GetMapping("/readNotice")
@@ -58,6 +58,6 @@ public class NoticeController {
         Page<NoticeDto> prevList = noticeService.getPrevNoticeList(member,page);
         model.addAttribute("noticeList", prevList);
 
-        return "prevNoticeList";
+        return "notice/prevNoticeList";
     }
 }

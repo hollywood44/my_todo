@@ -20,7 +20,7 @@ public class AdminController {
     @GetMapping("/suggest-answer")
     public String suggestAnswer(Model model, @RequestParam("boardId") Long boardId) {
         model.addAttribute("parentId", boardId);
-        return "suggestAnswerPosting";
+        return "suggestBoard/suggestAnswerPosting";
     }
 
     @PostMapping("/suggest-answer")

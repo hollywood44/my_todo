@@ -20,7 +20,7 @@ public class FriendController {
     public String friendListPage(@AuthenticationPrincipal Member member, Model model) {
         model.addAttribute("friendList", friendService.getFriendList(member.getMemberId()));
 
-        return "friendList";
+        return "member/friendList";
     }
 
     @PostMapping("/unfollow")
@@ -33,14 +33,14 @@ public class FriendController {
     @GetMapping("/requested-list")
     public String followRequestedListPage(@AuthenticationPrincipal Member member, Model model) {
         model.addAttribute("requestedList", friendService.requestedFriendList(member.getMemberId()));
-        return "followRequested";
+        return "member/followRequested";
     }
 
     @GetMapping("/request-list")
     public String followRequestList(@AuthenticationPrincipal Member member,Model model) {
         model.addAttribute("requestList", friendService.requestFriendList(member.getMemberId()));
 
-        return "followRequest";
+        return "member/followRequest";
     }
 
     @GetMapping("/follow-accept")
