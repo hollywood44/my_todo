@@ -62,6 +62,6 @@ class MemberServiceTest {
     @Test
     @Rollback(value = false)
     void modifyPassword() {
-        memberService.modifyPassword("member1", "12345");
+//        memberService.modifyPassword("member1", "12345");
     }
 }

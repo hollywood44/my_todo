@@ -19,7 +19,7 @@ public enum ErrorCode {
     MODIFY_INFO_NOT_EMPTY(400,"MODIFY_INFO_NOT_EMPTY","수정할 정보는 비어 있을 수 없습니다."),
     MODIFY_INFO_ERROR(500,"MODIFY-ERROR","정보 수정에 실패했습니다."),
     MEMBER_DELETE_FAILED_ERROR(500,"Delete-Failed","회원탈퇴에 실패 했습니다."),
-    MEMBER_DELETE_PASSWORD_WRONG_ERROR(400, "Password-Different", "비밀번호가 일치하지 않습니다.");
+    MEMBER_PASSWORD_CHECK_WRONG_ERROR(400, "Password-Different", "비밀번호가 일치하지 않습니다.");
 
     private int status;
     private String errorCode;

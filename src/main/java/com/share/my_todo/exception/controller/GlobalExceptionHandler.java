@@ -26,7 +26,7 @@ public class GlobalExceptionHandler {
         redirectAttributes.addFlashAttribute("error", response);
 
         switch (ex.getErrorCode()) {
-            case MEMBER_DELETE_PASSWORD_WRONG_ERROR : return "redirect:/member/my-info/info";
+            case MEMBER_PASSWORD_CHECK_WRONG_ERROR : return "redirect:/member/my-info/info";
             case MODIFY_INFO_NOT_EMPTY : return "redirect:/member/my-info/info";
             case POST_VALUE_NOT_EMPTY : if(requestPath.contains("todo")) return "redirect:/todo/main";
             default: return "redirect:/todo/main";

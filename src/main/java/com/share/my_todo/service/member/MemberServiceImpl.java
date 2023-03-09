@@ -23,7 +23,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class MemberServiceImpl implements MemberService{
+public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
     private final FriendListRepository friendListRepository;
@@ -50,7 +50,7 @@ public class MemberServiceImpl implements MemberService{
             friendListRepository.save(friendList);
 
             return memberDto.getMemberId();
-        }else {
+        } else {
             throw new IdDuplicateException("Member Id Duplicated", ErrorCode.ID_DUPLICATION);
         }
     }
@@ -73,7 +73,7 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public String modifyMemberInfo(MemberDto dto)throws InfoModifyException {
+    public String modifyMemberInfo(MemberDto dto) throws InfoModifyException {
         if (dto.getName().isEmpty()) {
             throw new CommonException(ErrorCode.MODIFY_INFO_NOT_EMPTY.getMessage(), ErrorCode.MODIFY_INFO_NOT_EMPTY);
         }
@@ -85,13 +85,19 @@ public class MemberServiceImpl implements MemberService{
     }
 
     @Override
-    public String modifyPassword(String memberId, String password)throws InfoModifyException {
+    public String modifyPassword(String memberId, String password, String passwordCheck) throws InfoModifyException {
         if (password.isEmpty()) {
             throw new CommonException(ErrorCode.MODIFY_INFO_NOT_EMPTY.getMessage(), ErrorCode.MODIFY_INFO_NOT_EMPTY);
         }
+
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         Member member = memberRepository.findById(memberId).get();
-        member.modifyPassword(encoder.encode(password));
+
+        if (encoder.matches(passwordCheck, member.getPassword())) {
+            member.modifyPassword(encoder.encode(password));
+        } else {
+            throw new CommonException(ErrorCode.MEMBER_PASSWORD_CHECK_WRONG_ERROR.getMessage(), ErrorCode.MEMBER_PASSWORD_CHECK_WRONG_ERROR);
+        }
         return memberRepository.save(member).getMemberId();
     }
 
@@ -103,7 +109,7 @@ public class MemberServiceImpl implements MemberService{
         if (encoder.matches(password, check.getPassword())) {
             memberRepository.delete(check);
         } else {
-            throw new CommonException(ErrorCode.MEMBER_DELETE_PASSWORD_WRONG_ERROR.getMessage(), ErrorCode.MEMBER_DELETE_PASSWORD_WRONG_ERROR);
+            throw new CommonException(ErrorCode.MEMBER_PASSWORD_CHECK_WRONG_ERROR.getMessage(), ErrorCode.MEMBER_PASSWORD_CHECK_WRONG_ERROR);
         }
     }
 }

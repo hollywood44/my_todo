@@ -28,7 +28,11 @@
 
             <form th:action="@{/member/modify-password}" method="post">
                 <div class="input-group mb-3">
-                    <span class="input-group-text">비밀번호</span>
+                    <span class="input-group-text">원래 비밀번호</span>
+                    <input type="password" name="passwordCheck" class="form-control"/>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">바꿀 비밀번호</span>
                     <input type="password" name="password" class="form-control"/>
                     <button class="btn btn-success" type="submit">비밀번호 수정</button>
                 </div>

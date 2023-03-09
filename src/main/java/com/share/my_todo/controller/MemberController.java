@@ -101,8 +101,8 @@ public class MemberController {
      * @return 성공 true, 실패 false
      */
     @PostMapping("/modify-password")
-    public String modifyPassword(@RequestParam("password")String password, @AuthenticationPrincipal Member member, RedirectAttributes redirectAttributes) {
-        memberService.modifyPassword(member.getMemberId(), password);
+    public String modifyPassword(@RequestParam("password")String password,@RequestParam("passwordCheck")String passwordCheck, @AuthenticationPrincipal Member member, RedirectAttributes redirectAttributes) {
+        memberService.modifyPassword(member.getMemberId(), password,passwordCheck);
 
         redirectAttributes.addFlashAttribute("message", "변경에 성공하였습니다!");
         return "redirect:/member/my-info/info";
