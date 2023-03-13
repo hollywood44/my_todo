@@ -1,18 +1,16 @@
 package com.share.my_todo.service.member;
 
 import com.share.my_todo.DTO.member.MemberDto;
-import com.share.my_todo.config.SecurityConfig;
 import com.share.my_todo.entity.common.Auth;
 import com.share.my_todo.entity.member.FriendList;
 import com.share.my_todo.entity.member.Member;
 import com.share.my_todo.exception.ErrorCode;
 import com.share.my_todo.exception.exceptionClass.CommonException;
-import com.share.my_todo.login.JwtTokenProvider;
-import com.share.my_todo.login.TokenInfo;
+import com.share.my_todo.config.login.JwtTokenProvider;
+import com.share.my_todo.config.login.TokenInfo;
 import com.share.my_todo.repository.friend.FriendListRepository;
 import com.share.my_todo.repository.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -56,7 +54,7 @@ public class MemberServiceImpl implements MemberService {
         }
 
         memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
-        memberDto.setAuth(Auth.Member);
+        memberDto.setAuth(Auth.MEMBER);
         Member member = dtoToEntity(memberDto);
 
         memberRepository.save(member);

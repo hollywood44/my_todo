@@ -1,10 +1,8 @@
 package com.share.my_todo.config;
 
 import com.share.my_todo.exception.LoginFailHandler;
-import com.share.my_todo.login.JwtAuthenticationFilter;
-import com.share.my_todo.login.JwtTokenProvider;
-import com.share.my_todo.service.member.MemberService;
-import lombok.RequiredArgsConstructor;
+import com.share.my_todo.config.login.JwtAuthenticationFilter;
+import com.share.my_todo.config.login.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,15 +12,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-
-import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -49,8 +42,8 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/logintest/login","/member/signUp").permitAll()
-                .antMatchers("/members/test").hasRole("USER")
+                .antMatchers("/**").permitAll()
+                .antMatchers("/members/test").hasRole("MEMBER")
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);

@@ -11,8 +11,8 @@ import lombok.Getter;
 @Getter
 public enum Auth {
 
-    Admin("ROLE_Admin,ROLE_Member"),
-    Member("ROLE_Member");
+    ADMIN("ROLE_ADMIN,ROLE_MEMBER"),
+    MEMBER("ROLE_MEMBER");
 
     private String value;
 }

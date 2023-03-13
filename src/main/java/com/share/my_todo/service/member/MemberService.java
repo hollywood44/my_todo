@@ -2,8 +2,7 @@ package com.share.my_todo.service.member;
 
 import com.share.my_todo.DTO.member.MemberDto;
 import com.share.my_todo.entity.member.Member;
-import com.share.my_todo.login.TokenInfo;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import com.share.my_todo.config.login.TokenInfo;
 
 public interface MemberService{
 

@@ -1,4 +1,4 @@
-package com.share.my_todo.login;
+package com.share.my_todo.config.login;
 
 import com.share.my_todo.entity.member.Member;
 import com.share.my_todo.exception.ErrorCode;
@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final MemberRepository memberRepository;
-    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -31,7 +30,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         return User.builder()
                 .username(member.getUsername())
                 .password(member.getPassword())
-                .roles(member.getRoles().toArray(new String[0]))
+                .roles(member.getAuth().toString())
                 .build();
     }
 }

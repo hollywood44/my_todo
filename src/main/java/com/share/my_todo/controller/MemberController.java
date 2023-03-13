@@ -1,45 +1,67 @@
 package com.share.my_todo.controller;
 
 import com.share.my_todo.DTO.member.MemberDto;
+import com.share.my_todo.DTO.member.MemberLoginRequestDto;
 import com.share.my_todo.entity.member.Member;
-import com.share.my_todo.exception.ErrorCode;
-import com.share.my_todo.exception.ErrorResponse;
+import com.share.my_todo.config.login.TokenInfo;
 import com.share.my_todo.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.net.URLDecoder;
-
-@Controller
+@RestController
 @RequiredArgsConstructor
-@RequestMapping("/member")
+@RequestMapping("/members")
 public class MemberController {
-
 
     private final MemberService memberService;
 
-    @GetMapping("/main")
-    public String introPage() {
-        return "start";
+    @GetMapping("/test")
+    public String test(){
+        return "has role!";
     }
 
-    @GetMapping("/signIn")
-    public String loginPage(@RequestParam(value = "error",required = false) String isError,@RequestParam(value = "message",required = false)String error,
-                            RedirectAttributes redirectAttributes) {
 
-        return "member/login";
+    @PostMapping("/sign-in")
+    public TokenInfo login(@RequestBody MemberLoginRequestDto memberLoginRequestDto) {
+        String memberId = memberLoginRequestDto.getMemberId();
+        String password = memberLoginRequestDto.getPassword();
+        TokenInfo tokenInfo = memberService.login(memberId, password);
+        return tokenInfo;
     }
 
-    @GetMapping("/signUp")
-    public String signUpPage() {
-        return "member/signUp";
+
+    /**
+     * 회원가입
+     * @param signUpData 아이디,이름,비밀번호
+     * @return 회원가입 완료된 아이디
+     */
+    @PostMapping("/sign-up")
+    public ResponseEntity<?> signUp(@RequestBody MemberDto signUpData) {
+        String signUpID = memberService.signUp(signUpData);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(signUpID);
     }
+
+    /**
+     * 아이디 중복확인
+     * @param memberId 중복확인 할 아이디
+     * @return true / false
+     */
+    @PostMapping("/signup/check")
+    public boolean idCheck(@RequestBody String memberId) {
+        return memberService.idCheck(memberId);
+    }
+
+    //--------위는 바뀐 메서드--------//
+    //--------아래는 안바뀐 메서드--------//
+
+
+
 
     @GetMapping("/my-info/{menu}")
     public String myInfoPage(@AuthenticationPrincipal Member member,Model model,@PathVariable String menu) {
@@ -52,27 +74,9 @@ public class MemberController {
         }
     }
 
-    /**
-     * 회원가입
-     * @param signUpData 아이디,이름,비밀번호
-     * @return 회원가입 완료된 아이디
-     */
-    @PostMapping("/signUp")
-    public ResponseEntity<?> signUp(@RequestBody MemberDto signUpData) {
-        String signUpID = memberService.signUp(signUpData);
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(signUpID);
-    }
 
-    /**
-     * 아이디 중복확인
-     * @param memberId 중복확인 할 아이디
-     * @return true / false
-     */
-    @GetMapping("/signup/check")
-    public boolean idCheck(@RequestParam("memberId")String memberId) {
-        return memberService.idCheck(memberId);
-    }
+
+
 
     /**
      * 회원정보 수정

@@ -1,4 +1,4 @@
-package com.share.my_todo.login;
+package com.share.my_todo.config.login;
 
 
 import io.jsonwebtoken.*;
