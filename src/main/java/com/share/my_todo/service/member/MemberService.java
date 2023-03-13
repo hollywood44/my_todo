@@ -2,9 +2,10 @@ package com.share.my_todo.service.member;
 
 import com.share.my_todo.DTO.member.MemberDto;
 import com.share.my_todo.entity.member.Member;
+import com.share.my_todo.login.TokenInfo;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-public interface MemberService extends UserDetailsService {
+public interface MemberService{
 
     default Member dtoToEntity(MemberDto dto) {
         Member entity = Member.builder()
@@ -67,5 +68,5 @@ public interface MemberService extends UserDetailsService {
 
     void deleteAccount(String memberId, String password);
 
-
+    public TokenInfo login(String memberId, String password);
 }
