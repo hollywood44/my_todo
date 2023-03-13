@@ -5,7 +5,6 @@ import com.share.my_todo.DTO.member.FriendListDto;
 import com.share.my_todo.entity.member.Friend;
 import com.share.my_todo.entity.member.FriendList;
 import com.share.my_todo.entity.member.Member;
-import com.share.my_todo.exception.exceptionClass.FollowRequestException;
 import com.share.my_todo.repository.friend.FriendListRepository;
 import com.share.my_todo.repository.friend.FriendRepository;
 import com.share.my_todo.repository.member.MemberRepository;
@@ -51,7 +50,7 @@ public class FriendServiceImpl implements FriendService {
 
     @Override
     @Transactional
-    public Long followRequest(String myId, String followId) throws FollowRequestException {
+    public Long followRequest(String myId, String followId){
         // 팔로우 건 회원 친구목록 불러옴 그리고 여기 담길 Friend객체 생성
         FriendList friendList = listRepository.findByMember(Member.builder().memberId(myId).build()).get();
         Friend followFriend = Friend.builder().member(Member.builder().memberId(followId).build()).build();

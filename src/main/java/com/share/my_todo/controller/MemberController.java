@@ -6,6 +6,8 @@ import com.share.my_todo.exception.ErrorCode;
 import com.share.my_todo.exception.ErrorResponse;
 import com.share.my_todo.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,16 +32,6 @@ public class MemberController {
     @GetMapping("/signIn")
     public String loginPage(@RequestParam(value = "error",required = false) String isError,@RequestParam(value = "message",required = false)String error,
                             RedirectAttributes redirectAttributes) {
-        if (isError != null) {
-            ErrorResponse errorResponse;
-            switch (error) {
-                case "LOGIN_ERROR_ID_PASSWORD" : errorResponse = new ErrorResponse(ErrorCode.LOGIN_ERROR_ID_PASSWORD);break;
-                case "LOGIN_ERROR_ID_NOT_PRESENT" : errorResponse = new ErrorResponse(ErrorCode.LOGIN_ERROR_ID_NOT_PRESENT);break;
-                default: errorResponse = new ErrorResponse(ErrorCode.LOGIN_ERROR_UNDEFINED);
-            }
-            redirectAttributes.addFlashAttribute("error", errorResponse);
-            return "redirect:/member/signIn";
-        }
 
         return "member/login";
     }
@@ -62,13 +54,14 @@ public class MemberController {
 
     /**
      * 회원가입
-     * @param signUpData 회원가입에 필요한 데이터
+     * @param signUpData 아이디,이름,비밀번호
      * @return 회원가입 완료된 아이디
      */
     @PostMapping("/signUp")
-    public String signUp(MemberDto signUpData) {
-        memberService.signUp(signUpData);
-        return "redirect:/member/signIn";
+    public ResponseEntity<?> signUp(@RequestBody MemberDto signUpData) {
+        String signUpID = memberService.signUp(signUpData);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(signUpID);
     }
 
     /**

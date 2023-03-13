@@ -6,7 +6,6 @@ import com.share.my_todo.entity.member.Member;
 import com.share.my_todo.entity.todo.Todo;
 import com.share.my_todo.exception.ErrorCode;
 import com.share.my_todo.exception.exceptionClass.CommonException;
-import com.share.my_todo.exception.exceptionClass.TodoUploadException;
 import com.share.my_todo.repository.todo.TodoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,11 +22,11 @@ public class TodoServiceImpl implements TodoService{
     private final TodoRepository todoRepository;
 
     @Override
-    public Long postingTodo(TodoDto dto,Member member) throws TodoUploadException {
+    public Long postingTodo(TodoDto dto,Member member){
         if (dto.getFinishDate() == null || dto.getFinishDate().isEmpty())
-            throw new CommonException(ErrorCode.POST_VALUE_NOT_EMPTY.getMessage(), ErrorCode.POST_VALUE_NOT_EMPTY);
+            throw new CommonException(ErrorCode.POSTING_VALUE_EMPTY);
         if(dto.getTodo() == null || dto.getTodo().isEmpty())
-            throw new CommonException(ErrorCode.POST_VALUE_NOT_EMPTY.getMessage(), ErrorCode.POST_VALUE_NOT_EMPTY);
+            throw new CommonException(ErrorCode.POSTING_VALUE_EMPTY);
 
         dto.setFinishDate(dto.getFinishDate().replace("-",""));
         dto.setProgress(TodoProgress.Proceeding);
@@ -40,9 +39,9 @@ public class TodoServiceImpl implements TodoService{
     @Override
     public Long modifyTodo(TodoDto dto,Member member) {
         if (dto.getFinishDate() == null || dto.getFinishDate().isEmpty())
-            throw new CommonException(ErrorCode.POST_VALUE_NOT_EMPTY.getMessage(), ErrorCode.POST_VALUE_NOT_EMPTY);
+            throw new CommonException(ErrorCode.MODIFY_VALUE_EMPTY);
         if(dto.getTodo() == null || dto.getTodo().isEmpty())
-            throw new CommonException(ErrorCode.POST_VALUE_NOT_EMPTY.getMessage(), ErrorCode.POST_VALUE_NOT_EMPTY);
+            throw new CommonException(ErrorCode.MODIFY_VALUE_EMPTY);
 
         dto.setFinishDate(dto.getFinishDate().replace("-",""));
         dto.setProgress(TodoProgress.Proceeding);

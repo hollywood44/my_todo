@@ -3,25 +3,33 @@ package com.share.my_todo.exception;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.http.HttpStatus;
 
 @Getter
 @AllArgsConstructor
 public enum ErrorCode {
 
-    COMMON_ERROR(500,"COMMON-ERR-500","It is Common Error"),
-    ID_DUPLICATION(400, "SIGNUP-ID-Dup", "이미 있는 아이디 입니다."),
-    LOGIN_ERROR_ID_PASSWORD(400,"Login-error-id-password","아이디 또는 비밀번호가 맞지 않습니다."),
-    LOGIN_ERROR_ID_NOT_PRESENT(400,"Login-error-id","존재하지 않는 아이디 입니다."),
-    LOGIN_ERROR_UNDEFINED(500,"Login-error-undefined","알 수 없는 이유로 로그인이 안되고 있습니다."),
-    TODO_UPLOAD_ERROR(500,"TODO-upload-error","할일 업로드가 실패했습니다."),
-    FOLLOW_REQUEST_ERROR(500, "FOLLOW-REQUEST-error", "친구 요청이 실패했습니다."),
-    POST_VALUE_NOT_EMPTY(400,"POST_VALUE_NOT_EMPTY","빈 값은 입력 할 수 없습니다."),
-    MODIFY_INFO_NOT_EMPTY(400,"MODIFY_INFO_NOT_EMPTY","수정할 정보는 비어 있을 수 없습니다."),
-    MODIFY_INFO_ERROR(500,"MODIFY-ERROR","정보 수정에 실패했습니다."),
-    MEMBER_DELETE_FAILED_ERROR(500,"Delete-Failed","회원탈퇴에 실패 했습니다."),
-    MEMBER_PASSWORD_CHECK_WRONG_ERROR(400, "Password-Different", "비밀번호가 일치하지 않습니다.");
+    //global exception
+    DATABASE_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "DB_ERROR","데이터 베이스 에러가 발생했습니다."),
+    PASSWORD_NOT_MATCH(HttpStatus.BAD_REQUEST,"PASSWORD_NOT_MATCH","비밀번호가 일치하지 않습니다."),
+    ID_NOT_FOUND(HttpStatus.BAD_REQUEST,"ID_NOT_FOUND","아이디를 찾을 수 없습니다."),
+    LOGIN_ERROR(HttpStatus.BAD_REQUEST,"ID_OR_PASSWORD_WRONG","아이디 혹은 비밀번호가 틀렸습니다."),
 
-    private int status;
+    //sign up exception
+    ID_DUPLICATED(HttpStatus.BAD_REQUEST,"ID_DUPLICATED","아이디가 중복됩니다."),
+
+
+    //posting exception
+    POSTING_ERROR(HttpStatus.INTERNAL_SERVER_ERROR,"POSTING_ERROR","등록에 실패했습니다."),
+    POSTING_VALUE_EMPTY(HttpStatus.BAD_REQUEST,"POSTING VALUE DOSE NOT EMPTY","빈 값은 제출하실 수 없습니다."),
+
+
+    //modify exception
+    MODIFY_ERROR(HttpStatus.INTERNAL_SERVER_ERROR,"MODIFY ERROR", "수정에 실패했습니다."),
+    MODIFY_VALUE_EMPTY(HttpStatus.BAD_REQUEST,"MODIFY VALUE DOSE NOT EMPTY","수정할 정보는 비어 있을 수 없습니다.");
+
+
+    private HttpStatus status;
     private String errorCode;
     private String message;
 }

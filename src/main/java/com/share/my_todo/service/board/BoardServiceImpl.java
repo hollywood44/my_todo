@@ -69,7 +69,6 @@ public class BoardServiceImpl implements BoardService{
         if (board.isAnswer()) {
             detailBoard.setAnswerBoard(entityToDto(boardRepository.findByParentId(boardId)));
         }
-//todo 답변 있으면 답변도 같이 리턴
         return detailBoard;
     }
 
