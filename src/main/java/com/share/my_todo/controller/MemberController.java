@@ -2,6 +2,7 @@ package com.share.my_todo.controller;
 
 import com.share.my_todo.DTO.member.MemberDto;
 import com.share.my_todo.DTO.member.MemberLoginRequestDto;
+import com.share.my_todo.DTO.member.PasswordCheckDto;
 import com.share.my_todo.entity.member.Member;
 import com.share.my_todo.config.login.TokenInfo;
 import com.share.my_todo.service.member.MemberService;
@@ -15,7 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/members")
+@RequestMapping("/api/members")
 public class MemberController {
 
     private final MemberService memberService;
@@ -25,7 +26,11 @@ public class MemberController {
         return "has role!";
     }
 
-
+    /**
+     * 로그인
+     * @param memberLoginRequestDto 아이디와 비밀번호
+     * @return 로그인 성공하면 토큰 반환
+     */
     @PostMapping("/sign-in")
     public TokenInfo login(@RequestBody MemberLoginRequestDto memberLoginRequestDto) {
         String memberId = memberLoginRequestDto.getMemberId();
@@ -41,7 +46,7 @@ public class MemberController {
      * @return 회원가입 완료된 아이디
      */
     @PostMapping("/sign-up")
-    public ResponseEntity<?> signUp(@RequestBody MemberDto signUpData) {
+    public ResponseEntity<String> signUp(@RequestBody MemberDto signUpData) {
         String signUpID = memberService.signUp(signUpData);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(signUpID);
@@ -57,54 +62,39 @@ public class MemberController {
         return memberService.idCheck(memberId);
     }
 
+    /**
+     * 회원 정보 불러옴
+     * @return 회원정보 반환
+     */
+    @GetMapping("/info")
+    public ResponseEntity<MemberDto> getMemberInfo() {
+        MemberDto memberInfo = memberService.getMemberInfo();
+
+        return ResponseEntity.status(HttpStatus.OK).body(memberInfo);
+    }
+
+    /**
+     * 회원 정보 수정
+     * @return HttpStatus 반환
+     */
+    @PostMapping("/modify-info")
+    public ResponseEntity<?> modifyMemberInfo(@RequestBody MemberDto modifyInfo) {
+        memberService.modifyMemberInfo(modifyInfo);
+
+        return ResponseEntity.status(HttpStatus.OK).body("info modify complete");
+    }
+
+    @PostMapping("/modify-password")
+    public ResponseEntity<?> modifyPassword(@RequestBody PasswordCheckDto passwordCheckDto) {
+        memberService.modifyPassword(passwordCheckDto);
+
+        return ResponseEntity.status(HttpStatus.OK).body("password modify complete");
+    }
+
+
     //--------위는 바뀐 메서드--------//
     //--------아래는 안바뀐 메서드--------//
 
-
-
-
-    @GetMapping("/my-info/{menu}")
-    public String myInfoPage(@AuthenticationPrincipal Member member,Model model,@PathVariable String menu) {
-        if (menu.equals("help")) {
-            model.addAttribute("helpImg", "uri");
-            return "member/help";
-        }else {
-            model.addAttribute("member", memberService.getMyInfo(member.getMemberId()));
-            return "member/myInfo";
-        }
-    }
-
-
-
-
-
-    /**
-     * 회원정보 수정
-     * @param modifyData 바뀌지 않은 데이터와 변경된 데이터
-     * @return 바뀐 데이터
-     */
-    @PostMapping("/modify-info")
-    public String modifyInfo(MemberDto modifyData,RedirectAttributes redirectAttributes) {
-        memberService.modifyMemberInfo(modifyData);
-
-        redirectAttributes.addFlashAttribute("message", "변경에 성공하였습니다!");
-        return "redirect:/member/my-info/info";
-    }
-
-    /**
-     * 비밀번호 변경
-     * @param password 바꿀 비밀번호
-     * @param member 로그인된 회원 정보
-     * @return 성공 true, 실패 false
-     */
-    @PostMapping("/modify-password")
-    public String modifyPassword(@RequestParam("password")String password,@RequestParam("passwordCheck")String passwordCheck, @AuthenticationPrincipal Member member, RedirectAttributes redirectAttributes) {
-        memberService.modifyPassword(member.getMemberId(), password,passwordCheck);
-
-        redirectAttributes.addFlashAttribute("message", "변경에 성공하였습니다!");
-        return "redirect:/member/my-info/info";
-
-    }
 
     /**
      * 회원 탈퇴

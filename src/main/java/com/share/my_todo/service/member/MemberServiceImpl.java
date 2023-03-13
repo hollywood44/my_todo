@@ -1,6 +1,8 @@
 package com.share.my_todo.service.member;
 
 import com.share.my_todo.DTO.member.MemberDto;
+import com.share.my_todo.DTO.member.PasswordCheckDto;
+import com.share.my_todo.config.SecurityUtil;
 import com.share.my_todo.entity.common.Auth;
 import com.share.my_todo.entity.member.FriendList;
 import com.share.my_todo.entity.member.Member;
@@ -77,38 +79,38 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public MemberDto getMemberInfo(String memberId) {
-        MemberDto memberInfo = entityToDto(memberRepository.findById(memberId).get());
+    public MemberDto getMemberInfo() {
+        MemberDto memberInfo = entityToDto(memberRepository.findById(SecurityUtil.getCurrentMemberId()).get());
         return memberInfo;
     }
 
     @Override
-    public String modifyMemberInfo(MemberDto dto){
+    public void modifyMemberInfo(MemberDto dto){
         if (dto.getName().isEmpty()) {
             throw new CommonException(ErrorCode.MODIFY_VALUE_EMPTY);
         }
 
-        Member modifiedMember = memberRepository.findById(dto.getMemberId()).get();
+        Member modifiedMember = memberRepository.findById(SecurityUtil.getCurrentMemberId()).orElseThrow(() -> new CommonException(ErrorCode.ID_NOT_FOUND));
         modifiedMember.modifyInfo(dto);
 
-        return memberRepository.save(modifiedMember).getMemberId();
+        memberRepository.save(modifiedMember);
     }
 
     @Override
-    public String modifyPassword(String memberId, String password, String passwordCheck){
-        if (password.isEmpty()) {
+    public void modifyPassword(PasswordCheckDto passwordCheckDto){
+        if (passwordCheckDto.getPassword()==null || passwordCheckDto.getPassword().isEmpty()) {
             throw new CommonException(ErrorCode.MODIFY_VALUE_EMPTY);
         }
 
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        Member member = memberRepository.findById(memberId).get();
+        Member member = memberRepository.findById(SecurityUtil.getCurrentMemberId()).orElseThrow(()-> new CommonException(ErrorCode.ID_NOT_FOUND));
 
-        if (encoder.matches(passwordCheck, member.getPassword())) {
-            member.modifyPassword(encoder.encode(password));
+        if (passwordEncoder.matches(passwordCheckDto.getPasswordCheck(), member.getPassword())) {
+            member.modifyPassword(passwordEncoder.encode(passwordCheckDto.getPassword()));
         } else {
             throw new CommonException(ErrorCode.PASSWORD_NOT_MATCH);
         }
-        return memberRepository.save(member).getMemberId();
+
+        memberRepository.save(member);
     }
 
     @Override
