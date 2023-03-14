@@ -1,6 +1,7 @@
 package com.share.my_todo.service.notice;
 
 import com.share.my_todo.DTO.notice.NoticeDto;
+import com.share.my_todo.config.SecurityUtil;
 import com.share.my_todo.entity.common.FollowNoticeMessage;
 import com.share.my_todo.entity.member.Member;
 import com.share.my_todo.entity.notice.Notice;
@@ -58,9 +59,9 @@ public class NoticeServiceImpl implements NoticeService{
     }
 
     @Override
-    public List<NoticeDto> getNotReadNoticeList(Member member) {
+    public List<NoticeDto> getNotReadNoticeList() {
         List<NoticeDto> noticeList = new ArrayList<>();
-        List<Notice> entityList = noticeRepository.findAllByMemberAndReadAtIsNull(member);
+        List<Notice> entityList = noticeRepository.findAllByMemberAndReadAtIsNull(Member.easyMakeMember(SecurityUtil.getCurrentMemberId()));
 
         if (!entityList.isEmpty()) {
             noticeList = entityList.stream().map(e -> entityToDto(e)).collect(Collectors.toList());
@@ -70,12 +71,15 @@ public class NoticeServiceImpl implements NoticeService{
     }
 
     @Override
-    public int readNotice(Member member) {
-        List<Notice> list = noticeRepository.findAllByMemberAndReadAtIsNull(member);
-        for (Notice notice : list) {
-            notice.readNotice();
+    public void readNotice() {
+        List<Notice> list = noticeRepository.findAllByMemberAndReadAtIsNull(Member.easyMakeMember(SecurityUtil.getCurrentMemberId()));
+
+        if (!list.isEmpty()) {
+            for (Notice notice : list) {
+                notice.readNotice();
+            }
+            noticeRepository.saveAll(list);
         }
-        return noticeRepository.saveAll(list).size();
     }
 
     @Override
@@ -86,10 +90,10 @@ public class NoticeServiceImpl implements NoticeService{
     }
 
     @Override
-    public Page<NoticeDto> getPrevNoticeList(Member member,int page) {
+    public Page<NoticeDto> getPrevNoticeList(int page) {
         Sort sort = Sort.by("noticeId").descending();
         Pageable pageable = PageRequest.of(page,30,sort); // page(번호)부터 10개씩 잘라서 보겠다
-        Page<Notice> entityList = noticeRepository.findAllByMemberAndReadAtIsNotNull(member,pageable);
+        Page<Notice> entityList = noticeRepository.findAllByMemberAndReadAtIsNotNull(Member.easyMakeMember(SecurityUtil.getCurrentMemberId()),pageable);
         if (!entityList.isEmpty()) {
             Page<NoticeDto> noticeList = entityList.map(e -> entityToDto(e));
             return noticeList;

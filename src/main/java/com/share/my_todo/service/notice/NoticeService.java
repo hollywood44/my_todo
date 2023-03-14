@@ -69,11 +69,11 @@ public interface NoticeService {
      */
     Notice makeFinishDateTomorrowNotice(String targetMemberId, String todoContent);
 
-    List<NoticeDto> getNotReadNoticeList(Member member);
+    List<NoticeDto> getNotReadNoticeList();
 
-    int readNotice(Member member);
+    void readNotice();
 
-    Page<NoticeDto> getPrevNoticeList(Member member,int page);
+    Page<NoticeDto> getPrevNoticeList(int page);
 
     int checkNotice(Member member);
 }

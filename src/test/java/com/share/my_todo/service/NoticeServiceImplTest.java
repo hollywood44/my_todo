@@ -30,7 +30,7 @@ class NoticeServiceImplTest {
 
     @Test
     void 알림조회테스트() {
-        List<NoticeDto> list = noticeService.getNotReadNoticeList(Member.builder().memberId("member7").build());
+        List<NoticeDto> list = noticeService.getNotReadNoticeList();
         if (!list.isEmpty()) {
             for (NoticeDto item : list) {
                 System.out.println(item.getNotice());
