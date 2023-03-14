@@ -65,7 +65,7 @@ public interface MemberService{
      */
     void modifyPassword(PasswordCheckDto passwordCheckDto);
 
-    void deleteAccount(String memberId, String password);
+    void deleteAccount(PasswordCheckDto passwordCheckDto);
 
     public TokenInfo login(String memberId, String password);
 }

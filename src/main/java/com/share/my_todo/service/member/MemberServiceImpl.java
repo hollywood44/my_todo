@@ -114,11 +114,10 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void deleteAccount(String memberId, String password){
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        Member check = memberRepository.findById(memberId).get();
+    public void deleteAccount(PasswordCheckDto passwordCheckDto){
+        Member check = memberRepository.findById(SecurityUtil.getCurrentMemberId()).orElseThrow(()->new CommonException(ErrorCode.ID_NOT_FOUND));
 
-        if (encoder.matches(password, check.getPassword())) {
+        if (passwordEncoder.matches(passwordCheckDto.getPasswordCheck(), check.getPassword())) {
             memberRepository.delete(check);
         } else {
             throw new CommonException(ErrorCode.PASSWORD_NOT_MATCH);

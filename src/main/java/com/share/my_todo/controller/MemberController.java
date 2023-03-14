@@ -84,6 +84,11 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.OK).body("info modify complete");
     }
 
+    /**
+     * 비밀번호 변경
+     * @param passwordCheckDto 바꿀 비밀번호, 체크를 위한 기존 비밀번호
+     * @return HttpStatus.OK 반환
+     */
     @PostMapping("/modify-password")
     public ResponseEntity<?> modifyPassword(@RequestBody PasswordCheckDto passwordCheckDto) {
         memberService.modifyPassword(passwordCheckDto);
@@ -91,22 +96,16 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.OK).body("password modify complete");
     }
 
-
-    //--------위는 바뀐 메서드--------//
-    //--------아래는 안바뀐 메서드--------//
-
-
     /**
      * 회원 탈퇴
-     * @param member
-     * @param password
-     * @return
+     * @param passwordCheckDto passwordCheck : 체크를 위한 기존 비밀번호
+     * @return HttpStatus.OK 반환
      */
     @PostMapping("/delete-account")
-    public String deleteAccount(@AuthenticationPrincipal Member member,@RequestParam("password") String password) {
-        memberService.deleteAccount(member.getMemberId(), password);
+    public ResponseEntity<?> deleteAccount(@RequestBody PasswordCheckDto passwordCheckDto) {
+        memberService.deleteAccount(passwordCheckDto);
 
-        return "redirect:/member/signIn";
+        return ResponseEntity.status(HttpStatus.OK).body("delete account complete");
     }
 
 }
