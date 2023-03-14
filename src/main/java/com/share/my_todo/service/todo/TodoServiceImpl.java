@@ -1,6 +1,7 @@
 package com.share.my_todo.service.todo;
 
 import com.share.my_todo.DTO.todo.TodoDto;
+import com.share.my_todo.config.SecurityUtil;
 import com.share.my_todo.entity.common.TodoProgress;
 import com.share.my_todo.entity.member.Member;
 import com.share.my_todo.entity.todo.Todo;
@@ -22,7 +23,7 @@ public class TodoServiceImpl implements TodoService{
     private final TodoRepository todoRepository;
 
     @Override
-    public Long postingTodo(TodoDto dto,Member member){
+    public void postingTodo(TodoDto dto){
         if (dto.getFinishDate() == null || dto.getFinishDate().isEmpty())
             throw new CommonException(ErrorCode.POSTING_VALUE_EMPTY);
         if(dto.getTodo() == null || dto.getTodo().isEmpty())
@@ -30,14 +31,15 @@ public class TodoServiceImpl implements TodoService{
 
         dto.setFinishDate(dto.getFinishDate().replace("-",""));
         dto.setProgress(TodoProgress.Proceeding);
-        dto.setMemberId(member.getMemberId());
+        dto.setMemberId(SecurityUtil.getCurrentMemberId());
 
         Todo todo = dtoToEntity(dto);
-        return todoRepository.save(todo).getTodoId();
+
+        todoRepository.save(todo).getTodoId();
     }
 
     @Override
-    public Long modifyTodo(TodoDto dto,Member member) {
+    public void modifyTodo(TodoDto dto) {
         if (dto.getFinishDate() == null || dto.getFinishDate().isEmpty())
             throw new CommonException(ErrorCode.MODIFY_VALUE_EMPTY);
         if(dto.getTodo() == null || dto.getTodo().isEmpty())
@@ -45,12 +47,12 @@ public class TodoServiceImpl implements TodoService{
 
         dto.setFinishDate(dto.getFinishDate().replace("-",""));
         dto.setProgress(TodoProgress.Proceeding);
-        dto.setMemberId(member.getMemberId());
+        dto.setMemberId(SecurityUtil.getCurrentMemberId());
 
-        Todo todo = todoRepository.findById(dto.getTodoId()).get();
+        Todo todo = todoRepository.findById(dto.getTodoId()).orElseThrow(() -> new CommonException(ErrorCode.TODO_NOT_FOUND));
         todo.modifyTodo(dto);
 
-        return todoRepository.save(todo).getTodoId();
+        todoRepository.save(todo);
     }
 
     @Override
@@ -81,8 +83,8 @@ public class TodoServiceImpl implements TodoService{
     }
 
     @Override
-    public List<TodoDto> getTodoList(String memberId) {
-        List<Todo> entityList = todoRepository.findByMemberAndProgress(Member.builder().memberId(memberId).build(),TodoProgress.Proceeding);
+    public List<TodoDto> getNotDoneTodoList() {
+        List<Todo> entityList = todoRepository.findByMemberAndProgress(Member.easyMakeMember(SecurityUtil.getCurrentMemberId()),TodoProgress.Proceeding);
         List<TodoDto> todoList = entityList.stream().map(entity -> entityToDto(entity)).collect(Collectors.toList());
 
         return todoList;

@@ -1,8 +1,10 @@
 package com.share.my_todo.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.share.my_todo.DTO.member.MemberDto;
 import com.share.my_todo.entity.common.Auth;
 import com.share.my_todo.entity.member.Member;
+import com.share.my_todo.service.member.MemberService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -51,7 +54,7 @@ class MemberControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
-        //Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MDEiLCJhdXRoIjoiUk9MRV9NRU1CRVIiLCJleHAiOjE2Nzg4MTgzMjV9.7D0xpUyhObD8yQunw56WU2h82aKyJ_Wm13AgjbCh7GE
+        //Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MDEiLCJhdXRoIjoiUk9MRV9NRU1CRVIiLCJleHAiOjE2Nzg4Njg4Mjl9.2FcujJhQlBWBSqUmOLMN6Z2bJN_709n5P5C9HVrlokg
     }
 
     @Test

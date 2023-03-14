@@ -68,6 +68,15 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
+    public String signUpForAdmin(MemberDto memberDto) {
+        memberDto.setPassword(passwordEncoder.encode(memberDto.getPassword()));
+        memberDto.setAuth(Auth.ADMIN);
+        Member member = dtoToEntity(memberDto);
+
+        return memberRepository.save(member).getMemberId();
+    }
+
+    @Override
     public boolean idCheck(String memberId) {
         return memberRepository.existsById(memberId);
     }

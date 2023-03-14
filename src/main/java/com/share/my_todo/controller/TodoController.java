@@ -4,6 +4,8 @@ import com.share.my_todo.DTO.todo.TodoDto;
 import com.share.my_todo.entity.member.Member;
 import com.share.my_todo.service.todo.TodoService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,61 +13,54 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Map;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
-@RequestMapping("/todo")
+@RequestMapping("/api/todos")
 public class TodoController {
 
     private final TodoService todoService;
 
-    @GetMapping("/main")
-    public String mainPage(@AuthenticationPrincipal Member member, Model model) {
-        List<TodoDto> notYetList = todoService.getTodoList(member.getMemberId());
-        model.addAttribute("todoList", notYetList);
+    @GetMapping("/list")
+    public ResponseEntity<List<TodoDto>> getNotDoneTodoList() {
+        List<TodoDto> notDoneList = todoService.getNotDoneTodoList();
 
-        return "todo/main";
+        return ResponseEntity.status(HttpStatus.OK).body(notDoneList);
+    }
+
+    @GetMapping("/detail/{todoId}")
+    public ResponseEntity<TodoDto> getTodoDetail(@PathVariable(name = "todoId") Long todoId) {
+        TodoDto detailData = todoService.getTodoDetail(todoId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(detailData);
     }
 
     @PostMapping("/posting")
-    public String posting(TodoDto posting, @AuthenticationPrincipal Member member) {
-        todoService.postingTodo(posting, member);
+    public ResponseEntity<?> todoPosting(@RequestBody TodoDto posting) {
+        todoService.postingTodo(posting);
 
-        return "redirect:/todo/main";
+        return ResponseEntity.status(HttpStatus.OK).body("todo posting complete");
     }
 
-    @GetMapping("/complete-todo")
-    public String completeTodo(@RequestParam("todoId") Long todoId) {
-        todoService.completeMyTodo(todoId);
+    @PostMapping("/complete")
+    public ResponseEntity<?> completeTodo(@RequestBody Map<String,Long> todoMap) {
+        todoService.completeMyTodo(todoMap.get("todoId"));
 
-        return "redirect:/todo/main";
-    }
-
-    @GetMapping("/modify-todo")
-    public String modifyTodoPage(@RequestParam("todoId") Long todoId, Model model, @AuthenticationPrincipal Member member, RedirectAttributes redirectAttributes) {
-        TodoDto item = todoService.getTodoDetail(todoId);
-
-        if (!member.getMemberId().equals(item.getMemberId())) {
-            redirectAttributes.addFlashAttribute("error", "접근 권한이 없습니다!");
-            return "redirect:/todo/main";
-        } else {
-            model.addAttribute("item", item);
-            return "todo/todoModify";
-        }
-
+        return ResponseEntity.status(HttpStatus.OK).body("todo complete");
     }
 
     @PostMapping("/modify")
-    public String modify(TodoDto modify, @AuthenticationPrincipal Member member) {
-        todoService.modifyTodo(modify, member);
+    public ResponseEntity<?> modifyTodo(@RequestBody TodoDto modifyData) {
+        todoService.modifyTodo(modifyData);
 
-        return "redirect:/todo/main";
+        return ResponseEntity.status(HttpStatus.OK).body("todo modify complete");
     }
 
     @PostMapping("/delete")
-    public String delete(@RequestParam(value = "todoId") Long todoId) {
-        todoService.deleteTodo(todoId);
+    public ResponseEntity<?> delete(@RequestBody Map<String, Long> todoMap) {
+        todoService.deleteTodo(todoMap.get("todoId"));
 
-        return "redirect:/todo/main";
+        return ResponseEntity.status(HttpStatus.OK).body("todo delete complete");
     }
 }

@@ -36,6 +36,8 @@ public interface MemberService{
      */
     String signUp(MemberDto memberDto);
 
+    String signUpForAdmin(MemberDto memberDto);
+
     boolean idCheck(String memberId);
 
     /**

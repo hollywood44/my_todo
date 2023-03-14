@@ -14,6 +14,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Map;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/members")
@@ -39,6 +41,8 @@ public class MemberController {
         return tokenInfo;
     }
 
+    //todo 로그아웃
+
 
     /**
      * 회원가입
@@ -54,12 +58,12 @@ public class MemberController {
 
     /**
      * 아이디 중복확인
-     * @param memberId 중복확인 할 아이디
+     * @param
      * @return true / false
      */
     @PostMapping("/signup/check")
-    public boolean idCheck(@RequestBody String memberId) {
-        return memberService.idCheck(memberId);
+    public boolean idCheck(@RequestBody Map<String,String> memberIdMap) {
+        return memberService.idCheck(memberIdMap.get("memberId"));
     }
 
     /**

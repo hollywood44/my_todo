@@ -79,11 +79,6 @@ class TodoServiceImplTest {
 
     @Test
     void 목록보기() {
-        List<TodoDto> list = todoService.getTodoList("member10");
-
-        for (TodoDto todo : list) {
-            System.out.println(todo.getTodoId());
-        }
 
     }
 

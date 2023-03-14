@@ -20,6 +20,14 @@ class MemberServiceTest {
     @Autowired
     MemberRepository memberRepository;
 
+
+    @Test
+    @Rollback(value = false)
+    void signUpForAdmin() {
+        MemberDto admin = MemberDto.builder().memberId("admin01").password("1234").name("admin01").build();
+        memberService.signUpForAdmin(admin);
+    }
+
     @Test
     @Rollback(value = false)
     void signUp(){

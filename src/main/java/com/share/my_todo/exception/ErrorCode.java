@@ -19,14 +19,17 @@ public enum ErrorCode {
     ID_DUPLICATED(HttpStatus.BAD_REQUEST,"ID_DUPLICATED","아이디가 중복됩니다."),
 
 
-    //posting exception
+    //common posting exception
     POSTING_ERROR(HttpStatus.INTERNAL_SERVER_ERROR,"POSTING_ERROR","등록에 실패했습니다."),
-    POSTING_VALUE_EMPTY(HttpStatus.BAD_REQUEST,"POSTING VALUE DOSE NOT EMPTY","빈 값은 제출하실 수 없습니다."),
+    POSTING_VALUE_EMPTY(HttpStatus.BAD_REQUEST,"POSTING_VALUE_DOSE_NOT_EMPTY","빈 값은 제출하실 수 없습니다."),
 
 
-    //modify exception
-    MODIFY_ERROR(HttpStatus.INTERNAL_SERVER_ERROR,"MODIFY ERROR", "수정에 실패했습니다."),
-    MODIFY_VALUE_EMPTY(HttpStatus.BAD_REQUEST,"MODIFY VALUE DOSE NOT EMPTY","수정할 정보는 비어 있을 수 없습니다.");
+    //common modify exception
+    MODIFY_ERROR(HttpStatus.INTERNAL_SERVER_ERROR,"MODIFY_ERROR", "수정에 실패했습니다."),
+    MODIFY_VALUE_EMPTY(HttpStatus.BAD_REQUEST,"MODIFY_VALUE_DOSE_NOT_EMPTY","수정할 정보는 비어 있을 수 없습니다."),
+
+    // todos exception
+    TODO_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "TODO_NOT_FOUND", "해당 할일을 찾을 수 없습니다.");
 
 
     private HttpStatus status;
