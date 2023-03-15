@@ -49,10 +49,9 @@ public interface FriendService {
 
     /**
      * 회원의 아이디를 가지고 해당 회원의 친구 목록을 불러옴
-     * @param memberId 회원아이디
      * @return 친구목록
      */
-    FriendListDto getFriendList(String memberId);
+    FriendListDto getFriendList();
 
     /**
      * 친구 팔로우<br/>
@@ -62,7 +61,7 @@ public interface FriendService {
      * @param followId 팔로우 할 친구 아이디
      * @return 성공하면 요청자 친구목록아이디 리턴
      */
-    Long followRequest(String myId, String followId);
+    void followRequest(String followId);
 
     /**
      * 팔루우 요청 수락<br/>
@@ -73,36 +72,30 @@ public interface FriendService {
      * @param followerId 팔로워 아이디
      * @return 성공하면 수락자 친구목록아이디 리턴
      */
-    Long followAccept(String myId, String followerId);
+    void followAccept(String followerId);
 
     /**
      * 팔로우 요청목록 반환
-     * @param myId 팔로우 받은 아이디
-     * @return 팔로우 요청온 목록 반환
+     * @return 팔로우 요청받은 목록 반환
      */
-    List<FriendDto> requestedFriendList(String myId);
+    List<FriendDto> requestedFriendList();
 
     /**
      * 내가 팔로우 요청한 목록 반환
-     * @param myId 팔로우 한 아이디
      * @return 내가 팔로우 요청한 목록 반환
      */
-    List<FriendDto> requestFriendList(String myId);
+    List<FriendDto> requestFriendList();
 
     /**
      * 팔로우 거절
-     * @param myId 거절 하는 사람 아이디
      * @param followerId 거절 받는 사람 아이디
-     * @return
      */
-    Long followReject(String myId, String followerId);
+    void followReject(String followerId);
 
     /**
      * 팔로우 해제
-     * @param myId 팔로우 해제하는 멤버 아이디
-     * @param followId 팔로우 해제당하는 멤버 아이디
-     * @return 삭제된 Friend.friendId 2개가 담긴 List<Long>타입 반환
+     * @param followId 팔로우 해체 할 아이디
      */
-    List<Long> unFollow(String myId, String followId);
+    void unFollow(String followId);
 
 }

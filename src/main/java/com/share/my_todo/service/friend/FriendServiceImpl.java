@@ -2,9 +2,12 @@ package com.share.my_todo.service.friend;
 
 import com.share.my_todo.DTO.member.FriendDto;
 import com.share.my_todo.DTO.member.FriendListDto;
+import com.share.my_todo.config.SecurityUtil;
 import com.share.my_todo.entity.member.Friend;
 import com.share.my_todo.entity.member.FriendList;
 import com.share.my_todo.entity.member.Member;
+import com.share.my_todo.exception.ErrorCode;
+import com.share.my_todo.exception.exceptionClass.CommonException;
 import com.share.my_todo.repository.friend.FriendListRepository;
 import com.share.my_todo.repository.friend.FriendRepository;
 import com.share.my_todo.repository.member.MemberRepository;
@@ -31,8 +34,9 @@ public class FriendServiceImpl implements FriendService {
 
     @Override
     @Transactional
-    public FriendListDto getFriendList(String memberId) {
-        Optional<FriendList> friendList = listRepository.findByMemberAndStatus(easyMakeMember(memberId), Friend.FollowStatus.Accept);
+    public FriendListDto getFriendList() {
+        Optional<FriendList> friendList = listRepository.findByMemberAndStatus(easyMakeMember(SecurityUtil.getCurrentMemberId()), Friend.FollowStatus.Accept);
+
         if (friendList.isPresent()) {
             FriendListDto friendListDto = entityToDtoForList(friendList.get());
             for (FriendDto friend : friendListDto.getFriendList()) {
@@ -50,17 +54,19 @@ public class FriendServiceImpl implements FriendService {
 
     @Override
     @Transactional
-    public Long followRequest(String myId, String followId){
+    public void followRequest(String followId){
+        String myId = SecurityUtil.getCurrentMemberId();
+
         // 팔로우 건 회원 친구목록 불러옴 그리고 여기 담길 Friend객체 생성
         FriendList friendList = listRepository.findByMember(Member.builder().memberId(myId).build()).get();
         Friend followFriend = Friend.builder().member(Member.builder().memberId(followId).build()).build();
 
         for (Friend friend : friendList.getFriendList()) {
             if (friend.getFollowStatus().equals(Friend.FollowStatus.Reject)) {
-                return 0001L;
+                throw new CommonException(ErrorCode.ALREADY_EXIST_FRIEND);
             }
             if (friend.getMember().getMemberId().equals(followId)) {
-                return 0000L;
+                throw new CommonException(ErrorCode.CAN_FOLLOW_AFTER_TWO_DAYS);
             }
         }
         // 팔로우 상태 세팅
@@ -80,12 +86,13 @@ public class FriendServiceImpl implements FriendService {
 
         // 친구목록 저장
         listRepository.save(followerFriendList);
-        return listRepository.save(friendList).getFriendListId();
+        listRepository.save(friendList);
     }
 
     @Override
     @Transactional
-    public Long followAccept(String myId, String followerId) {
+    public void followAccept(String followerId) {
+        String myId = SecurityUtil.getCurrentMemberId();
 
         noticeService.sendFollowAcceptNotice(myId, followerId);
 
@@ -108,13 +115,13 @@ public class FriendServiceImpl implements FriendService {
                 friendRepository.save(friend);
             }
         }
-
-        return friendId;
     }
 
     @Override
     @Transactional
-    public Long followReject(String myId, String followerId) {
+    public void followReject(String followerId) {
+        String myId = SecurityUtil.getCurrentMemberId();
+
         noticeService.sendFollowRejectNotice(myId, followerId);
 
         FriendList friendList = listRepository.findByMember(easyMakeMember(myId)).get();
@@ -136,17 +143,15 @@ public class FriendServiceImpl implements FriendService {
                 friendRepository.save(friend);
             }
         }
-
-        return friendId;
     }
 
     @Override
-    public List<FriendDto> requestedFriendList(String myId) {
-        FriendList friendList = listRepository.findByMember(Member.builder().memberId(myId).build()).get();
+    public List<FriendDto> requestedFriendList() {
+        Optional<FriendList> friendList = listRepository.findByMemberAndStatus(easyMakeMember(SecurityUtil.getCurrentMemberId()), Friend.FollowStatus.Requested);
         List<FriendDto> requestedList = new ArrayList<>();
 
-        for (Friend friend : friendList.getFriendList()) {
-            if (friend.getFollowStatus().equals(Friend.FollowStatus.Requested)) {
+        if (friendList.isPresent()) {
+            for (Friend friend : friendList.get().getFriendList()) {
                 requestedList.add(entityToDto(friend));
             }
         }
@@ -154,8 +159,8 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
-    public List<FriendDto> requestFriendList(String myId) {
-        Optional<FriendList> friendList = listRepository.findByMemberAndStatus(easyMakeMember(myId), Friend.FollowStatus.Waiting);
+    public List<FriendDto> requestFriendList() {
+        Optional<FriendList> friendList = listRepository.findByMemberAndStatus(easyMakeMember(SecurityUtil.getCurrentMemberId()), Friend.FollowStatus.Waiting);
         List<FriendDto> requestList = new ArrayList<>();
 
         if (friendList.isPresent()) {
@@ -169,7 +174,9 @@ public class FriendServiceImpl implements FriendService {
 
     @Override
     @Transactional
-    public List<Long> unFollow(String myId, String followId) {
+    public void unFollow(String followId) {
+        String myId = SecurityUtil.getCurrentMemberId();
+
         FriendList friendList = listRepository.findByMember(easyMakeMember(myId)).get();
         FriendList followerFriendList = listRepository.findByMember(easyMakeMember(followId)).get();
 
@@ -181,7 +188,5 @@ public class FriendServiceImpl implements FriendService {
         deleteList.add(myFriendId);
 
         friendRepository.deleteAllById(deleteList);
-
-        return deleteList;
     }
 }

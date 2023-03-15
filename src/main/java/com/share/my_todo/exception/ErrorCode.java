@@ -29,7 +29,11 @@ public enum ErrorCode {
     MODIFY_VALUE_EMPTY(HttpStatus.BAD_REQUEST,"MODIFY_VALUE_DOSE_NOT_EMPTY","수정할 정보는 비어 있을 수 없습니다."),
 
     // todos exception
-    TODO_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "TODO_NOT_FOUND", "해당 할일을 찾을 수 없습니다.");
+    TODO_NOT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR, "TODO_NOT_FOUND", "해당 할일을 찾을 수 없습니다."),
+
+    // about friend exception
+    ALREADY_EXIST_FRIEND(HttpStatus.BAD_REQUEST,"ALREADY_EXIST_FRIEND","이미 친구목록에 있는 친구입니다."),
+    CAN_FOLLOW_AFTER_TWO_DAYS(HttpStatus.BAD_REQUEST,"CAN_FOLLOW_AFTER_TWO_DAYS","상대방이 팔로우 거절시 이틀 후 자정부터 다시 팔로우 요청이 가능합니다.");
 
 
     private HttpStatus status;

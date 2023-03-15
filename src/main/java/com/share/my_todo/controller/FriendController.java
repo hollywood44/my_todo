@@ -1,81 +1,77 @@
 package com.share.my_todo.controller;
 
+import com.share.my_todo.DTO.member.FriendDto;
+import com.share.my_todo.DTO.member.FriendListDto;
 import com.share.my_todo.entity.member.Member;
 import com.share.my_todo.service.friend.FriendService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-@Controller
+import java.util.List;
+import java.util.Map;
+
+@RestController
 @RequiredArgsConstructor
-@RequestMapping("/friend")
+@RequestMapping("/api/friends")
 public class FriendController {
 
     private final FriendService friendService;
 
     @GetMapping("/list")
-    public String friendListPage(@AuthenticationPrincipal Member member, Model model) {
-        model.addAttribute("friendList", friendService.getFriendList(member.getMemberId()));
+    public ResponseEntity<FriendListDto> getFriendList() {
+        FriendListDto friendList = friendService.getFriendList();
 
-        return "member/friendList";
-    }
-
-    @PostMapping("/unfollow")
-    public String unfollow(@RequestParam("unfollowMemberId") String unfollowMemberId, @AuthenticationPrincipal Member member) {
-        friendService.unFollow(member.getMemberId(), unfollowMemberId);
-
-        return "redirect:/friend/list";
+        return ResponseEntity.status(HttpStatus.OK).body(friendList);
     }
 
     @GetMapping("/requested-list")
-    public String followRequestedListPage(@AuthenticationPrincipal Member member, Model model) {
-        model.addAttribute("requestedList", friendService.requestedFriendList(member.getMemberId()));
-        return "member/followRequested";
+    public ResponseEntity<List<FriendDto>> followRequestedListPage() {
+        List<FriendDto> requestedList = friendService.requestedFriendList();
+
+        return ResponseEntity.status(HttpStatus.OK).body(requestedList);
     }
 
     @GetMapping("/request-list")
-    public String followRequestList(@AuthenticationPrincipal Member member,Model model) {
-        model.addAttribute("requestList", friendService.requestFriendList(member.getMemberId()));
+    public ResponseEntity<List<FriendDto>> followRequestList() {
+        List<FriendDto> requestList = friendService.requestFriendList();
 
-        return "member/followRequest";
+        return ResponseEntity.status(HttpStatus.OK).body(requestList);
     }
 
-    @GetMapping("/follow-accept")
-    public String followAccept(@RequestParam("followerId") String followerId, @AuthenticationPrincipal Member member) {
-        friendService.followAccept(member.getMemberId(), followerId);
+    @PostMapping("/follow-accept")
+    public ResponseEntity<?> followAccept(@RequestBody Map<String,String> acceptMap) {
+        friendService.followAccept(acceptMap.get("followerId"));
 
-        return "redirect:/friend/list";
+        return ResponseEntity.status(HttpStatus.OK).body("follow accept success");
     }
 
-    @GetMapping("/follow-reject")
-    public String followReject(@RequestParam("followerId") String followerId, @AuthenticationPrincipal Member member) {
-        friendService.followReject(member.getMemberId(), followerId);
+    @PostMapping("/follow-reject")
+    public ResponseEntity<?> followReject(@RequestBody Map<String,String> rejectMap) {
+        friendService.followReject(rejectMap.get("followerId"));
 
-        return "redirect:/friend/list";
+        return ResponseEntity.status(HttpStatus.OK).body("follow Reject success");
     }
 
-    @GetMapping("/request-cancel")
-    public String followRequestCancel(@RequestParam("followId") String followId, @AuthenticationPrincipal Member member) {
-        friendService.unFollow(member.getMemberId(), followId);
-
-        return "redirect:/friend/list";
-    }
 
     @PostMapping("/follow-request")
-    public String followRequest(@RequestParam("followId") String followId, @AuthenticationPrincipal Member member, RedirectAttributes redirectAttributes) {
-        Long status = friendService.followRequest(member.getMemberId(), followId);
+    public ResponseEntity<?> followRequest(@RequestBody Map<String,String> requestMap) {
+        friendService.followRequest(requestMap.get("followId"));
 
-        if (status == 0000L) {
-            redirectAttributes.addFlashAttribute("msg", "이미 친구목록에 있는 친구입니다.");
-            return "redirect:/friend/list";
-        } else if (status == 0001L) {
-            redirectAttributes.addFlashAttribute("msg", "상대방이 팔로우 거절시 이틀 후 자정부터 다시 팔로우 요청이 가능합니다.");
-            return "redirect:/friend/list";
-        } else {
-            return "redirect:/friend/list";
-        }
+        return ResponseEntity.status(HttpStatus.OK).body("follow request success");
     }
+
+
+    @PostMapping({"/unfollow","/request-cancel"})
+    public ResponseEntity<?> unfollow(@RequestBody Map<String,String> unfollowMap) {
+        friendService.unFollow(unfollowMap.get("followId"));
+
+        return ResponseEntity.status(HttpStatus.OK).body("unfollow(cancel) success");
+    }
+
 }

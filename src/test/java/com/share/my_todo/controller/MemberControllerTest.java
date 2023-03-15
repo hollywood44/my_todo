@@ -19,10 +19,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import javax.transaction.Transactional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -54,11 +57,18 @@ class MemberControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
-        //Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MDEiLCJhdXRoIjoiUk9MRV9NRU1CRVIiLCJleHAiOjE2Nzg4Njg4Mjl9.2FcujJhQlBWBSqUmOLMN6Z2bJN_709n5P5C9HVrlokg
     }
 
     @Test
-    void signUp() {
+    void signUp()throws Exception {
+        MemberDto member = MemberDto.builder().memberId("test02").password("1234").name("test02").build();
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .post("/api/members/sign-up")
+                        .content(objectMapper.writeValueAsString(member))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print());
     }
 
     @Test
