@@ -2,7 +2,7 @@ package com.share.my_todo.service.friend;
 
 import com.share.my_todo.DTO.member.FriendDto;
 import com.share.my_todo.DTO.member.FriendListDto;
-import com.share.my_todo.config.SecurityUtil;
+import com.share.my_todo.util.SecurityUtil;
 import com.share.my_todo.entity.member.Friend;
 import com.share.my_todo.entity.member.FriendList;
 import com.share.my_todo.entity.member.Member;

@@ -5,6 +5,9 @@ import com.share.my_todo.DTO.member.PasswordCheckDto;
 import com.share.my_todo.entity.member.Member;
 import com.share.my_todo.config.login.TokenInfo;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 public interface MemberService{
 
     default Member dtoToEntity(MemberDto dto) {
@@ -62,12 +65,11 @@ public interface MemberService{
 
     /**
      * 비밀번호 변경
-     * @param memberId , password
+     * @param passwordCheckDto : memberId , password
      * @return 변경완료 된 아이디 리턴
      */
     void modifyPassword(PasswordCheckDto passwordCheckDto);
 
     void deleteAccount(PasswordCheckDto passwordCheckDto);
 
-    public TokenInfo login(String memberId, String password);
 }

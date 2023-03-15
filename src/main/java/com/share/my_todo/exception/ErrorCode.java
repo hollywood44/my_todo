@@ -37,7 +37,13 @@ public enum ErrorCode {
     CAN_FOLLOW_AFTER_TWO_DAYS(HttpStatus.BAD_REQUEST,"CAN_FOLLOW_AFTER_TWO_DAYS","상대방이 팔로우 거절시 이틀 후 자정부터 다시 팔로우 요청이 가능합니다."),
 
     // about board exception
-    BOARD_NOT_FOUND(HttpStatus.BAD_REQUEST,"BOARD_NOT_FOUND","해당 게시물을 찾을 수  없습니다.");
+    BOARD_NOT_FOUND(HttpStatus.BAD_REQUEST,"BOARD_NOT_FOUND","해당 게시물을 찾을 수  없습니다."),
+
+    // about jwt token
+    JWT_ACCESS_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED,"JWT_0001","엑세스 토큰이 만료되었습니다."),
+    JWT_REFRESH_TOKEN_NOT_FOUND(HttpStatus.UNAUTHORIZED,"JWT_0002","리프레쉬 토큰을 찾을 수 없습니다."),
+    JWT_REFRESH_TOKEN_EXPIRED(HttpStatus.UNAUTHORIZED,"JWT_0003","리프레쉬 토큰이 만료 되었습니다."),
+    JWT_REFRESH_TOKEN_NOT_MATCH(HttpStatus.UNAUTHORIZED,"JWT_0004","리프레쉬 토큰의 정보가 일치하지 않습니다.");
 
 
     private HttpStatus status;

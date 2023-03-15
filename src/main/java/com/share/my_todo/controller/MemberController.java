@@ -6,6 +6,7 @@ import com.share.my_todo.DTO.member.PasswordCheckDto;
 import com.share.my_todo.entity.member.Member;
 import com.share.my_todo.config.login.TokenInfo;
 import com.share.my_todo.service.member.MemberService;
+import com.share.my_todo.util.CookieUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 @RestController
@@ -28,18 +31,7 @@ public class MemberController {
         return "has role!";
     }
 
-    /**
-     * 로그인
-     * @param memberLoginRequestDto 아이디와 비밀번호
-     * @return 로그인 성공하면 토큰 반환
-     */
-    @PostMapping("/sign-in")
-    public TokenInfo login(@RequestBody MemberLoginRequestDto memberLoginRequestDto) {
-        String memberId = memberLoginRequestDto.getMemberId();
-        String password = memberLoginRequestDto.getPassword();
-        TokenInfo tokenInfo = memberService.login(memberId, password);
-        return tokenInfo;
-    }
+
 
     //todo 로그아웃
 

@@ -2,7 +2,10 @@ package com.share.my_todo.service.member;
 
 import com.share.my_todo.DTO.member.MemberDto;
 import com.share.my_todo.DTO.member.PasswordCheckDto;
-import com.share.my_todo.config.SecurityUtil;
+import com.share.my_todo.entity.member.RefreshToken;
+import com.share.my_todo.repository.member.RefreshTokenRepository;
+import com.share.my_todo.util.CookieUtil;
+import com.share.my_todo.util.SecurityUtil;
 import com.share.my_todo.entity.common.Auth;
 import com.share.my_todo.entity.member.FriendList;
 import com.share.my_todo.entity.member.Member;
@@ -12,15 +15,18 @@ import com.share.my_todo.config.login.JwtTokenProvider;
 import com.share.my_todo.config.login.TokenInfo;
 import com.share.my_todo.repository.friend.FriendListRepository;
 import com.share.my_todo.repository.member.MemberRepository;
+import com.share.my_todo.util.TokenUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 import java.util.Optional;
 
@@ -30,22 +36,9 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
     private final FriendListRepository friendListRepository;
-    private final AuthenticationManagerBuilder authenticationManagerBuilder;
-    private final JwtTokenProvider jwtTokenProvider;
 
     private final PasswordEncoder passwordEncoder;
 
-    @Override
-    public TokenInfo login(String memberId, String password) throws BadCredentialsException {
-
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(memberId, password);
-
-        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-
-        TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication);
-
-        return tokenInfo;
-    }
 
     @Override
     @Transactional

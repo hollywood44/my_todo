@@ -1,7 +1,7 @@
 package com.share.my_todo.service.todo;
 
 import com.share.my_todo.DTO.todo.TodoDto;
-import com.share.my_todo.config.SecurityUtil;
+import com.share.my_todo.util.SecurityUtil;
 import com.share.my_todo.entity.common.TodoProgress;
 import com.share.my_todo.entity.member.Member;
 import com.share.my_todo.entity.todo.Todo;

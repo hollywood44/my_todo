@@ -1,7 +1,7 @@
 package com.share.my_todo.service.board;
 
 import com.share.my_todo.DTO.board.BoardDto;
-import com.share.my_todo.config.SecurityUtil;
+import com.share.my_todo.util.SecurityUtil;
 import com.share.my_todo.entity.board.Board;
 import com.share.my_todo.entity.common.Auth;
 import com.share.my_todo.entity.common.BoardDetailStatus;

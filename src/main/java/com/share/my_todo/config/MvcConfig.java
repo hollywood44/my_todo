@@ -21,9 +21,9 @@ public class MvcConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("*","http://localhost:8080") // 자원 공유를 허락할 Origin을 지정
-                .allowedMethods("*");
-//                .allowCredentials(false) // 쿠키 요청
+                .allowedOrigins("http://localhost:8077") // 자원 공유를 허락할 Origin을 지정
+                .allowedMethods("GET","POST")
+                .allowCredentials(true); // 쿠키 요청
 //                .maxAge(3000) // preflight 요청에 대한 응답을 브라우저에서 캐싱하는 시간
     }
 }

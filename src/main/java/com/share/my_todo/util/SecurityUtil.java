@@ -1,4 +1,4 @@
-package com.share.my_todo.config;
+package com.share.my_todo.util;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
