@@ -1,77 +1,72 @@
 package com.share.my_todo.controller;
 
 import com.share.my_todo.DTO.board.BoardDto;
+import com.share.my_todo.entity.common.BoardDetailStatus;
 import com.share.my_todo.entity.member.Member;
 import com.share.my_todo.service.board.BoardService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-@Controller
+import java.util.Map;
+
+@RestController
 @RequiredArgsConstructor
-@RequestMapping("/board")
+@RequestMapping("/api/boards")
 public class BoardController {
 
     private final BoardService boardService;
 
-    @GetMapping
-    public String suggestPageMain(Model model, @RequestParam(name = "page", defaultValue = "1") int page) {
+    @GetMapping("/list")
+    public ResponseEntity<Page<BoardDto>> getAllBoardList(@RequestParam(name = "page", defaultValue = "1") int page) {
         page = page - 1;
-        model.addAttribute("boardList", boardService.getAllBoardList(page, 10));
-        model.addAttribute("maxPage", 10);
-        return "suggestBoard/suggestBoard";
+        Page<BoardDto> boardList = boardService.getAllBoardList(page, 10);
+
+        return ResponseEntity.status(HttpStatus.OK).body(boardList);
     }
 
-    @GetMapping("/suggest-posting")
-    public String suggestPostingPage() {
-        return "suggestBoard/boardPosting";
+    @GetMapping("/detail/{boardId}")
+    public ResponseEntity<BoardDto> getBoardDetail(@PathVariable Long boardId) {
+        BoardDto detail = boardService.getPostDetail(boardId, BoardDetailStatus.DETAIL);
+
+        return ResponseEntity.status(HttpStatus.OK).body(detail);
     }
 
-    @GetMapping("/suggest-detail")
-    public String suggestPostingDetailPage(@RequestParam("boardId") Long boardId, Model model) {
-        model.addAttribute("detail", boardService.postDetail(boardId));
+    @GetMapping("/detail/modify/{boardId}")
+    public ResponseEntity<BoardDto> suggestModifyPage(@PathVariable Long boardId) {
+        BoardDto board = boardService.getPostDetail(boardId, BoardDetailStatus.MODIFY);
 
-        return "suggestBoard/boardDetail";
+        board.setContent(board.getContent().replace("<br>", "\n"));
+
+        return ResponseEntity.status(HttpStatus.OK).body(board);
     }
 
-    @GetMapping("/suggest-modify")
-    public String suggestModifyPage(Model model, @RequestParam("boardId")Long boardId, @AuthenticationPrincipal Member member, RedirectAttributes redirectAttributes) {
-        BoardDto board = boardService.postDetail(boardId);
-
-        if (member.getMemberId().equals(board.getWriter())) {
-            board.setContent(board.getContent().replace("<br>", "\n"));
-            model.addAttribute("board", boardService.postDetail(boardId));
-            return "suggestBoard/boardModify";
-        } else {
-            redirectAttributes.addFlashAttribute("msg", "권한없는 접근입니다!");
-            return "redirect:/board";
-        }
-    }
-
-    @PostMapping("/suggest-posting")
-    public String suggestPosting(BoardDto boardDto, @AuthenticationPrincipal Member member) {
-        boardDto.setWriter(member.getMemberId());
-        boardDto.setContent(boardDto.getContent().replace("\n", "<br>"));
+    @PostMapping("/posting")
+    public ResponseEntity<?> suggestPosting(BoardDto boardDto) {
         boardService.boardPosting(boardDto);
 
-        return "redirect:/board";
+        return ResponseEntity.status(HttpStatus.OK).body("posting success");
     }
 
-    @PostMapping("/suggest-modify")
-    public String suggestModify(BoardDto boardDto) {
-        boardDto.setContent(boardDto.getContent().replace("\n", "<br>"));
+    @PostMapping("/modify")
+    public ResponseEntity<?> suggestModify(BoardDto boardDto) {
         boardService.modifyPost(boardDto);
 
-        return "redirect:/board";
+        return ResponseEntity.status(HttpStatus.OK).body("modify success");
     }
 
     @PostMapping("/delete")
-    public String deletePost(@RequestParam("boardId")Long boardId) {
-        boardService.deletePost(boardId);
+    public String deletePost(@RequestBody Map<String,Long> boardMap) {
+        boardService.deletePost(boardMap.get("boardId"));
 
         return "redirect:/board";
     }
+
+
 }

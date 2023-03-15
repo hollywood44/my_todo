@@ -14,6 +14,7 @@ public enum ErrorCode {
     PASSWORD_NOT_MATCH(HttpStatus.BAD_REQUEST,"PASSWORD_NOT_MATCH","비밀번호가 일치하지 않습니다."),
     ID_NOT_FOUND(HttpStatus.BAD_REQUEST,"ID_NOT_FOUND","아이디를 찾을 수 없습니다."),
     LOGIN_ERROR(HttpStatus.BAD_REQUEST,"ID_OR_PASSWORD_WRONG","아이디 혹은 비밀번호가 틀렸습니다."),
+    ACCESS_DENIED(HttpStatus.BAD_REQUEST,"ACCESS_DENIED","권한 없는 접근입니다."),
 
     //sign up exception
     ID_DUPLICATED(HttpStatus.BAD_REQUEST,"ID_DUPLICATED","아이디가 중복됩니다."),
@@ -33,7 +34,10 @@ public enum ErrorCode {
 
     // about friend exception
     ALREADY_EXIST_FRIEND(HttpStatus.BAD_REQUEST,"ALREADY_EXIST_FRIEND","이미 친구목록에 있는 친구입니다."),
-    CAN_FOLLOW_AFTER_TWO_DAYS(HttpStatus.BAD_REQUEST,"CAN_FOLLOW_AFTER_TWO_DAYS","상대방이 팔로우 거절시 이틀 후 자정부터 다시 팔로우 요청이 가능합니다.");
+    CAN_FOLLOW_AFTER_TWO_DAYS(HttpStatus.BAD_REQUEST,"CAN_FOLLOW_AFTER_TWO_DAYS","상대방이 팔로우 거절시 이틀 후 자정부터 다시 팔로우 요청이 가능합니다."),
+
+    // about board exception
+    BOARD_NOT_FOUND(HttpStatus.BAD_REQUEST,"BOARD_NOT_FOUND","해당 게시물을 찾을 수  없습니다.");
 
 
     private HttpStatus status;

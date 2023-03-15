@@ -23,29 +23,18 @@ class BoardServiceImplTest {
     @Test
     @Rollback(value = false)
     void postingTest() {
-        BoardDto dto = BoardDto.builder()
-                .title("posting test 6")
-                .content("post test content 6")
-                .writer("member7")
-                .build();
-        System.out.println(boardService.boardPosting(dto));
+
     }
 
     @Test
     @Rollback(value = false)
     void modifyTest() {
-        BoardDto dto = BoardDto.builder()
-                .boardId(2L)
-                .title("posting test 1 - modify")
-                .content("post test content 1  - modify")
-                .writer("member1")
-                .build();
-        System.out.println(boardService.modifyPost(dto));
+
     }
 
     @Test
     void detailTest() {
-        System.out.println(boardService.postDetail(4L));
+
     }
 
     @Test

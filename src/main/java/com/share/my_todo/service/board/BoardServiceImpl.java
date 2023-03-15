@@ -1,10 +1,15 @@
 package com.share.my_todo.service.board;
 
 import com.share.my_todo.DTO.board.BoardDto;
+import com.share.my_todo.config.SecurityUtil;
 import com.share.my_todo.entity.board.Board;
+import com.share.my_todo.entity.common.Auth;
+import com.share.my_todo.entity.common.BoardDetailStatus;
 import com.share.my_todo.entity.common.CommonNotice;
 import com.share.my_todo.entity.member.Member;
 import com.share.my_todo.entity.notice.Notice;
+import com.share.my_todo.exception.ErrorCode;
+import com.share.my_todo.exception.exceptionClass.CommonException;
 import com.share.my_todo.repository.board.BoardRepository;
 import com.share.my_todo.repository.notice.NoticeRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,16 +31,19 @@ public class BoardServiceImpl implements BoardService{
     private final NoticeRepository noticeRepository;
 
     @Override
-    public Long boardPosting(BoardDto dto) {
+    public void boardPosting(BoardDto dto) {
+        dto.setWriter(SecurityUtil.getCurrentMemberId());
+        dto.setContent(dto.getContent().replace("\n", "<br>"));
         dto.setAnswer(false);
+
         Board post = dtoToEntity(dto);
 
-        return boardRepository.save(post).getBoardId();
+        boardRepository.save(post);
     }
 
     @Override
     @Transactional
-    public Long answerPosting(BoardDto dto) {
+    public void answerPosting(BoardDto dto) {
         List<Board> saveList = new ArrayList<>();
 
         Board parentBoard = boardRepository.findById(dto.getParentId()).get();
@@ -49,26 +57,34 @@ public class BoardServiceImpl implements BoardService{
 
         Notice notice = Notice.builder().member(Member.builder().memberId(dto.getWriter()).build()).notice(CommonNotice.SUGGEST_ANSWER.getStatus()).build();
         noticeRepository.save(notice);
-
-        return dto.getParentId();
     }
 
     @Override
-    public Long modifyPost(BoardDto dto) {
+    public void modifyPost(BoardDto dto) {
+        dto.setContent(dto.getContent().replace("\n", "<br>"));
+
         Board modifiedPost = boardRepository.findById(dto.getBoardId()).get();
         modifiedPost.modifyPost(dto);
 
-        return boardRepository.save(modifiedPost).getBoardId();
+        boardRepository.save(modifiedPost);
     }
 
     @Override
-    public BoardDto postDetail(Long boardId) {
-        Board board = boardRepository.findById(boardId).get();
+    public BoardDto getPostDetail(Long boardId, BoardDetailStatus status) {
+        Board board = boardRepository.findById(boardId).orElseThrow(()-> new CommonException(ErrorCode.BOARD_NOT_FOUND));
+
+        if (status.equals(BoardDetailStatus.MODIFY)) {
+            if (!board.getWriter().getMemberId().equals(SecurityUtil.getCurrentMemberId())) {
+                throw new CommonException(ErrorCode.ACCESS_DENIED);
+            }
+        }
+
         BoardDto detailBoard = entityToDto(board);
 
         if (board.isAnswer()) {
             detailBoard.setAnswerBoard(entityToDto(boardRepository.findByParentId(boardId)));
         }
+
         return detailBoard;
     }
 
@@ -84,21 +100,21 @@ public class BoardServiceImpl implements BoardService{
 
     @Override
     @Transactional
-    public Long deletePost(Long boardId){
-        try {
-            List<Board> deleteList = new ArrayList<>();
-            Board board = boardRepository.findById(boardId).get();
-            deleteList.add(board);
-            if (board.isAnswer()) {
-                Board child = boardRepository.findByParentId(boardId);
-                deleteList.add(child);
-            }
-            boardRepository.deleteAll(deleteList);
-        }catch (Exception e){
-            e.printStackTrace();
-            throw new RuntimeException("게시물 삭제 중 오류 발생");
+    public void deletePost(Long boardId) {
+        Board board = boardRepository.findById(boardId).get();
+
+        if (!board.getWriter().getMemberId().equals(SecurityUtil.getCurrentMemberId()) || !board.getWriter().getAuth().equals(Auth.ADMIN)) {
+            throw new CommonException(ErrorCode.ACCESS_DENIED);
         }
-        return boardId;
+
+        List<Board> deleteList = new ArrayList<>();
+        deleteList.add(board);
+
+        if (board.isAnswer()) {
+            Board child = boardRepository.findByParentId(boardId);
+            deleteList.add(child);
+            boardRepository.deleteAll(deleteList);
+        }
     }
 
 }
