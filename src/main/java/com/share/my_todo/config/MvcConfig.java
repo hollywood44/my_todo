@@ -1,6 +1,8 @@
 package com.share.my_todo.config;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -22,8 +24,9 @@ public class MvcConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins("http://localhost:8077") // 자원 공유를 허락할 Origin을 지정
-                .allowedMethods("GET","POST")
-                .allowCredentials(true); // 쿠키 요청
-//                .maxAge(3000) // preflight 요청에 대한 응답을 브라우저에서 캐싱하는 시간
+                .allowedMethods("GET","POST","PUT","DELETE","OPTIONS","PATCH")
+                .allowCredentials(true)// 쿠키 요청
+                .exposedHeaders(HttpHeaders.AUTHORIZATION)
+                .maxAge(3600); // preflight 요청에 대한 응답을 브라우저에서 캐싱하는 시간
     }
 }

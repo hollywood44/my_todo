@@ -8,6 +8,7 @@ import com.share.my_todo.exception.exceptionClass.CommonException;
 import com.share.my_todo.repository.member.RefreshTokenRepository;
 import com.share.my_todo.util.CookieUtil;
 import com.share.my_todo.util.TokenUtil;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -31,7 +32,7 @@ public class AuthService {
     private final JwtTokenProvider jwtTokenProvider;
 
 
-    public TokenInfo login(String memberId, String password) throws BadCredentialsException {
+    public TokenInfo login(String memberId, String password,HttpServletResponse response) throws BadCredentialsException {
 
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(memberId, password);
 
@@ -42,18 +43,19 @@ public class AuthService {
         RefreshToken refreshToken = RefreshToken.builder().memberId(memberId).refreshToken(tokenInfo.getRefreshToken()).build();
         tokenRepository.save(refreshToken);
 
+        CookieUtil.setCookie(response,"refreshToken",tokenInfo.getRefreshToken(),60*1000);
+        tokenInfo.setRefreshToken("httpOnly");
+
         return tokenInfo;
     }
 
     public void logout(HttpServletRequest request) {
         String accessToken = TokenUtil.resolveToken(request);
         String memberId = jwtTokenProvider.getSubject(accessToken);
-
-
     }
 
 
-    public TokenInfo makeNewAccessToken(HttpServletRequest request, HttpServletResponse response) {
+    public TokenInfo makeNewToken(HttpServletRequest request, HttpServletResponse response) {
         String accessToken = TokenUtil.resolveToken(request);
         String memberId = jwtTokenProvider.getSubject(accessToken);
 
@@ -69,13 +71,25 @@ public class AuthService {
             }
         }
 
-        boolean isRefreshTokenValid = jwtTokenProvider.validateToken(refreshToken.getRefreshToken());
+        boolean isRefreshTokenValid = false;
+
+        try {
+            isRefreshTokenValid = jwtTokenProvider.validateToken(refreshToken.getRefreshToken());
+        } catch (ExpiredJwtException ex) {
+            throw new CommonException(ErrorCode.JWT_REFRESH_TOKEN_EXPIRED);
+        }
 
         if (isRefreshTokenValid) {
             Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
-            TokenInfo newAccessToken = jwtTokenProvider.makeNewAccessToken(authentication);
+            TokenInfo newToken = jwtTokenProvider.generateToken(authentication);
 
-            return newAccessToken;
+            RefreshToken refreshTokenDB = RefreshToken.builder().memberId(memberId).refreshToken(newToken.getRefreshToken()).build();
+            tokenRepository.save(refreshTokenDB);
+
+            CookieUtil.setCookie(response,"refreshToken",newToken.getRefreshToken(),60*1000);
+            newToken.setRefreshToken("httpOnly");
+
+            return newToken;
         } else {
             throw new CommonException(ErrorCode.JWT_REFRESH_TOKEN_EXPIRED);
         }

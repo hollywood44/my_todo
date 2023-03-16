@@ -8,10 +8,15 @@ import com.share.my_todo.util.TokenUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
+import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.filter.GenericFilterBean;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -25,23 +30,24 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Slf4j
-public class JwtAuthenticationFilter extends GenericFilterBean {
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
 
+
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-
-        // 1. Request Header 에서 JWT 토큰 추출
-        String token = TokenUtil.resolveToken((HttpServletRequest) request);
-        String path = ((HttpServletRequest) request).getServletPath();
-
-        // 2. validateToken 으로 토큰 유효성 검사
+    public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         try {
-            if (path.startsWith("/api/members/new-token")) {
+            String path =  request.getServletPath();
+            String token = TokenUtil.resolveToken(request);
+            boolean validate = false;
+            if (token != null) {
+                validate = jwtTokenProvider.validateToken(token);
+            }
+
+            if (path.startsWith("/api/auth/new-token") || request.getMethod().equals("OPTIONS") || CorsUtils.isPreFlightRequest(request)) {
                 chain.doFilter(request, response);
-            } else if (token != null && jwtTokenProvider.validateToken(token)) {
-                // 토큰이 유효할 경우 토큰에서 Authentication 객체를 가지고 와서 SecurityContext 에 저장
+            } else if (token != null && validate) {
                 Authentication authentication = jwtTokenProvider.getAuthentication(token);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -50,12 +56,11 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
                 chain.doFilter(request, response);
             }
         } catch (ExpiredJwtException e) {
+            System.out.println("토큰 만료!!");
             ErrorResponse errorResponse = new ErrorResponse(ErrorCode.JWT_ACCESS_TOKEN_EXPIRED);
-            ((HttpServletResponse) response).setCharacterEncoding("UTF-8");
-            ((HttpServletResponse) response).setStatus(401);
-            ((HttpServletResponse) response).getWriter().write(new ObjectMapper().writeValueAsString(errorResponse));
-            ((HttpServletResponse) response).getWriter().flush();
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
+            chain.doFilter(request,response);
         }
-
     }
 }
+
