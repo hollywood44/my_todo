@@ -41,7 +41,7 @@ public interface TodoService {
     }
 
     default String dateToString(LocalDate date) {
-        String changeDate = date.format(DateTimeFormatter.ofPattern("~yyyy-MM-dd"));
+        String changeDate = date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         return changeDate;
     }
 
