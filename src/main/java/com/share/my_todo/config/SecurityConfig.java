@@ -46,9 +46,9 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 .antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
-                .antMatchers("/api/auth/**").permitAll()
-                .antMatchers("/api/members/**","/api/todos/**").hasRole("MEMBER")
                 .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/api/auth/**").permitAll()
+                .antMatchers("/api/members/**","/api/todos/**","/api/boards/**","/api/friends/**","/api/notice/**").hasRole("MEMBER")
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
