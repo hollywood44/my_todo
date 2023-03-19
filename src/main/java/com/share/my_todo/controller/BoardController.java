@@ -48,24 +48,24 @@ public class BoardController {
     }
 
     @PostMapping("/posting")
-    public ResponseEntity<?> suggestPosting(BoardDto boardDto) {
+    public ResponseEntity<?> suggestPosting(@RequestBody BoardDto boardDto) {
         boardService.boardPosting(boardDto);
 
         return ResponseEntity.status(HttpStatus.OK).body("posting success");
     }
 
     @PostMapping("/modify")
-    public ResponseEntity<?> suggestModify(BoardDto boardDto) {
+    public ResponseEntity<?> suggestModify(@RequestBody BoardDto boardDto) {
         boardService.modifyPost(boardDto);
 
         return ResponseEntity.status(HttpStatus.OK).body("modify success");
     }
 
     @PostMapping("/delete")
-    public String deletePost(@RequestBody Map<String,Long> boardMap) {
+    public ResponseEntity<?> deletePost(@RequestBody Map<String,Long> boardMap) {
         boardService.deletePost(boardMap.get("boardId"));
 
-        return "redirect:/board";
+        return ResponseEntity.status(HttpStatus.OK).body(boardMap.get("boardId")+" " + "delete success");
     }
 
 

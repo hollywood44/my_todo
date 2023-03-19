@@ -53,7 +53,7 @@ public interface BoardService {
 
     /**
      * 게시글 작성
-     * @param dto 제목, 내용, 글쓴이 가 포함되어 있는 dto
+     * @param dto 제목, 내용이 포함되어 있는 dto
      * @return Long타입의 작성이 완료된 글의 게시글 번호
      */
     void boardPosting(BoardDto dto);

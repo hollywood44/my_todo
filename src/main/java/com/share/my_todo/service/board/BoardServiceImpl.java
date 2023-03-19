@@ -1,6 +1,7 @@
 package com.share.my_todo.service.board;
 
 import com.share.my_todo.DTO.board.BoardDto;
+import com.share.my_todo.repository.member.MemberRepository;
 import com.share.my_todo.util.SecurityUtil;
 import com.share.my_todo.entity.board.Board;
 import com.share.my_todo.entity.common.Auth;
@@ -29,9 +30,16 @@ public class BoardServiceImpl implements BoardService{
 
     private final BoardRepository boardRepository;
     private final NoticeRepository noticeRepository;
+    private final MemberRepository memberRepository;
 
     @Override
     public void boardPosting(BoardDto dto) {
+        if (dto.getTitle() == null || dto.getTitle().isEmpty()) {
+            throw new CommonException(ErrorCode.POSTING_VALUE_EMPTY);
+        }
+        if (dto.getContent() == null || dto.getContent().isEmpty()) {
+            throw new CommonException(ErrorCode.POSTING_VALUE_EMPTY);
+        }
         dto.setWriter(SecurityUtil.getCurrentMemberId());
         dto.setContent(dto.getContent().replace("\n", "<br>"));
         dto.setAnswer(false);
@@ -61,6 +69,13 @@ public class BoardServiceImpl implements BoardService{
 
     @Override
     public void modifyPost(BoardDto dto) {
+        if (dto.getTitle() == null || dto.getTitle().isEmpty()) {
+            throw new CommonException(ErrorCode.POSTING_VALUE_EMPTY);
+        }
+        if (dto.getContent() == null || dto.getContent().isEmpty()) {
+            throw new CommonException(ErrorCode.POSTING_VALUE_EMPTY);
+        }
+
         dto.setContent(dto.getContent().replace("\n", "<br>"));
 
         Board modifiedPost = boardRepository.findById(dto.getBoardId()).get();
@@ -102,18 +117,20 @@ public class BoardServiceImpl implements BoardService{
     @Transactional
     public void deletePost(Long boardId) {
         Board board = boardRepository.findById(boardId).get();
+        Member isAdmin = memberRepository.findById(SecurityUtil.getCurrentMemberId()).get();
 
-        if (!board.getWriter().getMemberId().equals(SecurityUtil.getCurrentMemberId()) || !board.getWriter().getAuth().equals(Auth.ADMIN)) {
+        if (isAdmin.getAuth() == Auth.ADMIN ||
+                board.getWriter().getMemberId().equals(SecurityUtil.getCurrentMemberId())) {
+            List<Board> deleteList = new ArrayList<>();
+            deleteList.add(board);
+
+            if (board.isAnswer()) {
+                Board child = boardRepository.findByParentId(boardId);
+                deleteList.add(child);
+                boardRepository.deleteAll(deleteList);
+            }
+        } else {
             throw new CommonException(ErrorCode.ACCESS_DENIED);
-        }
-
-        List<Board> deleteList = new ArrayList<>();
-        deleteList.add(board);
-
-        if (board.isAnswer()) {
-            Board child = boardRepository.findByParentId(boardId);
-            deleteList.add(child);
-            boardRepository.deleteAll(deleteList);
         }
     }
 

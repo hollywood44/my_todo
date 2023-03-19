@@ -65,11 +65,12 @@ public class TodoServiceImpl implements TodoService{
     @Override
     @Transactional
     public Long deleteTodo(Long todoId) {
-        try {
-            todoRepository.deleteById(todoId);
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-            throw new RuntimeException("할일 삭제 중 오류 발생");
+        Todo check = todoRepository.findById(todoId).orElseThrow(() -> new CommonException(ErrorCode.TODO_NOT_FOUND));
+
+        if (!check.getMember().getMemberId().equals(SecurityUtil.getCurrentMemberId())) {
+            throw new CommonException(ErrorCode.ACCESS_DENIED);
+        } else {
+            todoRepository.delete(check);
         }
         return todoId;
     }
@@ -77,6 +78,9 @@ public class TodoServiceImpl implements TodoService{
     @Override
     public TodoDto getTodoDetail(Long todoId) {
         Todo todo = todoRepository.findById(todoId).get();
+        if (!SecurityUtil.getCurrentMemberId().equals(todo.getMember().getMemberId())) {
+            throw new CommonException(ErrorCode.ACCESS_DENIED);
+        }
         TodoDto detail = entityToDto(todo);
 
         return detail;

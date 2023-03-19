@@ -37,29 +37,31 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-        try {
-            String path =  request.getServletPath();
-            String token = TokenUtil.resolveToken(request);
-            boolean validate = false;
-            if (token != null) {
-                validate = jwtTokenProvider.validateToken(token);
-            }
+        String path = request.getServletPath();
 
-            if (path.startsWith("/api/auth/new-token") || request.getMethod().equals("OPTIONS") || CorsUtils.isPreFlightRequest(request)) {
-                chain.doFilter(request, response);
-            } else if (token != null && validate) {
-                Authentication authentication = jwtTokenProvider.getAuthentication(token);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+        if (path.startsWith("/api/auth/new-token") || request.getMethod().equals("OPTIONS") || CorsUtils.isPreFlightRequest(request)) {
+            chain.doFilter(request, response);
+        } else {
+            try {
+                String token = TokenUtil.resolveToken(request);
+                boolean validate = false;
+                if (token != null) {
+                    validate = jwtTokenProvider.validateToken(token);
+                }
 
-                chain.doFilter(request, response);
-            } else {
-                chain.doFilter(request, response);
+                if (token != null && validate) {
+                    Authentication authentication = jwtTokenProvider.getAuthentication(token);
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+
+                    chain.doFilter(request, response);
+                } else {
+                    chain.doFilter(request, response);
+                }
+            } catch (ExpiredJwtException e) {
+                System.out.println("토큰 만료!!");
+                ErrorResponse errorResponse = new ErrorResponse(ErrorCode.JWT_ACCESS_TOKEN_EXPIRED);
+                response.sendError(HttpStatus.UNAUTHORIZED.value(), ErrorCode.JWT_ACCESS_TOKEN_EXPIRED.getErrorCode());
             }
-        } catch (ExpiredJwtException e) {
-            System.out.println("토큰 만료!!");
-            ErrorResponse errorResponse = new ErrorResponse(ErrorCode.JWT_ACCESS_TOKEN_EXPIRED);
-            response.setStatus(HttpStatus.UNAUTHORIZED.value());
-            chain.doFilter(request,response);
         }
     }
 }

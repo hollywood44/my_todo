@@ -1,11 +1,13 @@
 package com.share.my_todo.controller;
 
+import com.share.my_todo.DTO.member.MemberDto;
 import com.share.my_todo.DTO.member.MemberLoginRequestDto;
 import com.share.my_todo.config.login.JwtTokenProvider;
 import com.share.my_todo.config.login.TokenInfo;
 import com.share.my_todo.exception.ErrorCode;
 import com.share.my_todo.exception.exceptionClass.CommonException;
 import com.share.my_todo.service.member.AuthService;
+import com.share.my_todo.service.member.MemberService;
 import com.share.my_todo.util.CookieUtil;
 import com.share.my_todo.util.TokenUtil;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -27,6 +30,29 @@ public class AuthController {
 
     private final AuthService authService;
     private final JwtTokenProvider jwtTokenProvider;
+    private final MemberService memberService;
+
+    /**
+     * 회원가입
+     * @param signUpData 아이디,이름,비밀번호
+     * @return 회원가입 완료된 아이디
+     */
+    @PostMapping("/sign-up")
+    public ResponseEntity<String> signUp(@RequestBody MemberDto signUpData) {
+        String signUpID = memberService.signUp(signUpData);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(signUpID);
+    }
+
+    /**
+     * 아이디 중복확인
+     * @param
+     * @return true / false
+     */
+    @GetMapping("/signup/check")
+    public boolean idCheck(@RequestBody Map<String,String> memberIdMap) {
+        return memberService.idCheck(memberIdMap.get("memberId"));
+    }
 
     /**
      * 로그인

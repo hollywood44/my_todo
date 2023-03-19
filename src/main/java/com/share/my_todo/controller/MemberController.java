@@ -26,37 +26,7 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @GetMapping("/test")
-    public String test(){
-        return "has role!";
-    }
 
-
-
-    //todo 로그아웃
-
-
-    /**
-     * 회원가입
-     * @param signUpData 아이디,이름,비밀번호
-     * @return 회원가입 완료된 아이디
-     */
-    @PostMapping("/sign-up")
-    public ResponseEntity<String> signUp(@RequestBody MemberDto signUpData) {
-        String signUpID = memberService.signUp(signUpData);
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(signUpID);
-    }
-
-    /**
-     * 아이디 중복확인
-     * @param
-     * @return true / false
-     */
-    @PostMapping("/signup/check")
-    public boolean idCheck(@RequestBody Map<String,String> memberIdMap) {
-        return memberService.idCheck(memberIdMap.get("memberId"));
-    }
 
     /**
      * 회원 정보 불러옴
