@@ -30,13 +30,11 @@ public class NoticeController {
     }
 
     @GetMapping("/checkNotice")
-    public int checkNotice(@AuthenticationPrincipal Member member) {
-        if (member.getMemberId().isEmpty()) {
-            return 0;
-        } else {
-            int noticeCount = noticeService.checkNotice(member);
-            return noticeCount;
-        }
+    public ResponseEntity<Integer> checkNotice() {
+        Integer noticeCount = noticeService.checkNotice();
+
+        return ResponseEntity.status(HttpStatus.OK).body(noticeCount);
+
     }
 
     @GetMapping("/readNotice")

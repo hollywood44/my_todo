@@ -61,12 +61,13 @@ public class FriendServiceImpl implements FriendService {
         FriendList friendList = listRepository.findByMember(Member.builder().memberId(myId).build()).get();
         Friend followFriend = Friend.builder().member(Member.builder().memberId(followId).build()).build();
 
+        // todo 리팩토링해서 성능 향상 기대
         for (Friend friend : friendList.getFriendList()) {
-            if (friend.getFollowStatus().equals(Friend.FollowStatus.Reject)) {
-                throw new CommonException(ErrorCode.ALREADY_EXIST_FRIEND);
+            if (friend.getFollowStatus().equals(Friend.FollowStatus.Reject) && friend.getMember().getMemberId().equals(followId)) {
+                throw new CommonException(ErrorCode.CAN_FOLLOW_AFTER_TWO_DAYS);
             }
             if (friend.getMember().getMemberId().equals(followId)) {
-                throw new CommonException(ErrorCode.CAN_FOLLOW_AFTER_TWO_DAYS);
+                throw new CommonException(ErrorCode.ALREADY_EXIST_FRIEND);
             }
         }
         // 팔로우 상태 세팅

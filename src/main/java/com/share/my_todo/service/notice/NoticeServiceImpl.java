@@ -83,8 +83,8 @@ public class NoticeServiceImpl implements NoticeService{
     }
 
     @Override
-    public int checkNotice(Member member) {
-        List<Notice> list = noticeRepository.findAllByMemberAndReadAtIsNull(member);
+    public Integer checkNotice() {
+        List<Notice> list = noticeRepository.findAllByMemberAndReadAtIsNull(Member.easyMakeMember(SecurityUtil.getCurrentMemberId()));
 
         return list.size();
     }

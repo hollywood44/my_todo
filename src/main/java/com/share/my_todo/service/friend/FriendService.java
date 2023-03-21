@@ -43,6 +43,7 @@ public interface FriendService {
         FriendListDto dto = FriendListDto.builder()
                 .friendListId(entity.getFriendListId())
                 .friendList(dtoList)
+                .memberId(entity.getMember().getMemberId())
                 .build();
         return dto;
     }

@@ -75,5 +75,5 @@ public interface NoticeService {
 
     Page<NoticeDto> getPrevNoticeList(int page);
 
-    int checkNotice(Member member);
+    Integer checkNotice();
 }
