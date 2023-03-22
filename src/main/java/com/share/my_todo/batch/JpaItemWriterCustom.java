@@ -1,26 +1,20 @@
 package com.share.my_todo.batch;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.item.database.JpaItemWriter;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import java.util.List;
 
+@Slf4j
 public class JpaItemWriterCustom<T> extends JpaItemWriter<T> {
-
-    protected static final Log logger = LogFactory.getLog(JpaItemWriter.class);
 
     private EntityManagerFactory entityManagerFactory;
     private boolean usePersist = false;
 
     @Override
     protected void doWrite(EntityManager entityManager, List<? extends T> items) {
-
-        if (logger.isDebugEnabled()) {
-            logger.debug("Writing to JPA with " + items.size() + " items.");
-        }
 
         if (!items.isEmpty()) {
             long addedToContextCount = 0;
@@ -35,11 +29,8 @@ public class JpaItemWriterCustom<T> extends JpaItemWriter<T> {
                     addedToContextCount++;
                 }
             }
-            if (logger.isDebugEnabled()) {
-                logger.debug(addedToContextCount + " entities " + (usePersist ? " persisted." : "merged."));
-                logger.debug((items.size() - addedToContextCount) + " entities found in persistence context.");
-            }
+            log.debug(addedToContextCount + " entities " + (usePersist ? " persisted." : "merged."));
+            log.debug((items.size() - addedToContextCount) + " entities found in persistence context.");
         }
-
     }
 }

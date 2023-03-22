@@ -3,6 +3,7 @@ package com.share.my_todo.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.share.my_todo.config.login.TokenInfo;
 import com.share.my_todo.service.friend.FriendService;
+import com.share.my_todo.service.member.AuthService;
 import com.share.my_todo.service.member.MemberService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -18,6 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 import java.util.HashMap;
 import java.util.Map;
@@ -48,7 +50,7 @@ class FriendControllerTest {
     void setup() {
         this.objectMapper = new ObjectMapper();
 
-        tokenInfo = memberService.login("test01","1234");
+//        tokenInfo = AuthService.login("test01","1234");
         tokenValue = tokenInfo.getGrantType() + " " + tokenInfo.getAccessToken();
     }
 

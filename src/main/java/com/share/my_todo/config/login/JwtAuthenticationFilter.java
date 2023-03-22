@@ -39,7 +39,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         String path = request.getServletPath();
 
-        if (path.startsWith("/api/auth/new-token") || request.getMethod().equals("OPTIONS") || CorsUtils.isPreFlightRequest(request)) {
+        if (path.startsWith("/api/auth/new-token") || request.getMethod().equals("OPTIONS") || CorsUtils.isPreFlightRequest(request)
+            || path.startsWith("/api/auth/sign")) {
             chain.doFilter(request, response);
         } else {
             try {
@@ -58,7 +59,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     chain.doFilter(request, response);
                 }
             } catch (ExpiredJwtException e) {
-                System.out.println("토큰 만료!!");
+                log.error("토큰 만료!!");
                 ErrorResponse errorResponse = new ErrorResponse(ErrorCode.JWT_ACCESS_TOKEN_EXPIRED);
                 response.sendError(HttpStatus.UNAUTHORIZED.value(), ErrorCode.JWT_ACCESS_TOKEN_EXPIRED.getErrorCode());
             }

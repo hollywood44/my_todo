@@ -43,7 +43,7 @@ class TodoControllerTest {
     void setup() {
         this.objectMapper = new ObjectMapper();
 
-        tokenInfo = memberService.login("test01","1234");
+//        tokenInfo = memberService.login("test01","1234");
     }
 
     @Test

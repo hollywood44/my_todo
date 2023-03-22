@@ -35,6 +35,7 @@ public class CookieUtil {
 
     public static void deleteCookie(HttpServletRequest request,HttpServletResponse response,String name) {
         ResponseCookie cookie = ResponseCookie.from(name, null)
+                .path("/")
                 .maxAge(0)
                 .build();
 
