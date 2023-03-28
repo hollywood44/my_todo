@@ -128,6 +128,8 @@ public class BoardServiceImpl implements BoardService{
                 Board child = boardRepository.findByParentId(boardId);
                 deleteList.add(child);
                 boardRepository.deleteAll(deleteList);
+            }else{
+                boardRepository.deleteAll(deleteList);
             }
         } else {
             throw new CommonException(ErrorCode.ACCESS_DENIED);

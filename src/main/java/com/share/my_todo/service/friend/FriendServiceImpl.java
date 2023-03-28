@@ -13,6 +13,7 @@ import com.share.my_todo.repository.friend.FriendRepository;
 import com.share.my_todo.repository.member.MemberRepository;
 import com.share.my_todo.service.notice.NoticeService;
 import com.share.my_todo.service.todo.TodoService;
+import jdk.jshell.execution.Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -55,6 +56,11 @@ public class FriendServiceImpl implements FriendService {
     @Override
     @Transactional
     public void followRequest(String followId){
+        if(followId.equals(SecurityUtil.getCurrentMemberId())){
+            throw new CommonException(ErrorCode.CANT_FOLLOW_TO_ME);
+        }
+        Member check = memberRepository.findById(followId).orElseThrow(() -> new CommonException(ErrorCode.ID_NOT_FOUND));
+
         String myId = SecurityUtil.getCurrentMemberId();
 
         // 팔로우 건 회원 친구목록 불러옴 그리고 여기 담길 Friend객체 생성

@@ -35,6 +35,7 @@ public enum ErrorCode {
     // about friend exception
     ALREADY_EXIST_FRIEND(HttpStatus.BAD_REQUEST,"ALREADY_EXIST_FRIEND","이미 친구목록에 있는 친구입니다."),
     CAN_FOLLOW_AFTER_TWO_DAYS(HttpStatus.BAD_REQUEST,"CAN_FOLLOW_AFTER_TWO_DAYS","상대방이 팔로우 거절시 이틀 후 자정부터 다시 팔로우 요청이 가능합니다."),
+    CANT_FOLLOW_TO_ME(HttpStatus.BAD_REQUEST,"CANT_FOLLOW_TO_ME","자신에게는 팔로우 요청을 할 수 없습니다."),
 
     // about board exception
     BOARD_NOT_FOUND(HttpStatus.BAD_REQUEST,"BOARD_NOT_FOUND","해당 게시물을 찾을 수  없습니다."),
