@@ -4,6 +4,7 @@ import com.share.my_todo.DTO.member.MemberDto;
 import com.share.my_todo.DTO.member.MemberLoginRequestDto;
 import com.share.my_todo.config.login.JwtTokenProvider;
 import com.share.my_todo.config.login.TokenInfo;
+import com.share.my_todo.entity.board.Board;
 import com.share.my_todo.exception.ErrorCode;
 import com.share.my_todo.exception.exceptionClass.CommonException;
 import com.share.my_todo.service.member.AuthService;
@@ -50,8 +51,9 @@ public class AuthController {
      * @return true / false
      */
     @GetMapping("/signup/check")
-    public boolean idCheck(@RequestBody Map<String,String> memberIdMap) {
-        return memberService.idCheck(memberIdMap.get("memberId"));
+    public ResponseEntity<Boolean> idCheck(@RequestParam String memberId) {
+        Boolean check = memberService.idCheck(memberId);
+        return ResponseEntity.status(HttpStatus.OK).body(check);
     }
 
     /**

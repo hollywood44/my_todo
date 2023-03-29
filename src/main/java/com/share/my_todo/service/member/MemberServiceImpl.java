@@ -43,6 +43,12 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional
     public String signUp(MemberDto memberDto) {
+        if(memberDto.getMemberId() == null || memberDto.getMemberId().isEmpty() ||
+                memberDto.getPassword() == null || memberDto.getPassword().isEmpty() ||
+                memberDto.getName() == null || memberDto.getName().isEmpty()){
+            throw new CommonException(ErrorCode.POSTING_VALUE_EMPTY);
+        }
+
         Optional<Member> check = memberRepository.findById(memberDto.getMemberId());
         if (check.isPresent()) {
             throw new CommonException(ErrorCode.ID_DUPLICATED);
@@ -71,6 +77,9 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public boolean idCheck(String memberId) {
+        if(memberId == null || memberId.isEmpty()){
+            throw new CommonException(ErrorCode.POSTING_VALUE_EMPTY);
+        }
         return memberRepository.existsById(memberId);
     }
 
