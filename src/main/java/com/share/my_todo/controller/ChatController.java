@@ -5,6 +5,8 @@ import com.share.my_todo.DTO.chat.ChatRoomDto;
 import com.share.my_todo.entity.member.Member;
 import com.share.my_todo.service.chat.ChatService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -27,30 +29,30 @@ public class ChatController {
     private final SimpMessagingTemplate template;
 
     @GetMapping("/chat/room-list")
-    public String chatRoomListPage(@AuthenticationPrincipal Member member, Model model) {
-        List<ChatRoomDto> chatRoomList = chatService.getChatRoomList(member);
-        model.addAttribute("chatRoomList", chatRoomList);
+    public ResponseEntity<List<ChatRoomDto>> chatRoomListPage() {
+        List<ChatRoomDto> chatRoomList = chatService.getChatRoomList();
 
-        return "chat/chatList";
+        return ResponseEntity.status(HttpStatus.OK).body(chatRoomList);
     }
 
-    @GetMapping("/chat/{roomId}/{chatMember}")
-    public String chatRoomDetail(@AuthenticationPrincipal Member member, @PathVariable Long roomId,@PathVariable String chatMember,Model model) {
+    @GetMapping("/chat/history/{roomId}")
+    public ResponseEntity<List<ChatDto>> getHistory(@PathVariable Long roomId) {
         List<ChatDto> history = chatService.getChatHistory(roomId);
-        model.addAttribute("history", history);
 
-        return "chat/chatDetail";
+        return ResponseEntity.status(HttpStatus.OK).body(history);
     }
 
     @GetMapping("/chat/{receiveMember}")
-    public String createRoomOrOpenChatDetail(@AuthenticationPrincipal Member member,@PathVariable String receiveMember) {
-        Long chatRoomId = chatService.createRoom(receiveMember,member.getMemberId());
-        return "redirect:/chat/" + chatRoomId + "/" + receiveMember;
+    public ResponseEntity<Long> createRoomOrOpenChatDetail(@AuthenticationPrincipal Member member,@PathVariable String receiveMember) {
+        Long chatRoomId = chatService.createRoom(receiveMember);
+
+        return ResponseEntity.status(HttpStatus.OK).body(chatRoomId);
     }
 
-    @MessageMapping("/sendMessage/{roomId}/{senderId}")
-    public void message(@RequestBody ChatDto chatDto, @DestinationVariable Long roomId,@DestinationVariable String senderId) {
+    @MessageMapping("/chat/sendMessage/{roomId}")
+    public void message(@RequestBody ChatDto chatDto, @DestinationVariable Long roomId) {
         ChatDto receive = chatService.chatSave(chatDto);
+        receive.setChatTime(receive.getChatTime().substring(0,receive.getChatTime().lastIndexOf(':')));
         template.convertAndSend("/sub/chat/receive/"+receive.getChatRoomId(),receive);
     }
 }

@@ -7,6 +7,7 @@ import com.share.my_todo.entity.chat.ChatRoom;
 import com.share.my_todo.entity.member.Member;
 import com.share.my_todo.repository.chat.ChatRepository;
 import com.share.my_todo.repository.chat.ChatRoomRepository;
+import com.share.my_todo.util.SecurityUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +27,8 @@ public class ChatServiceImpl implements ChatService{
     private final ChatRepository chatRepository;
 
     @Override
-    public Long createRoom(String receiverId, String senderId) {
+    public Long createRoom(String receiverId) {
+        String senderId = SecurityUtil.getCurrentMemberId();
         Optional<ChatRoom> chatRoom = roomRepository.findChatRoom(Member.easyMakeMember(receiverId),Member.easyMakeMember(senderId));
         if (!chatRoom.isPresent()) {
             ChatRoom createRoom = ChatRoom.builder().memberOneId(Member.builder().memberId(receiverId).build()).memberTwoId(Member.builder().memberId(senderId).build()).build();
@@ -43,7 +45,8 @@ public class ChatServiceImpl implements ChatService{
     }
 
     @Override
-    public List<ChatRoomDto> getChatRoomList(Member member) {
+    public List<ChatRoomDto> getChatRoomList() {
+        Member member = Member.easyMakeMember(SecurityUtil.getCurrentMemberId());
         List<ChatRoom> entityRoomList = roomRepository.findByMemberOneIdOrMemberTwoId(member, member);
         if (!entityRoomList.isEmpty()) {
             List<ChatRoomDto> roomList = entityRoomList.stream().map(e -> roomEntityToDto(e, 1)).collect(Collectors.toList());

@@ -88,7 +88,7 @@ public interface ChatService {
      * @param senderId
      * @return 채팅방ID
      */
-    Long createRoom(String receiverId,String senderId);
+    Long createRoom(String receiverId);
 
     /**
      * 보낸(받은) 채팅 DB에 저장
@@ -97,7 +97,7 @@ public interface ChatService {
      */
     ChatDto chatSave(ChatDto chat);
 
-    List<ChatRoomDto> getChatRoomList(Member member);
+    List<ChatRoomDto> getChatRoomList();
 
     List<ChatDto> getChatHistory(Long chatRoomId);
 

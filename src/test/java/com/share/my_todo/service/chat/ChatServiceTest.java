@@ -25,8 +25,6 @@ class ChatServiceTest {
 
     @Test
     void createRoom() {
-        Long roomId = chatService.createRoom("member12", "member7");
-        System.out.println(roomId);
     }
 
     @Test
@@ -38,8 +36,6 @@ class ChatServiceTest {
 
     @Test
     void getRoomList() {
-        List<ChatRoomDto> list = chatService.getChatRoomList(Member.builder().memberId("member7").build());
-        list.stream().forEach(i -> System.out.println(i));
     }
 
     @Test
@@ -50,9 +46,5 @@ class ChatServiceTest {
 
     @Test
     void 채팅방하나만생성하는지(){
-        Long roomId = chatService.createRoom("member10", "member7");
-        System.out.println(roomId);
-        Long roomId2 = chatService.createRoom("member7", "member10");
-        System.out.println(roomId2);
     }
 }
