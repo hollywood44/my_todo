@@ -52,6 +52,9 @@ public class BoardServiceImpl implements BoardService{
     @Override
     @Transactional
     public void answerPosting(BoardDto dto) {
+        dto.setContent(dto.getContent().replace("\n", "<br>"));
+        dto.setWriter(SecurityUtil.getCurrentMemberId());
+
         List<Board> saveList = new ArrayList<>();
 
         Board parentBoard = boardRepository.findById(dto.getParentId()).get();
