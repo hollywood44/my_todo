@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface ChatRoomRepositoryCustom {
 
     public Optional<ChatRoom> findChatRoom(Member member1, Member member2);
+    public boolean checkChatAuthority(String memberId,Long chatRoomId);
 }

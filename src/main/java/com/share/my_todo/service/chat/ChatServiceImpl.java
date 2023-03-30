@@ -5,6 +5,8 @@ import com.share.my_todo.DTO.chat.ChatRoomDto;
 import com.share.my_todo.entity.chat.Chat;
 import com.share.my_todo.entity.chat.ChatRoom;
 import com.share.my_todo.entity.member.Member;
+import com.share.my_todo.exception.ErrorCode;
+import com.share.my_todo.exception.exceptionClass.CommonException;
 import com.share.my_todo.repository.chat.ChatRepository;
 import com.share.my_todo.repository.chat.ChatRoomRepository;
 import com.share.my_todo.util.SecurityUtil;
@@ -40,6 +42,9 @@ public class ChatServiceImpl implements ChatService{
 
     @Override
     public ChatDto chatSave(ChatDto chat) {
+        if (!chat.getSenderId().equals(SecurityUtil.getCurrentMemberId())) {
+            throw new CommonException(ErrorCode.ACCESS_DENIED);
+        }
         chatRepository.save(chatDtoToEntity(chat));
         return chat;
     }
@@ -47,6 +52,7 @@ public class ChatServiceImpl implements ChatService{
     @Override
     public List<ChatRoomDto> getChatRoomList() {
         Member member = Member.easyMakeMember(SecurityUtil.getCurrentMemberId());
+        // todo memberOneOrMemberTwo 부분 매개변수2개가 아닌 1개로 가능하게 개선 여지
         List<ChatRoom> entityRoomList = roomRepository.findByMemberOneIdOrMemberTwoId(member, member);
         if (!entityRoomList.isEmpty()) {
             List<ChatRoomDto> roomList = entityRoomList.stream().map(e -> roomEntityToDto(e, 1)).collect(Collectors.toList());
@@ -59,6 +65,11 @@ public class ChatServiceImpl implements ChatService{
 
     @Override
     public List<ChatDto> getChatHistory(Long chatRoomId) {
+        boolean checkAuthority = roomRepository.checkChatAuthority(SecurityUtil.getCurrentMemberId(), chatRoomId);
+        if (!checkAuthority) {
+            throw new CommonException(ErrorCode.ACCESS_DENIED);
+        }
+
         List<Chat> entityHistory = chatRepository.findAllByChatRoomOrderByChatTimeAsc(ChatRoom.builder().chatroomId(chatRoomId).build());
         if (!entityHistory.isEmpty()) {
             List<ChatDto> chatHistory = entityHistory.stream().map(e -> chatEntityToDto(e)).collect(Collectors.toList());

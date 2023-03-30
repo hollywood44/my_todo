@@ -33,4 +33,16 @@ public class ChatRoomRepositoryCustomImpl implements ChatRoomRepositoryCustom{
                 .stream().findAny();
         return result;
     }
+
+    @Override
+    public boolean checkChatAuthority(String memberId,Long chatRoomId) {
+        Integer result = queryFactory
+                .selectOne()
+                .from(chatRoom)
+                .where(chatRoom.chatroomId.eq(chatRoomId)
+                        .and(chatRoom.memberTwoId.memberId.eq(memberId).or(chatRoom.memberOneId.memberId.eq(memberId))))
+                .fetchFirst();
+
+        return result != null;
+    }
 }
