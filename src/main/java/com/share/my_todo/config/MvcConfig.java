@@ -23,7 +23,7 @@ public class MvcConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:8077") // 자원 공유를 허락할 Origin을 지정
+                .allowedOrigins("http://localhost:8077","http://my-todo-front.s3-website.ap-northeast-2.amazonaws.com") // 자원 공유를 허락할 Origin을 지정
                 .allowedMethods("GET","POST","PUT","DELETE","OPTIONS","PATCH")
                 .allowCredentials(true)// 쿠키 요청
 //                .exposedHeaders(HttpHeaders.AUTHORIZATION)
