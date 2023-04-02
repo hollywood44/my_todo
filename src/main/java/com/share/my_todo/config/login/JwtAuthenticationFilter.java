@@ -60,8 +60,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 }
             } catch (ExpiredJwtException e) {
                 log.error("토큰 만료!!");
+
                 ErrorResponse errorResponse = new ErrorResponse(ErrorCode.JWT_ACCESS_TOKEN_EXPIRED);
-                response.sendError(HttpStatus.UNAUTHORIZED.value(), ErrorCode.JWT_ACCESS_TOKEN_EXPIRED.getErrorCode());
+                response.setHeader("RE-LOGIN",errorResponse.getErrorCode());
+                response.sendError(HttpStatus.UNAUTHORIZED.value());
             }
         }
     }

@@ -26,7 +26,7 @@ public class MvcConfig implements WebMvcConfigurer {
                 .allowedOrigins("http://localhost:8077","https://www.share-my-todo.shop") // 자원 공유를 허락할 Origin을 지정
                 .allowedMethods("GET","POST","PUT","DELETE","OPTIONS","PATCH")
                 .allowCredentials(true)// 쿠키 요청
-//                .exposedHeaders(HttpHeaders.AUTHORIZATION)
+                .exposedHeaders("RE-LOGIN")
                 .maxAge(3600); // preflight 요청에 대한 응답을 브라우저에서 캐싱하는 시간
     }
 }
