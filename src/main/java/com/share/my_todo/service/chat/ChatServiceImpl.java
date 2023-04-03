@@ -42,9 +42,6 @@ public class ChatServiceImpl implements ChatService{
 
     @Override
     public ChatDto chatSave(ChatDto chat) {
-        if (!chat.getSenderId().equals(SecurityUtil.getCurrentMemberId())) {
-            throw new CommonException(ErrorCode.ACCESS_DENIED);
-        }
         chatRepository.save(chatDtoToEntity(chat));
         return chat;
     }
