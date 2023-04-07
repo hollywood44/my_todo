@@ -7,6 +7,7 @@ import static com.share.my_todo.entity.chat.QChatRoom.chatRoom;
 import com.share.my_todo.entity.member.Member;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 import java.util.Optional;
 
 public class ChatRoomRepositoryCustomImpl implements ChatRoomRepositoryCustom{
@@ -44,5 +45,15 @@ public class ChatRoomRepositoryCustomImpl implements ChatRoomRepositoryCustom{
                 .fetchFirst();
 
         return result != null;
+    }
+
+    @Override
+    public List<ChatRoom> findChatRoomByMemberId(String memberId) {
+        List<ChatRoom> result = queryFactory
+                .selectFrom(chatRoom)
+                .where(chatRoom.memberOneId.memberId.eq(memberId).or(chatRoom.memberTwoId.memberId.eq(memberId)))
+                .fetch();
+
+        return result;
     }
 }

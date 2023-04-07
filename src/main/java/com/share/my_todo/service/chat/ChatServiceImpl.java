@@ -48,9 +48,9 @@ public class ChatServiceImpl implements ChatService{
 
     @Override
     public List<ChatRoomDto> getChatRoomList() {
-        Member member = Member.easyMakeMember(SecurityUtil.getCurrentMemberId());
         // todo memberOneOrMemberTwo 부분 매개변수2개가 아닌 1개로 가능하게 개선 여지
-        List<ChatRoom> entityRoomList = roomRepository.findByMemberOneIdOrMemberTwoId(member, member);
+        List<ChatRoom> entityRoomList = roomRepository.findChatRoomByMemberId(SecurityUtil.getCurrentMemberId());
+
         if (!entityRoomList.isEmpty()) {
             List<ChatRoomDto> roomList = entityRoomList.stream().map(e -> roomEntityToDto(e, 1)).collect(Collectors.toList());
             return roomList;
